@@ -83,6 +83,20 @@ Before reporting a task done:
   `DATABASE_URL` (pooled) for the app at runtime, `DIRECT_URL` (direct)
   for Prisma CLI/migrations
 
+## Vendored agent skills
+
+`.claude/skills/` holds official, vendor-published Claude Code skills for
+this stack (Supabase, Vercel, Next.js), fetched from their upstream
+GitHub repos via the `skills` CLI (`npx skills ...`) and committed —
+`skills-lock.json` records each skill's source/version for
+`npx skills update`. Installed: `supabase`,
+`supabase-postgres-best-practices` (Supabase/Postgres work),
+`deploy-to-vercel`, `vercel-cli-with-tokens` (Vercel deploy/CLI),
+`vercel-react-best-practices`, `next-dev-loop`,
+`next-cache-components-adoption`, `next-partial-prefetching-adoption`
+(Next.js/React). These are third-party content — review before trusting,
+they run with full agent permissions.
+
 ## Boundaries and approvals
 
 - Never mutate plan data via business logic in the frontend — always
