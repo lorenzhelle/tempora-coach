@@ -66,7 +66,8 @@ Before reporting a task done, once code exists:
   versions `[NEEDS CONFIRMATION, to be set with Epic A1]`
 - Formatting: `[NEEDS CONFIRMATION: no formatter/style guide chosen]`
 - Naming: code/variable names in English (standard convention);
-  comments/docs in German (personal project), see `CLAUDE.md`
+  comments/docs in English — the context layer was translated from
+  German to English (2026-08-25), see `CLAUDE.md`
 - Testing: `[NEEDS CONFIRMATION: when tests are mandatory and where they
   live — not yet decided]`
 - Dependencies: `[NEEDS CONFIRMATION: approval/lockfile rules not yet
