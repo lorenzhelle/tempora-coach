@@ -1,21 +1,22 @@
-# ADR-0001: App-Name — Tempora
+# ADR-0001: App name — Tempora
 
 ## Status
-Entschieden — 2026-08-25
+Decided — 2026-08-25
 
-## Kontext
-Für die Lauf-Coach-App wurde eine Reihe von Namensideen diskutiert, u.a.
-Pacer, Splits, Threshold, Zone/Zonal, Stride, Pacemaker und Tempora
-(Wortspiel Tempo/Zeit). Keine davon war zuvor final festgelegt — das Repo
-hieß bereits `tempora-coach`, aber das allein war keine Produktentscheidung.
+## Context
+A number of name ideas were discussed for the running coach app, among
+them Pacer, Splits, Threshold, Zone/Zonal, Stride, Pacemaker, and Tempora
+(a play on tempo/time). None of these had been finalized before — the repo
+was already named `tempora-coach`, but that alone wasn't a product
+decision.
 
-## Entscheidung
-Der Name der App ist **Tempora**.
+## Decision
+The app's name is **Tempora**.
 
-## Konsequenzen
-- Repo-Name `tempora-coach` ist konsistent mit dem Produktnamen — keine
-  Umbenennung nötig.
-- Der Titel in `CLAUDE.md` ("Tempora — Lauf-Coach-App") ist ab jetzt korrekt
-  und nicht mehr nur ein Arbeitstitel.
-- Branding/Domain-Wahl (z.B. `tempora.app`, Subdomain o.ä.) kann darauf
-  aufbauen, ist aber nicht Teil dieser Entscheidung.
+## Consequences
+- The repo name `tempora-coach` is consistent with the product name — no
+  rename needed.
+- The title in `CLAUDE.md` ("Tempora — Running Coach App") is now correct,
+  not just a working title.
+- Branding/domain choice (e.g. `tempora.app`, a subdomain, etc.) can build
+  on this, but is not part of this decision.

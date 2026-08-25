@@ -1,44 +1,46 @@
-# Tempora — Lauf-Coach-App — Projektkontext
+# Tempora — Running Coach App — Project Context
 
-> Dieses Dokument ist Claude Codes direkt geladener Projektkontext
-> (Produktrahmen, fachlicher Hintergrund). Für portable Agent-Regeln
-> (exakte Befehle, Quality Gates, Konventionen, Boundaries) ist
-> [AGENTS.md](AGENTS.md) die kanonische Quelle, für Architektur
-> [docs/architecture.md](docs/architecture.md), für nicht verhandelbare
-> Invarianten [docs/constitution.md](docs/constitution.md). Bei
-> Widersprüchen zwischen diesem Dokument und einer dieser Quellen gilt die
-> jeweils spezialisierte Datei.
+> This document is Claude Code's directly loaded project context
+> (product framing, domain background). For portable agent rules
+> (exact commands, quality gates, conventions, boundaries),
+> [AGENTS.md](AGENTS.md) is the canonical source; for architecture,
+> [docs/architecture.md](docs/architecture.md); for non-negotiable
+> invariants, [docs/constitution.md](docs/constitution.md). In case of
+> conflict between this document and one of these sources, the more
+> specialized file governs.
 
-## Was ist das
-Webapp für einen Trainingsplan fürs Laufen (aktuell: 5km unter 20min in 12
-Monaten), Sync mit Strava (siehe ADR-0002), Dashboard mit Wochenplan/
-Fortschritt, und ein Chat-Layer, über den der Plan angepasst werden kann.
-Kein Chat-only-Interface — Dashboard ist die Hauptansicht, Chat ist Zusatz
-(Vorbild: Runna, aber viel einfacher). v1 ist bewusst auf einen Nutzer
-zugeschnitten (siehe "Nicht in Scope" in `docs/specs/00-fundament/tickets.md`), die Strava-OAuth-
-Architektur ist aber grundsätzlich multi-user-fähig, falls das später
-gewünscht wird.
+## What this is
+A web app for a running training plan (current goal: 5 km under 20 minutes
+in 12 months), synced with Strava (see ADR-0002), a dashboard with a weekly
+plan/progress view, and a chat layer for adjusting the plan. Not a
+chat-only interface — the dashboard is the primary view, chat is
+supplementary (model: Runna, but much simpler). v1 is deliberately scoped
+to a single user (see "Out of scope" in
+`docs/specs/00-fundament/tickets.md`), but the Strava OAuth architecture is
+fundamentally multi-user-capable in case that's wanted later.
 
-## Tech-Stack & Architektur
-Next.js (App Router, TypeScript) Frontend + API Routes, SQLite via Prisma,
-Anthropic API für den Chat-Layer, Strava-Sync über OAuth + Webhooks (kein
-Sidecar, siehe ADR-0002), Hosting Vercel Free Tier. Details, Modul-Map und
-kritische Flows: [docs/architecture.md](docs/architecture.md).
+## Tech stack & architecture
+Next.js (App Router, TypeScript) frontend + API routes, SQLite via Prisma,
+Anthropic API for the chat layer via the Vercel AI SDK (see ADR-0003),
+Strava sync via OAuth + webhooks (no sidecar, see ADR-0002), hosting on
+Vercel Free Tier. Details, module map, and critical flows:
+[docs/architecture.md](docs/architecture.md). Visual language:
+[docs/design-system.md](docs/design-system.md).
 
-## Konventionen, Befehle, Anti-Patterns
-Kanonisch in [AGENTS.md](AGENTS.md) — dort auch der aktuelle Stand der
-`[NEEDS CONFIRMATION]`-Lücken (z.B. Lint/Test-Setup, das erst mit Epic A1
-entsteht). Nicht hier duplizieren.
+## Conventions, commands, anti-patterns
+Canonical in [AGENTS.md](AGENTS.md) — also holds the current state of
+`[NEEDS CONFIRMATION]` gaps (e.g. lint/test setup, which only comes into
+being with Epic A1). Not duplicated here.
 
-## Fachlicher Hintergrund
-Die Coaching-Logik (Progressionsraten, Schmerz-Ampel, Spike-Regel, Zonen-
-Ableitung, Onboarding-Struktur) basiert auf einer strukturierten Recherche
-mit Primärquellen (RCTs, Kohortenstudien, Meta-Analysen). Siehe
-`docs/research/` — insbesondere relevant für die System-Prompts in
-[Spec 3](docs/specs/03-onboarding/spec.md) (Onboarding) und
-[Spec 5](docs/specs/05-chat-anpassung/spec.md) (Chat-Anpassung).
+## Domain background
+The coaching logic (progression rates, pain traffic-light model, spike
+rule, zone derivation, onboarding structure) is based on structured
+research with primary sources (RCTs, cohort studies, meta-analyses). See
+`docs/research/` — especially relevant for the system prompts in
+[Spec 3](docs/specs/03-onboarding/spec.md) (onboarding) and
+[Spec 5](docs/specs/05-chat-anpassung/spec.md) (chat-based adjustment).
 
-## Entscheidungen
-Verbindliche Architektur-/Produktentscheidungen stehen als ADRs in
-`docs/decisions/` (u.a. App-Name, Datenquelle Strava). Bei Widersprüchen
-zwischen diesem Dokument und einer ADR gilt die ADR.
+## Decisions
+Binding architecture/product decisions live as ADRs in
+`docs/decisions/` (among them: app name, Strava as data source). In case of
+conflict between this document and an ADR, the ADR governs.

@@ -1,89 +1,89 @@
 # Constitution
 
-Nicht verhandelbare Invarianten für Tempora. Diese Regeln stehen über
-`AGENTS.md`-Konventionen und dürfen nur durch eine neue, ausdrückliche
-Entscheidung (ADR in `docs/decisions/`) geändert werden — nie stillschweigend
-per Code-Änderung.
+Non-negotiable invariants for Tempora. These rules stand above `AGENTS.md`
+conventions and may only be changed through a new, explicit decision (an
+ADR in `docs/decisions/`) — never silently via a code change.
 
-## Sicherheit
+## Security
 
-- **SEC-001** — Strava-Access-/Refresh-Tokens, Anthropic-API-Keys und alle
-  anderen Secrets dürfen niemals ins Git-Repository (Code, Config, Logs,
-  Commit-Historie) gelangen. Sie leben ausschließlich in `.env` (lokal) bzw.
-  in den Secret-Mechanismen der Hosting-Plattform (Vercel Environment
-  Variables).
-- **SEC-002** — Strava-Access-Tokens laufen nach 6h ab. Der Refresh muss
-  automatisch und proaktiv erfolgen (vor Ablauf), nicht reaktiv erst wenn ein
-  API-Aufruf fehlschlägt (siehe `docs/specs/01-strava-sync/spec.md` Spec 1, AC 4).
-- **SEC-003** — Wird ein Refresh-Token ungültig (Nutzer hat Zugriff in Strava
-  widerrufen), MUSS die Verbindung als getrennt markiert werden; der Fehler
-  darf keine anderen Syncs blockieren (siehe `docs/specs/01-strava-sync/spec.md` Spec 1, AC 5).
+- **SEC-001** — Strava access/refresh tokens, the Anthropic API key, and
+  all other secrets must never end up in the Git repository (code, config,
+  logs, commit history). They live exclusively in `.env` (local) or in the
+  hosting platform's secret mechanisms (Vercel environment variables).
+- **SEC-002** — Strava access tokens expire after 6h. The refresh must
+  happen automatically and proactively (before expiry), not reactively
+  only once an API call fails (see `docs/specs/01-strava-sync/spec.md`
+  Spec 1, AC 4).
+- **SEC-003** — If a refresh token becomes invalid (the user revoked
+  access in Strava), the connection MUST be marked as disconnected; the
+  error must not block other syncs (see
+  `docs/specs/01-strava-sync/spec.md` Spec 1, AC 5).
 
-## Datenintegrität
+## Data integrity
 
-- **DATA-001** — Der Trainingsplan ist ein strukturiertes Datenmodell in der
-  DB (`Plan`, `Milestone`, `TrainingWeek`, `PlannedSession`), nicht nur Text
-  im Chatverlauf. Mutationen laufen ausschließlich über Next.js API-Routes —
-  niemals direkt aus Frontend-Code oder ungeprüft aus einer Chat-Antwort.
-- **DATA-002** — Strava-Aktivitäten werden über `stravaActivityId`
-  dedupliziert. Ein wiederholter Sync-Lauf oder ein doppeltes Webhook-Event
-  darf nie zu doppelten `Activity`-Einträgen führen (siehe
+- **DATA-001** — The training plan is a structured data model in the DB
+  (`Plan`, `Milestone`, `TrainingWeek`, `PlannedSession`), not just text in
+  the chat history. Mutations run exclusively through Next.js API routes —
+  never directly from frontend code or unchecked from a chat response.
+- **DATA-002** — Strava activities are deduplicated via
+  `stravaActivityId`. A repeated sync run or a duplicate webhook event must
+  never produce duplicate `Activity` entries (see
   `docs/specs/01-strava-sync/spec.md` Spec 1, AC 3).
-- **DATA-003** — Eine Chat-Anpassung ändert gezielt die betroffenen Felder
-  eines Plans, nie den gesamten Plan neu generieren (siehe
-  `docs/specs/05-chat-anpassung/spec.md` Spec 5, AC 1). Das verhindert, dass
-  bereits bestätigte Planteile unbeabsichtigt überschrieben werden.
+- **DATA-003** — A chat-based adjustment changes only the affected fields
+  of a plan, never regenerates the entire plan (see
+  `docs/specs/05-chat-anpassung/spec.md` Spec 5, AC 1). This prevents
+  already-confirmed parts of the plan from being overwritten unintentionally.
 
-## Architekturgrenzen
+## Architecture boundaries
 
-- **ARCH-001** — Datenquelle für Lauf-Aktivitäten ist Strava (OAuth +
-  Webhooks), kein Garmin-Direktsync-Sidecar mehr (siehe
-  [ADR-0002](decisions/0002-datenquelle-strava.md)). Ein Wechsel der
-  Datenquelle erfordert eine neue ADR, die ADR-0002 explizit ablöst.
-- **ARCH-002** — v1 bleibt bewusst auf einen Nutzer beschränkt (kein
-  Auth-System für mehrere Accounts). Eine Ausweitung auf Multi-User ist eine
-  separate, noch offene Entscheidung (siehe "Nicht in Scope" in
-  `docs/specs/00-fundament/tickets.md`) und erfordert eine eigene ADR, bevor
-  sie umgesetzt wird.
+- **ARCH-001** — The data source for running activities is Strava (OAuth +
+  webhooks), no more Garmin direct-sync sidecar (see
+  [ADR-0002](decisions/0002-datenquelle-strava.md)). Changing the data
+  source requires a new ADR that explicitly supersedes ADR-0002.
+- **ARCH-002** — v1 stays deliberately limited to a single user (no auth
+  system for multiple accounts). Expanding to multi-user is a separate,
+  still-open decision (see "Out of scope" in
+  `docs/specs/00-fundament/tickets.md`) and requires its own ADR before it
+  is implemented.
 
-## Trainingsprinzipien (fachliche Sicherheitsregeln)
+## Training principles (domain safety rules)
 
-- **SAFE-001** — Eine Chat-Anfrage, die einen Einzellauf plant, der stark
-  über den längsten Lauf der letzten 30 Tage springt (RUNSAFE-Spike-Regel,
-  siehe `docs/research/`), darf nicht still übernommen werden. Das System
-  MUSS erst darauf hinweisen, bevor die Änderung angewendet wird (siehe
+- **SAFE-001** — A chat request that plans a single run that jumps sharply
+  above the longest run of the last 30 days (RUNSAFE spike rule, see
+  `docs/research/`) must not be silently applied. The system MUST flag it
+  first, before applying the change (see
   `docs/specs/05-chat-anpassung/spec.md` Spec 5, AC 4).
-- **SAFE-002** — Punktueller Knochenschmerz (Schienbein/Fuß/Hüfte) folgt
-  nicht der normalen Schmerz-Ampel-Logik (0–10-Skala) — er ist immer ein
-  Stopp-Signal für Aufprallbelastung, unabhängig vom Zahlenwert (siehe
+- **SAFE-002** — Localized bone pain (shin/foot/hip) does not follow the
+  normal pain-traffic-light logic (0–10 scale) — it is always a stop
+  signal for impact loading, regardless of the numeric value (see
   `docs/research/progression-und-verletzungspraevention.md`).
 
 ## Human vs. agent approval gates
 
-- Menschliche Freigabe erforderlich vor: Merge in den Default-Branch,
-  jeder destruktiven Git-Operation (force-push, reset --hard), jeder
-  Schema-Migration mit bestehenden Daten, jedem Wechsel der Datenquelle oder
-  der Multi-User-Entscheidung (siehe ARCH-001/ARCH-002).
-- Ein Coding-Agent darf ohne Rückfrage: Code gemäß den Specs/Tickets unter
-  `docs/specs/` implementieren, Tests schreiben/ausführen, Dokumentation
-  gemäß diesem Kontext-Layer aktualisieren.
+- Human approval required before: merging into the default branch, any
+  destructive git operation (force-push, reset --hard), any schema
+  migration affecting existing data, any change of data source or the
+  multi-user decision (see ARCH-001/ARCH-002).
+- A coding agent may, without asking first: implement code per the
+  specs/tickets under `docs/specs/`, write/run tests, update documentation
+  per this context layer.
 
-## Governance-Metadaten
+## Governance metadata
 
-- Eigentümer: `[NEEDS CONFIRMATION: formaler Owner — aktuell einziger
-  Nutzer/Betreiber des Projekts]`
-- Letzte Überprüfung: 2026-08-25
-- Änderungsprozess: Eine Invariante wird nur durch eine neue ADR geändert,
-  nie durch eine stille Code- oder Doku-Änderung.
+- Owner: `[NEEDS CONFIRMATION: formal owner — currently the sole
+  user/operator of the project]`
+- Last reviewed: 2026-08-25
+- Change process: An invariant is only changed through a new ADR, never
+  through a silent code or doc change.
 
 ## Related documentation
 
-- Agent-Anweisungen: [AGENTS.md](../AGENTS.md)
-- Architektur: [docs/architecture.md](architecture.md)
-- Entscheidungshistorie: [docs/decisions/README.md](decisions/README.md)
+- Agent instructions: [AGENTS.md](../AGENTS.md)
+- Architecture: [docs/architecture.md](architecture.md)
+- Decision history: [docs/decisions/README.md](decisions/README.md)
 
 ## Maintenance
 
-Überprüfen, wenn sich Sicherheits-, Datenintegritäts- oder
-Architekturgrenzen ändern — jede Änderung läuft über eine neue ADR, nie
-über eine direkte Bearbeitung bestehender Invarianten-IDs.
+Review whenever security, data-integrity, or architecture boundaries
+change — every change goes through a new ADR, never a direct edit of
+existing invariant IDs.

@@ -1,38 +1,39 @@
-# Spec 1: Strava-Sync
+# Spec 1: Strava Sync
 
-**Ziel:** Läufe automatisch aus Strava (die Garmin-Uhr synct dorthin) in die
-App-DB holen, ohne manuellen Export. Siehe [ADR-0002](../../decisions/0002-datenquelle-strava.md)
-für die Begründung Strava statt Garmin-Direktsync.
+**Goal:** Automatically pull runs from Strava (the Garmin watch syncs
+there) into the app DB, without a manual export. See
+[ADR-0002](../../decisions/0002-datenquelle-strava.md) for the reasoning
+behind Strava instead of a direct Garmin sync.
 
-**Ansatz:** Offizielle Strava-OAuth-API. Einmaliger Connect-Flow pro Nutzer
-(OAuth-Redirect, Access-/Refresh-Token speichern), danach Webhook-Endpoint,
-der bei neuen/geänderten Aktivitäten von Strava benachrichtigt wird.
-Periodischer Abgleich (z.B. täglich) als Fallback, falls ein Webhook-Event
-verloren geht.
+**Approach:** The official Strava OAuth API. A one-time connect flow per
+user (OAuth redirect, store access/refresh token), then a webhook
+endpoint that gets notified about new/changed activities from Strava. A
+periodic reconciliation (e.g. daily) as a fallback in case a webhook
+event gets lost.
 
-**Datenmodell `StravaConnection`:**
+**Data model `StravaConnection`:**
 ```
 id, userId, stravaAthleteId, accessToken, refreshToken, expiresAt
 ```
 
-**Datenmodell `Activity`:**
+**Data model `Activity`:**
 ```
 id, stravaActivityId (unique), date, distanceKm, durationSeconds,
-avgPaceSecPerKm, avgHeartRate (nullable), splits (JSON: pro-km Pace),
-feltEffort (nullable, manuell nachtragbar 1-10), notes (nullable)
+avgPaceSecPerKm, avgHeartRate (nullable), splits (JSON: per-km pace),
+feltEffort (nullable, can be added manually 1-10), notes (nullable)
 ```
 
 **Acceptance Criteria:**
-- WHEN ein Nutzer den Strava-Connect-Flow abschließt, THE SYSTEM SHALL
-  Access-Token, Refresh-Token und Ablaufzeit in `StravaConnection` speichern.
-- WHEN ein Strava-Webhook-Event für eine neue Aktivität eintrifft, THE SYSTEM
-  SHALL die Aktivität abrufen und als `Activity`-Eintrag speichern.
-- IF eine Strava-Aktivität bereits in der DB existiert (gleiche
-  `stravaActivityId`), THEN THE SYSTEM SHALL sie nicht doppelt anlegen.
-- WHEN ein Access-Token abgelaufen ist, THE SYSTEM SHALL es automatisch via
-  Refresh-Token erneuern, bevor ein API-Aufruf fehlschlägt.
-- IF der Refresh-Token ungültig ist (Nutzer hat Zugriff in Strava widerrufen),
-  THEN THE SYSTEM SHALL den Fehler loggen, die Verbindung als getrennt
-  markieren und den nächsten Sync-Versuch für andere Nutzer nicht blockieren.
-- WHEN eine neue Aktivität gespeichert wurde, THE SYSTEM SHALL sie dem
-  Dashboard und dem Chat-Kontext zur Verfügung stellen.
+- WHEN a user completes the Strava connect flow, THE SYSTEM SHALL store
+  the access token, refresh token, and expiry time in `StravaConnection`.
+- WHEN a Strava webhook event arrives for a new activity, THE SYSTEM
+  SHALL fetch the activity and store it as an `Activity` entry.
+- IF a Strava activity already exists in the DB (same `stravaActivityId`),
+  THEN THE SYSTEM SHALL NOT create a duplicate.
+- WHEN an access token has expired, THE SYSTEM SHALL automatically renew
+  it via the refresh token, before an API call fails.
+- IF the refresh token is invalid (the user revoked access in Strava),
+  THEN THE SYSTEM SHALL log the error, mark the connection as
+  disconnected, and not block the next sync attempt for other users.
+- WHEN a new activity has been stored, THE SYSTEM SHALL make it available
+  to the dashboard and the chat context.

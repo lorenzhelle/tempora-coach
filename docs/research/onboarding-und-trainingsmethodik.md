@@ -1,120 +1,173 @@
-# Quellen-Zusammenfassung & Onboarding-Konzept für den Trainingsplan (5 km bis Marathon)
+# Source Summary & Onboarding Concept for the Training Plan (5 km to Marathon)
 
-## Teil 1 — Zusammenfassung: Wichtigste Quellen & Erkenntnisse
+## Part 1 — Summary: Key Sources & Findings
 
-### A. Trainingsintensität & Methodik
+### A. Training Intensity & Methodology
 
-| Quelle | Kernbefund |
+| Source | Key finding |
 |---|---|
-| **Rosenblat et al., Sports Medicine 2025** (Netzwerk-Meta-Analyse, individuelle Daten, 13 Studien, 348 Athleten) | Kein signifikanter Unterschied zwischen polarisiert (POL), pyramidal (PYR), Schwelle, HIIT, High-Volume für VO₂max/Zeitfahrleistung. **Aber:** wettkampfnahe Athleten profitieren eher von POL, Freizeitläufer eher von PYR (Subgruppen-Signal, p<0,05) |
-| **Filipas et al., Scand J Med Sci Sports 2022** (60 gut trainierte Läufer) | Periodisierung **pyramidal → polarisiert** brachte größte Zuwächse in VO₂max, Schwellengeschwindigkeit, 5-km-Zeit |
-| **Esteve-Lanao et al., J Strength Cond Res 2007** (12 subelite Läufer) | 80,5 % lockeres Laufen schlug 66,8 % ("Grey Zone") signifikant (−157s vs. −121,5s, p=0,03) → **80/20-Prinzip bestätigt** |
-| **Seiler & Sjursen, Scand J Med Sci Sports 2004** | Lange Intervalle (3–5 min) erreichen ~92% VO₂max vs. nur 82% bei 1-min-Bouts → **Intervalllänge für VO₂max-Training entscheidend** |
-| **Seiler et al. 2013** (35 Athleten) | 4×8min-Intervalle (+11,4%) schlugen 4×4min (+5,5%) und 4×16min (+5,6%) → **Sweet Spot ~8 min pro Intervall** |
+| **Rosenblat et al., Sports Medicine 2025** (network meta-analysis, individual data, 13 studies, 348 athletes) | No significant difference between polarized (POL), pyramidal (PYR), threshold, HIIT, high-volume for VO₂max/time-trial performance. **But:** athletes closer to competition tend to benefit more from POL, recreational runners more from PYR (subgroup signal, p<0.05) |
+| **Filipas et al., Scand J Med Sci Sports 2022** (60 well-trained runners) | Periodization **pyramidal → polarized** produced the largest gains in VO₂max, threshold speed, 5 km time |
+| **Esteve-Lanao et al., J Strength Cond Res 2007** (12 sub-elite runners) | 80.5% easy running significantly beat 66.8% ("grey zone") (−157s vs. −121.5s, p=0.03) → **confirms the 80/20 principle** |
+| **Seiler & Sjursen, Scand J Med Sci Sports 2004** | Long intervals (3–5 min) reach ~92% VO₂max vs. only 82% for 1-min bouts → **interval length is decisive for VO₂max training** |
+| **Seiler et al. 2013** (35 athletes) | 4×8min intervals (+11.4%) beat 4×4min (+5.5%) and 4×16min (+5.6%) → **sweet spot ~8 min per interval** |
 
-### B. Umfang & Volumen
+### B. Volume
 
-| Quelle | Kernbefund |
+| Source | Key finding |
 |---|---|
-| **Vickers & Vertosick, BMC Sports Sci Med Rehabil 2016** (N=2.303 Freizeitläufer) | Wochenumfang ist der **stärkste Prädiktor** für Renn-Zeiten (5km–Marathon) |
-| Diverse Reviews | Sub-20-Kandidaten: Zielkorridor **40–55 km/Woche**; Mitteldistanz-Basis oft ~32–38 km/Woche |
+| **Vickers & Vertosick, BMC Sports Sci Med Rehabil 2016** (N=2,303 recreational runners) | Weekly mileage is the **strongest predictor** of race times (5km–marathon) |
+| Various reviews | Sub-20 candidates: target corridor **40–55 km/week**; middle-distance base often ~32–38 km/week |
 
-### C. Sichere Progression / Verletzungsprävention (entscheidend für Onboarding!)
+### C. Safe Progression / Injury Prevention (crucial for onboarding!)
 
-| Quelle | Kernbefund |
+| Source | Key finding |
 |---|---|
-| **Buist et al., Am J Sports Med 2008** (RCT, 532 Novizen) | 10%-Regel-Gruppe: 20,8% Verletzungsrate vs. Standard-Gruppe 20,3% → **10%-Regel ist NICHT signifikant schützend** (einziges RCT dazu!) |
-| **Nielsen et al., JOSPT 2014** (874 Novizen, GPS-Daten) | >30%-Steigerung über 2 Wochen: HR 1,59 für distanzbezogene Verletzungen — **statistisch nicht signifikant** (KI 0,96–2,66), wird oft überzitiert |
-| **Frandsen et al./RUNSAFE, BJSM 2025** (5.205 Läufer, 588.071 Einheiten — größte Studie ihrer Art) | Nicht die Wochensteigerung, sondern der **Sprung in einer einzelnen Einheit** relativ zur längsten Distanz der letzten 30 Tage treibt das Risiko (HRR 1,64–2,28 je nach Spike-Größe) → **wichtigster Befund für die App-Logik: längsten Einzellauf nie stark springen lassen** |
-| Physiologie-Literatur | Herz-Kreislauf & Muskeln adaptieren in Wochen; **Knochen brauchen 3–4 Monate** (Remodeling-Zyklus), Sehnen Wochen–Monate → Wiedereinsteiger fühlen sich schneller fit als der Stützapparat tatsächlich ist |
-| **Silbernagel/Thomeé, Am J Sports Med 2007** | Validiertes **Schmerz-Ampel-Modell**: Schmerz während/nach Belastung bis 5/10 ok, muss bis nächsten Morgen abklingen, darf nicht wochenweise zunehmen. **Ausnahme: Knochenschmerz** → sofort stoppen |
-| **Lauersen, Bertelsen & Andersen, BJSM 2014** (Meta-Analyse) | Krafttraining senkt Sportverletzungen auf <1/3 (RR 0,647), Überlastungsverletzungen fast halbiert (RR 0,527) |
+| **Buist et al., Am J Sports Med 2008** (RCT, 532 novices) | 10%-rule group: 20.8% injury rate vs. 20.3% for the standard group → **the 10% rule is NOT significantly protective** (the only RCT on it!) |
+| **Nielsen et al., JOSPT 2014** (874 novices, GPS data) | A >30% increase over 2 weeks: HR 1.59 for distance-related injuries — **statistically not significant** (CI 0.96–2.66), often over-cited |
+| **Frandsen et al./RUNSAFE, BJSM 2025** (5,205 runners, 588,071 sessions — the largest study of its kind) | Not the weekly increase, but the **jump within a single session** relative to the longest distance of the last 30 days drives risk (HRR 1.64–2.28 depending on spike size) → **the most important finding for the app's logic: never let the longest single run jump sharply** |
+| Physiology literature | The cardiovascular system and muscles adapt within weeks; **bones need 3–4 months** (remodeling cycle), tendons weeks–months → returning runners feel fit faster than their support structures actually are |
+| **Silbernagel/Thomeé, Am J Sports Med 2007** | The validated **pain-traffic-light model**: pain during/after activity up to 5/10 is OK, must subside by the next morning, must not increase week over week. **Exception: bone pain** → stop immediately |
+| **Lauersen, Bertelsen & Andersen, BJSM 2014** (meta-analysis) | Strength training reduces sports injuries to <1/3 (RR 0.647), overuse injuries nearly halved (RR 0.527) |
 
-### D. Krafttraining & Laufökonomie
+### D. Strength Training & Running Economy
 
-| Quelle | Kernbefund |
+| Source | Key finding |
 |---|---|
-| **Eihara et al., Sports Medicine – Open 2022** (Meta-Analyse, 22 Studien, 479 Probanden) | Schweres Krafttraining (≥90% 1RM, ≥10 Wochen) verbessert Laufökonomie (g=−0,32) und TT-Leistung (g=−0,24) stärker als Plyometrie |
-| **Llanos-Lagos et al., Sports Medicine 2024** | Kombiniertes Kraft+Plyo-Training: großer Effekt (ES=−1,035, p=0,036) auf Laufleistung; kein Krafttraining verbessert VO₂max direkt — Wirkung läuft über Ökonomie |
+| **Eihara et al., Sports Medicine – Open 2022** (meta-analysis, 22 studies, 479 subjects) | Heavy strength training (≥90% 1RM, ≥10 weeks) improves running economy (g=−0.32) and time-trial performance (g=−0.24) more than plyometrics |
+| **Llanos-Lagos et al., Sports Medicine 2024** | Combined strength+plyo training: a large effect (ES=−1.035, p=0.036) on running performance; strength training alone doesn't improve VO₂max directly — the effect runs through economy |
 
-### E. Testprotokolle & Zonenbestimmung
+### E. Test Protocols & Zone Determination
 
-- **5-km-Zeitfahrtest** = praktischster Feldtest für Freizeitläufer
-- **Critical-Velocity-Test** (2–3 All-out-Efforts, 2–20 min) = genaueste feldbasierte Schwellenschätzung ohne Labor
-- **Ableitung aus 5-km-Pace** (John Davis/Running Writings, validiert an hunderten Läufern): Schwelle ≈ 90% der 5km-Pace, Critical Velocity ≈ 96%, VO₂max-Pace ≈ 100%
-- **VDOT-Modell (Jack Daniels)** zur Umrechnung Bestzeit → Trainingspaces über alle Distanzen
+- **A 5 km time trial** = the most practical field test for recreational
+  runners
+- **The critical-velocity test** (2–3 all-out efforts, 2–20 min) = the
+  most accurate field-based threshold estimate without a lab
+- **Derivation from 5 km pace** (John Davis/Running Writings, validated
+  across hundreds of runners): threshold ≈ 90% of 5km pace, critical
+  velocity ≈ 96%, VO₂max pace ≈ 100%
+- **The VDOT model (Jack Daniels)** for converting a personal best into
+  training paces across all distances
 
-### F. Assessment-Standards
+### F. Assessment Standards
 
-- **PAR-Q+** (Physical Activity Readiness Questionnaire) = internationaler Standard für Gesundheits-Screening vor Trainingsbeginn
-- **ACSM-Präpartizipations-Algorithmus** = professioneller Standard, stratifiziert nach Aktivitätsniveau, Vorerkrankungen, Zielintensität
-- **ACWR (Acute:Chronic Workload Ratio)**, IOC-Konsens: "Sweet Spot" grob 0,8–1,3, erhöhtes Risiko >1,5 — methodisch umstritten, aber als grobe Orientierung für Belastungssteuerung (z.B. Garmin Training Load) brauchbar
+- **PAR-Q+** (Physical Activity Readiness Questionnaire) = the
+  international standard for health screening before starting training
+- **The ACSM pre-participation algorithm** = the professional standard,
+  stratified by activity level, pre-existing conditions, target intensity
+- **ACWR (Acute:Chronic Workload Ratio)**, IOC consensus: a "sweet spot"
+  of roughly 0.8–1.3, elevated risk >1.5 — methodologically contested,
+  but usable as a rough guide for load management (e.g. Garmin Training
+  Load)
 
 ---
 
-## Teil 2 — Onboarding-Gespräch für den Trainingsplan (5 km bis Marathon)
+## Part 2 — Onboarding Conversation for the Training Plan (5 km to Marathon)
 
-### Designprinzipien
-1. **Progressiv-adaptiv, nicht als Fragebogen-Wand:** Fragen bauen aufeinander auf; spätere Fragen hängen von früheren Antworten ab (z.B. Verletzungs-Detailfragen nur bei "Ja").
-2. **Sicherheit zuerst:** Gesundheits-Screening (PAR-Q+-Prinzip) kommt vor der Zielplanung — ein tolles Ziel nützt nichts, wenn eine Kontraindikation übersehen wird.
-3. **Trennung von "harten" Fakten und "weichen" Kontextfaktoren:** Erstere bestimmen die Trainingszonen/Sicherheitsgrenzen direkt, letztere die Plangestaltung (Frequenz, Tageslage).
-4. **Jede Frage muss eine Konsequenz im Plan haben** — keine Frage nur "zur Vollständigkeit". Das hält das Onboarding kurz genug für Hobbyläufer.
-5. **Re-Onboarding als Konzept einbauen:** Manche Datenpunkte (Umfang, Bestzeiten, Verletzungen) sind nicht einmalig, sondern werden bei jedem neuen Zyklus/Testlauf aktualisiert.
+### Design principles
+1. **Progressive and adaptive, not a wall of questions:** questions build
+   on each other; later questions depend on earlier answers (e.g. injury
+   detail questions only on "yes").
+2. **Safety first:** the health screen (PAR-Q+ principle) comes before
+   goal planning — a great goal is worthless if a contraindication gets
+   missed.
+3. **Separate "hard" facts from "soft" context factors:** the former
+   directly determine training zones/safety limits, the latter shape the
+   plan design (frequency, time of day).
+4. **Every question must have a consequence in the plan** — no question
+   just "for completeness." That keeps onboarding short enough for
+   recreational runners.
+5. **Build in re-onboarding as a concept:** some data points (mileage,
+   personal bests, injuries) aren't one-time, but get updated on every
+   new cycle/test run.
 
-### Gesprächsstruktur (6 Phasen)
+### Conversation structure (6 phases)
 
-**Phase 1 — Sicherheits-Screening (kurz, zuerst, Pflicht)**
-Angelehnt an PAR-Q+: wenige Ja/Nein-Fragen zu Herz-Kreislauf-Symptomen, Schwindel/Ohnmacht bei Belastung, ärztlich diagnostizierten Erkrankungen, aktuellen Verletzungen/Schmerzen, Medikamenten. Bei "Ja" bei kritischen Punkten: Hinweis auf ärztliche Abklärung vor Trainingsstart, Plan pausiert nicht komplett aber startet konservativer.
+**Phase 1 — Safety screening (short, first, mandatory)**
+Modeled on PAR-Q+: a few yes/no questions on cardiovascular symptoms,
+dizziness/fainting during exertion, medically diagnosed conditions,
+current injuries/pain, medications. On "yes" for critical items: a note
+to get medical clearance before starting training; the plan doesn't
+pause entirely but starts more conservatively.
 
-*Beispiel-Dialog:*
-> "Bevor wir loslegen, ein kurzer Gesundheitscheck (dauert 1 Minute): Hat dir je ein Arzt gesagt, dass du nur unter ärztlicher Aufsicht Sport treiben solltest? Hattest du Brustschmerzen oder Schwindel bei Belastung? ..."
+*Example dialog:*
+> "Before we start, a quick health check (takes 1 minute): has a doctor
+> ever told you that you should only exercise under medical supervision?
+> Have you had chest pain or dizziness during exertion? ..."
 
-**Phase 2 — Trainingshistorie (Ausgangspunkt bestimmen)**
-- Aktueller Wochenumfang (km) und Anzahl Läufe/Woche der letzten 4 Wochen
-- Längster aktueller Einzellauf (wichtig wegen RUNSAFE-Befund!)
-- Frühere Laufhistorie: War früher aktiver? Wie lange Pause? Früherer Spitzenumfang? → unterscheidet "echten Anfänger" von "Wiedereinsteiger" (unterschiedliche Progressionslogik)
-- Bestzeiten auf beliebigen Distanzen, falls vorhanden (auch alte PBs zählen für Zonenschätzung)
+**Phase 2 — Training history (establish the starting point)**
+- Current weekly mileage (km) and number of runs/week over the last 4
+  weeks
+- The longest current single run (important because of the RUNSAFE
+  finding!)
+- Prior running history: were you more active before? How long was the
+  break? Previous peak mileage? → distinguishes a "true beginner" from a
+  "returning runner" (different progression logic)
+- Personal bests at any distance, if available (even old PBs count for
+  zone estimation)
 
-**Phase 3 — Verletzungshistorie (bedingt, nur Details bei Vorgeschichte)**
-- Frühere Lauf-/Überlastungsverletzungen: Art, Lokalisation, wie lange her
-- Aktuelle Beschwerden/"Niggles"
-- Bei Stressfraktur-Historie: gesonderter Hinweis auf konservativere Aufprall-Progression
+**Phase 3 — Injury history (conditional, details only if there's a history)**
+- Prior running/overuse injuries: type, location, how long ago
+- Current complaints/"niggles"
+- On a history of stress fracture: a separate note about a more
+  conservative impact progression
 
-**Phase 4 — Ziel & Rahmen**
-- Zieldistanz: 5 km / 10 km / Halbmarathon / Marathon (bestimmt Trainingsplan-Template)
-- Zielzeit (falls vorhanden) oder "einfach ankommen/verbessern"
-- Zieldatum/Wettkampf (bestimmt verfügbare Zeitspanne → Aggressivität der Progression)
-- Falls kein festes Datum: "Wie viel Zeit möchtest du dir grob geben?"
+**Phase 4 — Goal & framework**
+- Target distance: 5 km / 10 km / half marathon / marathon (determines
+  the training-plan template)
+- Target time (if any) or "just finish/improve"
+- Target date/race (determines the available timeframe → how aggressive
+  the progression can be)
+- If there's no fixed date: "roughly how much time do you want to give
+  yourself?"
 
-**Phase 5 — Zeitbudget & Rahmenbedingungen**
-- Wie viele Tage/Woche realistisch fürs Laufen?
-- Zugang zu Krafttraining (Gym/Zuhause/keins)?
-- Bevorzugter Untergrund (Straße/Trail/Bahn) — relevant für Belastungssteuerung
-- Laufuhr vorhanden? (bei Lorenz: Garmin, für Datenanbindung ohnehin gesetzt)
+**Phase 5 — Time budget & constraints**
+- How many days/week are realistic for running?
+- Access to strength training (gym/home/none)?
+- Preferred terrain (road/trail/track) — relevant for load management
+- Own a running watch? (for Lorenz: Garmin, already set for the data
+  integration anyway)
 
-**Phase 6 — Physiologische Basisdaten & Lebensstil (leichtgewichtig)**
-- Alter, Geschlecht (für HF-Zonen-Schätzung, falls kein Test vorliegt)
-- Ruhepuls/HFmax, falls bekannt (sonst Schätzformel mit Hinweis auf Ungenauigkeit)
-- Schlaf/Stress-Level grob (beeinflusst Erholungsfähigkeit/Progression) — bewusst niedrigschwellig, kein Gesundheitsfragebogen
+**Phase 6 — Baseline physiological data & lifestyle (lightweight)**
+- Age, sex (for HR-zone estimation, if no test is available)
+- Resting HR/HRmax, if known (otherwise an estimation formula with a note
+  on its imprecision)
+- Rough sleep/stress level (affects recovery capacity/progression) —
+  deliberately low-friction, not a full health questionnaire
 
-### Aus den Antworten abgeleitete Logik (Beispiele)
+### Logic derived from the answers (examples)
 
-| Antwort-Kombination | Konsequenz im Plan |
+| Answer combination | Consequence in the plan |
 |---|---|
-| Aktueller Umfang niedrig + frühere gute PB vorhanden | "Wiedereinsteiger"-Modus: aerober Teil darf zügiger aufgebaut werden, Aufprall/Tempo bleibt konservativ (Analogie zu Lorenz' Fall) |
-| Aktueller Umfang niedrig + keine Laufhistorie | "Echter Anfänger"-Modus: Run-Walk-Empfehlung, noch konservativere Progression |
-| Frühere Stressfraktur | Extra-konservative Steigerungsrate, expliziter Hinweis auf Knochenschmerz-Ausnahme der Schmerz-Ampel |
-| Kein festes Wettkampfdatum | Plan mit flexiblen Phasengrenzen, adaptiv nach Fortschritt statt straffem Kalender |
-| Nur 3 Tage/Woche Zeit | Plan mit weniger, aber dichteren Einheiten (Qualität über Quantität priorisiert), Cross-Training als Ergänzungsoption vorschlagen |
-| Zieldistanz Marathon | Zusätzliche Fragen zu Longrun-Erfahrung und Ernährungsstrategie während langer Läufe relevant, kürzere Intervall-Betonung als bei 5 km |
+| Low current mileage + a prior good PB | "Returning runner" mode: the aerobic side can build up faster, impact/pace stays conservative (as in Lorenz's case) |
+| Low current mileage + no running history | "True beginner" mode: run-walk recommendation, even more conservative progression |
+| Prior stress fracture | Extra-conservative rate of increase, an explicit note about the bone-pain exception to the pain traffic light |
+| No fixed race date | A plan with flexible phase boundaries, adaptive to progress instead of a strict calendar |
+| Only 3 days/week available | A plan with fewer but denser sessions (prioritizing quality over quantity), suggest cross-training as an optional add-on |
+| Target distance: marathon | Additional questions about long-run experience and fueling strategy during long runs become relevant, less emphasis on short intervals than for 5 km |
 
-### Laufende Datenerhebung nach dem Onboarding (nicht einmalig)
-Der Plan sollte sich nicht auf das initiale Gespräch verlassen, sondern kontinuierlich nachjustieren:
-- **Nach jedem Lauf:** Schmerz-Ampel-Check (0–10, während/danach), subjektives Gefühl
-- **Alle 4–6 Wochen:** Re-Test (5-km-Zeitfahrt oder äquivalent) zur Zonen-Neuberechnung
-- **Laufend über Garmin-Daten:** Training Load/Status, HRV-Trend als Frühwarnsystem — genau der Use-Case, den du für die App im Kopf hast
+### Ongoing data collection after onboarding (not one-time)
+The plan shouldn't rely on the initial conversation alone, but should
+keep adjusting continuously:
+- **After every run:** a pain-traffic-light check (0–10, during/after),
+  subjective feel
+- **Every 4–6 weeks:** a re-test (5 km time trial or equivalent) to
+  recalculate zones
+- **Continuously via Garmin data:** Training Load/Status, HRV trend as an
+  early-warning system — exactly the use case you have in mind for the
+  app
 
-## Recommendations für die App-Umsetzung
-- Das Onboarding als **geführten Chat-Dialog** (wie hier) statt Formular umsetzen passt zu deinem Konzept — Phase 1–2 sind Pflicht, Phase 3 bedingt, Phase 4–6 können auch nachträglich ergänzt/verfeinert werden, ohne den Start zu blockieren.
-- Die **RUNSAFE-Erkenntnis** (Einzel-Spike wichtiger als Wochensumme) sollte als Kernregel in die Plan-Logik einfließen: die App sollte den längsten Lauf der letzten 30 Tage tracken und Warnungen ausgeben, wenn ein geplanter Lauf diesen zu stark überschreitet — das ist der am besten belegte, konkret umsetzbare Sicherheitsmechanismus aus der gesamten Recherche.
-- Schmerz-Ampel als einfaches Check-in nach jedem Lauf (1 Frage: 0–10) liefert strukturierte, validierte Daten für automatische Plan-Anpassungen.
+## Recommendations for building the app
+- Implementing onboarding as a **guided chat dialog** (like here) instead
+  of a form fits your concept — phases 1–2 are mandatory, phase 3
+  conditional, phases 4–6 can also be added/refined afterward without
+  blocking the start.
+- The **RUNSAFE finding** (a single spike matters more than the weekly
+  total) should feed into the plan logic as a core rule: the app should
+  track the longest run of the last 30 days and issue warnings when a
+  planned run exceeds it too sharply — that's the best-evidenced,
+  concretely implementable safety mechanism from the entire body of
+  research.
+- The pain traffic light as a simple check-in after every run (one
+  question: 0–10) delivers structured, validated data for automatic plan
+  adjustments.

@@ -1,29 +1,30 @@
-# Spec 2: Plan-Datenmodell
+# Spec 2: Plan Data Model
 
-**Ziel:** Der Trainingsplan ist strukturiert in der DB, nicht nur Text.
+**Goal:** The training plan is structured in the DB, not just text.
 
-**Datenmodell:**
+**Data model:**
 ```
-Plan: id, goalDescription ("5km unter 20min"), startDate, targetDate,
-      currentPhase (enum: basis | tempo | intervall | renn)
+Plan: id, goalDescription ("5km under 20min"), startDate, targetDate,
+      currentPhase (enum: base | tempo | interval | race)
 
-Milestone: id, planId, targetTimeSeconds, label ("unter 25min"),
+Milestone: id, planId, targetTimeSeconds, label ("under 25min"),
            targetDate (nullable), achievedDate (nullable)
 
 TrainingWeek: id, planId, weekNumber, startDate, endDate, phase, notes
 
-PlannedSession: id, trainingWeekId, dayOfWeek, type (enum: locker | tempo |
-                intervall | kraft | rest | testlauf), targetDurationMin
+PlannedSession: id, trainingWeekId, dayOfWeek, type (enum: easy | tempo |
+                interval | strength | rest | timeTrial), targetDurationMin
                 (nullable), targetDistanceKm (nullable), targetPace
                 (nullable), description, completed (bool),
-                linkedActivityId (nullable, FK zu Activity)
+                linkedActivityId (nullable, FK to Activity)
 ```
 
 **Acceptance Criteria:**
-- WHEN ein Plan erstellt wird, THE SYSTEM SHALL mindestens einen `Milestone`
-  und die `TrainingWeek`-Einträge für die aktuelle Phase anlegen.
-- WHEN eine Strava-Aktivität einer `PlannedSession` zeitlich/inhaltlich
-  entspricht, THE SYSTEM SHALL sie verknüpfen können (manuell oder
-  vorgeschlagen) und `completed = true` setzen.
-- IF ein Milestone-Zieldatum erreicht ist und die letzte Testlauf-Zeit unter
-  dem Zielwert liegt, THEN THE SYSTEM SHALL `achievedDate` setzen.
+- WHEN a plan is created, THE SYSTEM SHALL create at least one
+  `Milestone` and the `TrainingWeek` entries for the current phase.
+- WHEN a Strava activity matches a `PlannedSession` in time/content, THE
+  SYSTEM SHALL be able to link them (manually or suggested) and set
+  `completed = true`.
+- IF a milestone's target date has been reached and the last time-trial
+  result is under the target value, THEN THE SYSTEM SHALL set
+  `achievedDate`.

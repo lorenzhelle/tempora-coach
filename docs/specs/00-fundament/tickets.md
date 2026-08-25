@@ -1,39 +1,39 @@
-# Fundament — Tickets
+# Foundation — Tickets
 
-Kein Spec-Bezug — Basis-Setup, auf dem alle anderen Specs aufbauen.
+No spec relation — baseline setup that all other specs build on.
 
-### A1 — Projekt-Setup
-- Next.js (App Router, TypeScript) Projekt aufsetzen
-- SQLite + Prisma einrichten, `.env`-Handling für Secrets
-- CLAUDE.md ins Repo-Root legen
-- **Akzeptanz:** `npm run dev` startet eine leere Startseite, DB-Migration
-  läuft fehlerfrei durch
+### A1 — Project setup
+- Set up the Next.js (App Router, TypeScript) project
+- Set up SQLite + Prisma, `.env` handling for secrets
+- Place CLAUDE.md at the repo root
+- **Acceptance:** `npm run dev` starts an empty landing page, the DB
+  migration runs without errors
 
-### A3 — Vercel-Deployment + CI-Pipeline
-- Vercel-Projekt anlegen und mit dem GitHub-Repo verbinden (Git-Integration):
-  Push auf `main` deployt automatisch nach Production, jeder PR bekommt ein
-  Preview-Deployment
-- Secrets (Strava Client-ID/Secret, Anthropic API-Key, DB-Connection) als
-  Vercel Environment Variables hinterlegen (nie im Repo, siehe
+### A3 — Vercel deployment + CI pipeline
+- Create a Vercel project and connect it to the GitHub repo (git
+  integration): a push to `main` auto-deploys to production, every PR
+  gets a preview deployment
+- Store secrets (Strava client ID/secret, Anthropic API key, DB
+  connection) as Vercel environment variables (never in the repo, see
   `docs/constitution.md` SEC-001)
-- GitHub-Actions-Workflow, der vor jedem Merge Lint, Typecheck und Build
-  laufen lässt (Tests sobald ein Test-Framework gewählt ist, siehe
-  `AGENTS.md` "Exact commands")
-- **Akzeptanz:** Push auf `main` triggert ein Production-Deployment auf
-  Vercel; ein PR erzeugt automatisch ein Preview-Deployment; ein PR mit
-  fehlschlagendem Lint/Typecheck/Build wird von GitHub als "checks failed"
-  markiert und blockiert den Merge
+- A GitHub Actions workflow that runs lint, typecheck, and build before
+  every merge (tests once a test framework is chosen, see `AGENTS.md`
+  "Exact commands")
+- **Acceptance:** a push to `main` triggers a production deployment on
+  Vercel; a PR automatically gets a preview deployment; a PR with a
+  failing lint/typecheck/build is marked "checks failed" by GitHub and
+  blocks the merge
 
 ---
 
-## Nicht in Scope (bewusst zurückgestellt)
-- Workout-Push zurück aufs Garmin-Gerät (Training API / Connect IQ)
-- Mehrbenutzer-Fähigkeit / echtes Auth-System für mehrere Nutzer-Accounts —
-  die Strava-OAuth-Architektur (ADR-0002) ist technisch multi-user-fähig,
-  aber v1 bleibt bewusst auf einen Nutzer beschränkt (kein Nutzer-Onboarding-
-  Flow, keine Rollen/Rechte)
-- Garmin-exklusive Metriken (HRV-Status, Body Battery, Training Load/Status)
-  — kommen über Strava nicht durch (siehe ADR-0002); falls später gewünscht,
-  wäre das ein separates Zusatzfeature
-- Apple Health als Datenquelle (kein Cloud-API, nur geräteseitig — siehe
+## Out of scope (deliberately deferred)
+- Pushing workouts back to the Garmin device (Training API / Connect IQ)
+- Multi-user capability / a real auth system for multiple user accounts —
+  the Strava OAuth architecture (ADR-0002) is technically
+  multi-user-capable, but v1 stays deliberately limited to a single user
+  (no user onboarding flow, no roles/permissions)
+- Garmin-exclusive metrics (HRV status, Body Battery, Training
+  Load/Status) — don't come through via Strava (see ADR-0002); if wanted
+  later, that would be a separate add-on feature
+- Apple Health as a data source (no cloud API, on-device only — see
   `docs/research/`)

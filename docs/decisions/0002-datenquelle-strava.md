@@ -1,62 +1,63 @@
-# ADR-0002: Datenquelle für Lauf-Aktivitäten — Strava statt Garmin-Direktsync
+# ADR-0002: Data source for running activities — Strava instead of a direct Garmin sync
 
 ## Status
-Entschieden — 2026-08-25 (löst die ursprüngliche Annahme "Garmin via
-inoffizielle Library + Python-Sidecar" ab, wie sie zuerst in
-CLAUDE.md/docs/specs/ stand)
+Decided — 2026-08-25 (supersedes the original assumption of "Garmin via
+an unofficial library + a Python sidecar," as it first appeared in
+CLAUDE.md/docs/specs/)
 
-## Kontext
-Zwei Optionen wurden evaluiert, um Laufdaten von der Garmin-Uhr in die App
-zu bekommen:
+## Context
+Two options were evaluated for getting running data from the Garmin watch
+into the app:
 
-1. **Direkt via `python-garminconnect`** (inoffizielle Library, Login mit
-   Garmin-E-Mail/Passwort über einen Python-Sidecar). Funktioniert technisch,
-   aber: kein offizieller Support, Login-Flow kann durch Garmin-seitige
-   Änderungen jederzeit brechen (MFA-Handling, Rate-Limits), und für
-   zukünftige weitere Nutzer müsste man deren Garmin-Passwort zentral
-   speichern — nicht vertretbar, sobald mehr als der Betreiber selbst die App
-   nutzt.
-2. **Strava als Relay via offizieller OAuth-API.** Garmin Connect synct
-   Aktivitäten automatisch zu Strava. Jeder Nutzer verbindet per OAuth sein
-   eigenes Strava-Konto — kein Passwort-Teilen. Echte Webhooks für neue
-   Aktivitäten (eine App-weite Subscription für alle Nutzer). Standard-Tier
-   erlaubt bis zu 10 verbundene Athleten ohne formale Prüfung. Seit 1. Juni
-   2026 ist eine aktive Strava-Mitgliedschaft (11,99 $/Monat) Pflicht für
-   API-Zugang — das zahlt der App-Betreiber pro App, nicht jeder Nutzer
-   einzeln.
+1. **Directly via `python-garminconnect`** (an unofficial library, login
+   with the Garmin email/password through a Python sidecar). Works
+   technically, but: no official support, the login flow can break at any
+   time due to Garmin-side changes (MFA handling, rate limits), and for
+   future additional users you'd have to store their Garmin password
+   centrally — not defensible once more than the operator themselves uses
+   the app.
+2. **Strava as a relay via the official OAuth API.** Garmin Connect
+   automatically syncs activities to Strava. Each user connects their own
+   Strava account via OAuth — no password sharing. Real webhooks for new
+   activities (one app-wide subscription for all users). The standard
+   tier allows up to 10 connected athletes without formal review. Since
+   June 1, 2026, an active Strava membership ($11.99/month) is required
+   for API access — the app operator pays that per app, not each user
+   individually.
 
-**Trade-off, bewusst in Kauf genommen:** Garmin-exklusive Metriken
-(HRV-Status, Body Battery, Training Load/Status — Firstbeat-Analytics)
-kommen über Strava nicht durch, nur Basis-Laufdaten (Pace, Distanz, Dauer,
-Herzfrequenz, GPS, Splits). Für den Plan-Kern (Zonen, Umfangs-Progression,
-Fortschritt, Schmerz-Ampel-Checkins, Spike-Regel aus der Recherche in
-`docs/research/`) reicht das vollständig aus.
+**Trade-off, knowingly accepted:** Garmin-exclusive metrics (HRV status,
+Body Battery, Training Load/Status — Firstbeat analytics) don't come
+through via Strava, only basic running data (pace, distance, duration,
+heart rate, GPS, splits). For the core of the plan (zones, volume
+progression, progress, pain-traffic-light check-ins, the spike rule from
+the research in `docs/research/`), that is entirely sufficient.
 
-Apple Health wurde ebenfalls geprüft: kein Cloud-/REST-API, nur
-geräteseitiges Framework — für eine Web-App ohne native Begleit-App oder
-Shortcuts-Automation kein gangbarer Weg. Bleibt als möglicher iOS-exklusiver
-Zusatzkanal für die Zukunft, ist aber kein Ersatz für Strava.
+Apple Health was also evaluated: no cloud/REST API, only an on-device
+framework — not a viable path for a web app without a companion native
+app or Shortcuts automation. Remains a possible iOS-exclusive additional
+channel for the future, but is not a substitute for Strava.
 
-## Entscheidung
-Datenquelle ist **Strava**, angebunden über die offizielle OAuth-API +
-Webhooks. Kein Python-Sidecar mehr — der Sync läuft direkt als Next.js
-API-Route (OAuth-Connect-Flow + Webhook-Handler).
+## Decision
+The data source is **Strava**, connected via the official OAuth API +
+webhooks. No more Python sidecar — the sync runs directly as a Next.js
+API route (OAuth connect flow + webhook handler).
 
-## Konsequenzen
-- Neues Datenmodell `StravaConnection` (userId, stravaAthleteId,
-  accessToken, refreshToken, expiresAt) statt Garmin-Login-Credentials in
-  `.env`.
-- `Activity.garminActivityId` wird zu `Activity.stravaActivityId`.
-- Architektur vereinfacht sich: kein separater Sidecar-Host/Cronjob-Prozess
-  mehr nötig. [Spec 1 und die zugehörigen Tickets](../specs/01-strava-sync/)
-  sind entsprechend auf Strava umgestellt (Details dort, nicht hier
-  dupliziert).
-- Laufende Kosten: 11,99 $/Monat für den Strava-API-Zugang (Betreiber
-  zahlt, nicht die einzelnen Nutzer).
-- Architektur ist durch OAuth-pro-Nutzer grundsätzlich multi-user-fähig,
-  auch wenn v1 weiterhin bewusst nur für einen Nutzer live geschaltet wird
-  (siehe "Nicht in Scope" in `docs/specs/00-fundament/tickets.md`) — das ist
-  eine separate, noch offene Entscheidung, keine Folge dieser ADR.
-- Firstbeat-Analytics (HRV, Body Battery, Training Load) stehen nicht zur
-  Verfügung. Falls später gewünscht: separates, optionales Zusatzfeature,
-  nicht Teil von v1.
+## Consequences
+- New data model `StravaConnection` (userId, stravaAthleteId,
+  accessToken, refreshToken, expiresAt) instead of Garmin login
+  credentials in `.env`.
+- `Activity.garminActivityId` becomes `Activity.stravaActivityId`.
+- The architecture gets simpler: no separate sidecar host/cron process
+  needed anymore. [Spec 1 and its tickets](../specs/01-strava-sync/) have
+  been updated to Strava accordingly (details there, not duplicated
+  here).
+- Ongoing cost: $11.99/month for Strava API access (paid by the operator,
+  not by individual users).
+- The architecture is fundamentally multi-user-capable via per-user
+  OAuth, even though v1 continues to deliberately go live for a single
+  user only (see "Out of scope" in
+  `docs/specs/00-fundament/tickets.md`) — that is a separate, still-open
+  decision, not a consequence of this ADR.
+- Firstbeat analytics (HRV, Body Battery, Training Load) are not
+  available. If wanted later: a separate, optional add-on feature, not
+  part of v1.
