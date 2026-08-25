@@ -1,20 +1,19 @@
 # Spec 4: Dashboard
 
-**Ziel:** Hauptansicht der App — zeigt aktuellen Wochenplan, nächste Einheit,
-Fortschritt zu den Meilensteinen.
+**Goal:** The primary view of the app — shows the current weekly plan, the
+next session, and progress toward the milestones.
 
 **Views:**
-- Wochenübersicht: alle `PlannedSession` der aktuellen Woche, Status
-  (offen/erledigt/verpasst)
-- Nächste Einheit: hervorgehoben, mit Details (Typ, Ziel-Pace/-Dauer)
-- Meilenstein-Fortschritt: aktuelle Bestzeit vs. nächster Meilenstein
-- Verlauf: letzte Aktivitäten mit Pace-Trend (einfaches Chart)
+- Week overview: all `PlannedSession` entries for the current week,
+  status (open/done/missed)
+- Next session: highlighted, with details (type, target pace/duration)
+- Milestone progress: current personal best vs. the next milestone
+- History: recent activities with a pace trend (a simple chart)
 
 **Acceptance Criteria:**
-- WHEN das Dashboard geladen wird, THE SYSTEM SHALL die aktuelle
-  `TrainingWeek` basierend auf dem heutigen Datum bestimmen und anzeigen.
-- IF eine `PlannedSession` in der Vergangenheit liegt und keine verknüpfte
-  Aktivität hat, THEN THE SYSTEM SHALL sie als "verpasst" markieren.
-- WHEN eine neue Strava-Aktivität synced wurde, THE SYSTEM SHALL das
-  Dashboard beim nächsten Laden aktualisiert anzeigen (kein manueller Refresh
-  nötig).
+- WHEN the dashboard loads, THE SYSTEM SHALL determine and display the
+  current `TrainingWeek` based on today's date.
+- IF a `PlannedSession` is in the past and has no linked activity, THEN
+  THE SYSTEM SHALL mark it as "missed."
+- WHEN a new Strava activity has been synced, THE SYSTEM SHALL show the
+  updated dashboard on the next load (no manual refresh needed).

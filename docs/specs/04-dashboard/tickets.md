@@ -1,23 +1,24 @@
 # Dashboard — Tickets
 
-Setzt auf [00-fundament](../00-fundament/tickets.md) und
-[02-plan-datenmodell](../02-plan-datenmodell/tickets.md) auf. Siehe
-[spec.md](spec.md) für Ziel und Acceptance Criteria.
+Builds on [00-fundament](../00-fundament/tickets.md) and
+[02-plan-datenmodell](../02-plan-datenmodell/tickets.md). See
+[spec.md](spec.md) for the goal and acceptance criteria.
 
-### D1 — Wochenübersicht
-- View, die die aktuelle `TrainingWeek` (basierend auf heutigem Datum) lädt
-  und alle `PlannedSession` anzeigt
-- **Akzeptanz:** Richtige Woche wird anhand des Datums bestimmt (Spec 4, AC 1)
+### D1 — Week overview
+- A view that loads the current `TrainingWeek` (based on today's date)
+  and shows all `PlannedSession` entries
+- **Acceptance:** the correct week is determined from the date (Spec 4,
+  AC 1)
 
-### D2 — Nächste Einheit + Status
-- Hervorhebung der nächsten offenen Einheit
-- Automatische "verpasst"-Markierung für vergangene Einheiten ohne verknüpfte
-  Aktivität (Spec 4, AC 2)
-- **Akzeptanz:** Manuell in der DB eine vergangene Session ohne Activity
-  anlegen → wird als verpasst angezeigt
+### D2 — Next session + status
+- Highlight the next open session
+- Automatic "missed" marking for past sessions without a linked activity
+  (Spec 4, AC 2)
+- **Acceptance:** manually create a past session without an activity in
+  the DB → it's shown as missed
 
-### D3 — Meilenstein-Fortschritt + Verlauf-Chart
-- Anzeige: aktuelle Bestzeit vs. nächster Meilenstein
-- Einfaches Pace-Trend-Chart der letzten Aktivitäten
-- **Akzeptanz:** Chart zeigt reale Daten aus `Activity`, aktualisiert sich
-  nach neuem Sync (Spec 4, AC 3)
+### D3 — Milestone progress + history chart
+- Display: current personal best vs. next milestone
+- A simple pace-trend chart of recent activities
+- **Acceptance:** the chart shows real data from `Activity`, updates
+  after a new sync (Spec 4, AC 3)

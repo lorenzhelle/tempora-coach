@@ -1,67 +1,67 @@
 # Contributing
 
-Tempora ist aktuell ein persönliches Projekt eines einzelnen
-Betreibers/Nutzers — kein offenes Projekt mit externen Contributors. Dieser
-Workflow beschreibt, wie der Betreiber selbst (bzw. ein für ihn arbeitender
-Coding-Agent) am Repository arbeitet.
+Tempora is currently a personal project of a single operator/user — not
+an open project with external contributors. This workflow describes how
+the operator themselves (or a coding agent working on their behalf)
+works on the repository.
 
 ## Branching
 
-- Feature-/Ticket-Branches ausgehend vom Default-Branch, benannt nach dem
-  bearbeiteten Ticket/Thema (z.B. `claude/laufcoach-strava-agent-70s1cq`).
-- `[NEEDS CONFIRMATION: verbindliche Branch-Namenskonvention für zukünftige
-  Branches — bisher nur ad hoc]`
+- Feature/ticket branches off the default branch, named after the ticket/
+  topic being worked on (e.g. `claude/laufcoach-strava-agent-70s1cq`).
+- `[NEEDS CONFIRMATION: a binding branch-naming convention for future
+  branches — so far only ad hoc]`
 
 ## Commits
 
-- Ein Commit pro inhaltlich abgeschlossenem Schritt, nicht pro Datei.
-- Commit-Message beschreibt das "Warum", nicht nur das "Was" (siehe
-  Commit-Historie in `git log` als Vorbild).
+- One commit per completed logical step, not per file.
+- The commit message describes the "why," not just the "what" (see the
+  commit history in `git log` as a model).
 
 ## Pull Requests
 
-- `[NEEDS CONFIRMATION: formaler PR-Prozess noch nicht etabliert — bisher
-  direkte Commits auf Feature-Branches ohne Review durch Dritte, da
-  Einzelnutzer-Projekt]`
-- Sobald ein PR erstellt wird: Beschreibung fasst die Änderung und den Bezug
-  zur betroffenen Spec/den betroffenen Tickets unter `docs/specs/` zusammen.
+- `[NEEDS CONFIRMATION: no formal PR process established yet — so far
+  direct commits on feature branches without third-party review, since
+  it's a single-user project]`
+- Once a PR is created: the description summarizes the change and its
+  relation to the affected spec/tickets under `docs/specs/`.
 
 ## Review
 
-- `[NEEDS CONFIRMATION: kein zweiter menschlicher Reviewer vorhanden
-  (Einzelnutzer-Projekt) — Review erfolgt aktuell durch den Betreiber selbst
-  bzw. durch einen Coding-Agenten gemäß AGENTS.md]`
+- `[NEEDS CONFIRMATION: no second human reviewer available (single-user
+  project) — review currently happens via the operator themselves or a
+  coding agent per AGENTS.md]`
 
 ## Issues
 
-- `[NEEDS CONFIRMATION: GitHub Issues noch nicht als Tracking-Mechanismus
-  aktiviert — aktuell laufen offene Aufgaben über docs/specs/*/tickets.md]`
-- Neue Aufgaben, die in keiner `docs/specs/*/tickets.md` stehen, dort als
-  neues Ticket im passenden Spec-Ordner ergänzen (bzw. in
-  `docs/specs/00-fundament/tickets.md`, falls kein Spec-Bezug besteht),
-  statt sie nur im Chat zu besprechen.
+- `[NEEDS CONFIRMATION: GitHub issues not yet enabled as a tracking
+  mechanism — open tasks currently live in docs/specs/*/tickets.md]`
+- New tasks not covered by any `docs/specs/*/tickets.md` should be added
+  there as a new ticket in the matching spec folder (or in
+  `docs/specs/00-fundament/tickets.md`, if there's no spec relation),
+  instead of only being discussed in chat.
 
 ## Security reporting
 
-- `[NEEDS CONFIRMATION: kein öffentlicher Security-Reporting-Kanal — bei
-  einem Einzelnutzer-Projekt direkt den Betreiber kontaktieren]`
-- Ein gefundenes Secret-Leak (siehe `docs/constitution.md` SEC-001) sofort
-  rotieren (Strava-App neu autorisieren, API-Key neu generieren), bevor der
-  Commit gepusht/gemerged wird.
+- `[NEEDS CONFIRMATION: no public security-reporting channel — for a
+  single-user project, contact the operator directly]`
+- Rotate a discovered secret leak immediately (see `docs/constitution.md`
+  SEC-001) (re-authorize the Strava app, regenerate the API key) before
+  the commit is pushed/merged.
 
 ## Help
 
-- Fragen zum Projektkontext: `CLAUDE.md`
-- Fragen zur Architektur: `docs/architecture.md`
-- Fragen zu Entscheidungen: `docs/decisions/README.md`
+- Questions about project context: `CLAUDE.md`
+- Questions about architecture: `docs/architecture.md`
+- Questions about decisions: `docs/decisions/README.md`
 
 ## Related documentation
 
-- Agent-Anweisungen und exakte Befehle: [AGENTS.md](../AGENTS.md)
-- Invarianten und Freigabe-Grenzen: [docs/constitution.md](constitution.md)
+- Agent instructions and exact commands: [AGENTS.md](../AGENTS.md)
+- Invariants and approval boundaries: [docs/constitution.md](constitution.md)
 
 ## Maintenance
 
-Aktualisieren, sobald sich Branch-, Commit-, PR-, Review-, Issue- oder
-Security-Reporting-Workflow ändert — insbesondere, sobald ein formaler
-PR-Prozess oder weitere Contributors hinzukommen.
+Update whenever the branching, commit, PR, review, issue, or
+security-reporting workflow changes — especially once a formal PR process
+or additional contributors are added.

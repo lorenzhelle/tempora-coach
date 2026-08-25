@@ -1,25 +1,25 @@
-# Chat-Anpassungen — Tickets
+# Chat-based Adjustment — Tickets
 
-Setzt auf [03-onboarding](../03-onboarding/tickets.md) auf. Siehe
-[spec.md](spec.md) für Ziel und Acceptance Criteria.
+Builds on [03-onboarding](../03-onboarding/tickets.md). See
+[spec.md](spec.md) for the goal and acceptance criteria.
 
-### E1 — Plan-Kontext in Chat-Anfragen
-- Bestehender Chat (aus C2) bekommt bei jeder Anfrage den aktuellen
-  Plan-Stand + letzte N Aktivitäten als Tool-Ergebnisse mitgegeben
-- **Akzeptanz:** Claude kann im Chat korrekt auf konkrete Wochen/Einheiten
-  des bestehenden Plans referenzieren
+### E1 — Plan context in chat requests
+- The existing chat (from C2) gets the current plan state + the last N
+  activities as tool results on every request
+- **Acceptance:** Claude can correctly reference specific weeks/sessions
+  of the existing plan in chat
 
-### E2 — Gezielte Plan-Updates
-- Tool für Claude, um einzelne Felder (z.B. eine `PlannedSession` verschieben,
-  eine `TrainingWeek` anpassen) zu ändern, statt den ganzen Plan neu zu
-  generieren (Spec 5, AC 1)
-- **Akzeptanz:** Chat-Anfrage "verschieb den Sonntagslauf auf Montag" ändert
-  nur das betroffene Feld, Rest des Plans bleibt unverändert
+### E2 — Targeted plan updates
+- A tool for Claude to change individual fields (e.g. move a
+  `PlannedSession`, adjust a `TrainingWeek`) instead of regenerating the
+  whole plan (Spec 5, AC 1)
+- **Acceptance:** the chat request "move Sunday's run to Monday" changes
+  only the affected field, the rest of the plan stays unchanged
 
-### E3 — Trainingsprinzipien-Check
-- Vor Übernahme einer Änderung: Check gegen einfache Regeln (Spike-Regel:
-  Einzellauf springt nicht stark über den längsten Lauf der letzten 30 Tage;
-  siehe `docs/research/`), Warnung statt stiller Übernahme bei Verstoß
-  (Spec 5, AC 4)
-- **Akzeptanz:** Anfrage nach unrealistischer Sprungsteigerung löst einen
-  Hinweis im Chat aus, bevor etwas geändert wird
+### E3 — Training-principles check
+- Before applying a change: check it against simple rules (spike rule: a
+  single run doesn't jump sharply above the longest run of the last 30
+  days; see `docs/research/`), warn instead of silently applying on a
+  violation (Spec 5, AC 4)
+- **Acceptance:** a request for an unrealistic jump in distance triggers a
+  notice in chat before anything is changed

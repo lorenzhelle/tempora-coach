@@ -1,18 +1,18 @@
 # Specs
 
-Jede Spec hat einen eigenen Unterordner mit `spec.md` (Ziel, Datenmodell,
-Acceptance Criteria im EARS-Format) und `tickets.md` (Umsetzungsreihenfolge
-für diese Spec). `00-fundament/` enthält Setup-Tickets, die keiner Spec
-zugeordnet sind (kein `spec.md` dort).
+Every spec has its own subfolder with `spec.md` (goal, data model,
+acceptance criteria in EARS format) and `tickets.md` (the implementation
+order for that spec). `00-fundament/` contains setup tickets not tied to
+any spec (no `spec.md` there).
 
-- [00-fundament](00-fundament/tickets.md) — Projekt-Setup (kein Spec-Bezug)
-- [01-strava-sync](01-strava-sync/spec.md) — Strava-Sync
-- [02-plan-datenmodell](02-plan-datenmodell/spec.md) — Plan-Datenmodell
-- [03-onboarding](03-onboarding/spec.md) — Onboarding — Plan-Erstellung im Chat
-- [04-dashboard](04-dashboard/spec.md) — Dashboard
-- [05-chat-anpassung](05-chat-anpassung/spec.md) — Chat-basierte Plan-Anpassung
+- [00-fundament](00-fundament/tickets.md) — project setup (no spec relation)
+- [01-strava-sync](01-strava-sync/spec.md) — Strava sync
+- [02-plan-datenmodell](02-plan-datenmodell/spec.md) — plan data model
+- [03-onboarding](03-onboarding/spec.md) — onboarding — plan creation in chat
+- [04-dashboard](04-dashboard/spec.md) — dashboard
+- [05-chat-anpassung](05-chat-anpassung/spec.md) — chat-based plan adjustment
 
-Umsetzungsreihenfolge über alle Specs hinweg: 00 → 02 → 01 → 03 → 04 → 05
-(entspricht der bisherigen Epic-Reihenfolge A → B → C → D → E aus der
-früheren `TICKETS.md`, wobei Epic A auf 00-fundament und 02-plan-datenmodell
-aufgeteilt ist).
+Implementation order across all specs: 00 → 02 → 01 → 03 → 04 → 05
+(matches the earlier epic order A → B → C → D → E from the former
+`TICKETS.md`, with epic A split across 00-fundament and
+02-plan-datenmodell).

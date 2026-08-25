@@ -1,122 +1,123 @@
 # Design System
 
-Verbindliche visuelle Sprache für Tempora-UI. Herkunft: Die Richtung
-"Performance Dark" wurde als eine von drei Claude-Design-Entwürfen erstellt
-und vom Nutzer als finale Richtung bestätigt (Dashboard + Onboarding-Chat).
-Visuelle Referenz (privat, Claude-Design-Canvas):
+Binding visual language for the Tempora UI. Origin: the "Performance Dark"
+direction was created as one of three Claude Design drafts and confirmed
+by the user as the final direction (dashboard + onboarding chat). Visual
+reference (private, Claude Design canvas):
 https://claude.ai/code/artifact/a7691a56-03c8-4a38-aa75-86a5aa36c93a
 
-Dieses Dokument hält die daraus abgeleiteten Tokens und Komponenten fest,
-damit spätere UI-Arbeit (auch ohne erneuten Blick auf die Canvas) konsistent
-bleibt. Bei Widersprüchen zwischen der Canvas und diesem Dokument gilt dieses
-Dokument, sobald es aktualisiert wurde — die Canvas ist der Entwurfsstand,
-dieses Dokument der bindende Ist-Stand für die Implementierung.
+This document records the tokens and components derived from it, so later
+UI work stays consistent even without looking at the canvas again. In case
+of conflict between the canvas and this document, this document governs
+once it has been updated — the canvas is the draft state, this document is
+the binding as-built reference for the implementation.
 
-## Ton
+## Tone
 
-Athletisch, datennah, ruhig — kein Marketing-Overload. Kurze, direkte Copy.
-Keine Emojis in der UI. Dunkles Interface als Standard (kein Light-Mode für
-v1 spezifiziert).
+Athletic, data-forward, calm — no marketing overload. Short, direct copy.
+No emoji in the UI. Dark interface as the default (no light mode specified
+for v1).
 
-## Farb-Tokens
+## Color tokens
 
-Alle Farben als `oklch()` definiert (gleicher Chroma/Lightness-Anteil über
-verwandte Akzente hinweg, nur Hue variiert).
+All colors defined as `oklch()` (same chroma/lightness share across related
+accents, only hue varies).
 
-| Token | Wert | Verwendung |
+| Token | Value | Usage |
 | --- | --- | --- |
-| `--bg` | `oklch(0.17 0.012 260)` | Seitenhintergrund |
-| `--surface` | `oklch(0.22 0.012 260)` | Card-/Panel-Hintergrund |
-| `--surface-2` | `oklch(0.26 0.014 260)` | Erhöhte Fläche innerhalb einer Card (z.B. Chat-Input) |
-| `--border` | `oklch(0.3 0.012 260)` | Card-/Trennlinien-Rahmen |
-| `--text` | `oklch(0.95 0.006 260)` | Primärtext |
-| `--text-muted` | `oklch(0.62 0.012 260)` | Sekundärtext, Labels, Zeitstempel |
-| `--accent` | `oklch(0.85 0.19 155)` | Primärakzent (Lime-Grün) — CTAs, aktive Zustände, positive Werte |
-| `--accent-ink` | `oklch(0.2 0.05 155)` | Text/Icons auf `--accent`-Flächen |
-| `--accent-soft` | `oklch(0.27 0.05 155)` | Gedämpfte Akzentfläche (Chips, User-Chat-Bubble, ausgewählte Tageskachel) |
-| `--rest` | `oklch(0.4 0.012 260)` | Neutrale Punkte/Icons (z.B. Ruhetag) |
-| `--warn` | `oklch(0.72 0.17 55)` | Reserviert für Warnungen (z.B. Spike-Regel-Hinweis, Spec 5) — noch nicht in Screens verwendet |
+| `--bg` | `oklch(0.17 0.012 260)` | Page background |
+| `--surface` | `oklch(0.22 0.012 260)` | Card/panel background |
+| `--surface-2` | `oklch(0.26 0.014 260)` | Elevated surface within a card (e.g. chat input) |
+| `--border` | `oklch(0.3 0.012 260)` | Card/divider border |
+| `--text` | `oklch(0.95 0.006 260)` | Primary text |
+| `--text-muted` | `oklch(0.62 0.012 260)` | Secondary text, labels, timestamps |
+| `--accent` | `oklch(0.85 0.19 155)` | Primary accent (lime green) — CTAs, active states, positive values |
+| `--accent-ink` | `oklch(0.2 0.05 155)` | Text/icons on `--accent` surfaces |
+| `--accent-soft` | `oklch(0.27 0.05 155)` | Muted accent surface (chips, user chat bubble, selected day tile) |
+| `--rest` | `oklch(0.4 0.012 260)` | Neutral dots/icons (e.g. rest day) |
+| `--warn` | `oklch(0.72 0.17 55)` | Reserved for warnings (e.g. spike-rule notice, Spec 5) — not yet used in screens |
 
-Nur ein Akzent-Hue (155°, Grün) für positive/aktive Zustände. Ein zweiter
-Hue (`--warn`, 55° Orange) ist für Warnhinweise reserviert, sobald Spec 5
-(Trainingsprinzipien-Check) UI bekommt — noch nicht weiter ausgestaltet.
+Only one accent hue (155°, green) for positive/active states. A second hue
+(`--warn`, 55° orange) is reserved for warning notices once Spec 5
+(training-principles check) gets UI — not yet fleshed out further.
 
-## Typografie
+## Typography
 
-Alle drei Fonts über Google Fonts, mit System-Fallback:
+All three fonts via Google Fonts, with a system fallback:
 
-| Rolle | Font | Fallback | Gewichte |
+| Role | Font | Fallback | Weights |
 | --- | --- | --- | --- |
-| Headlines, Buttons, UI-Labels | Sora | `system-ui, sans-serif` | 500, 600, 700 |
-| Fließtext, Chat-Nachrichten | Manrope | `system-ui, sans-serif` | 400, 500, 600 |
-| Zahlen/Daten (Pace, Zeiten, Daten, Wochen) | JetBrains Mono | `monospace` | 500, 600 |
+| Headlines, buttons, UI labels | Sora | `system-ui, sans-serif` | 500, 600, 700 |
+| Body copy, chat messages | Manrope | `system-ui, sans-serif` | 400, 500, 600 |
+| Numbers/data (pace, times, dates, weeks) | JetBrains Mono | `monospace` | 500, 600 |
 
-Regel: Jeder numerische Messwert (Pace, Bestzeit, Datum, Wochenzähler) läuft
-über die Mono-Schrift, auch inline im Fließtext — das ist das visuelle
-Signal "Messwert" in diesem System.
+Rule: every numeric measurement (pace, personal best, date, week counter)
+runs in the mono typeface, even inline within body copy — that's the
+visual signal for "measurement" in this system.
 
-## Abstände, Radien, Rahmen
+## Spacing, radii, borders
 
-- Card-Radius: `16px` (Chat-Karten, Panels), `20px` bei großzügigeren
-  Hero-Flächen nicht verwendet in Performance Dark (das war Richtung A).
-- Kleinere Elemente (Chips, Tageskacheln, Buttons): `6px`–`10px` Radius.
-- Rahmen durchgehend `1px solid var(--border)`, keine Schatten (flaches,
-  datennahes Erscheinungsbild statt Tiefenwirkung).
-- Card-Innenabstand: `26px–32px` auf Desktop-Breite (1440px-Layouts).
-- Grid-Abstand (`gap`) zwischen gleichrangigen Elementen: `12px–20px`.
+- Card radius: `16px` (chat cards, panels); `20px` for the more generous
+  hero surfaces not used in Performance Dark (that was direction A).
+- Smaller elements (chips, day tiles, buttons): `6px`–`10px` radius.
+- Borders throughout: `1px solid var(--border)`, no shadows (a flat,
+  data-forward look instead of depth effects).
+- Card inner padding: `26px–32px` at desktop width (1440px layouts).
+- Grid spacing (`gap`) between peer elements: `12px–20px`.
 
-## Komponenten-Inventar
+## Component inventory
 
-- **Top Bar** — Logo/Wordmark links (Icon + "TEMPORA", Sora 700,
-  Buchstabenabstand), Navigation/Kontext rechts, `72–76px` Höhe,
-  `1px solid var(--border)` unten.
-- **Card** — `--surface`-Hintergrund, `1px solid var(--border)`, `16px`
-  Radius. Grundbaustein für Hero-, Meilenstein-, Wochen- und Verlaufs-Panels.
-- **Button primary** — `--accent`-Hintergrund, `--accent-ink`-Text, Sora 600,
-  `10px` Radius, Icon rechts (Pfeil/Check) für Aktionsrichtung.
-- **Button secondary** — transparenter Hintergrund, `1px solid var(--border)`,
-  `--text`-Farbe — für nicht-destruktive Zweitaktionen (z.B. "Anpassung
-  wünschen").
-- **Chip/Tag** — Pill oder abgerundetes Rechteck, `--surface`/`--accent-soft`
-  Hintergrund, kleine Caps-Labels (11–12px, Sora/Mono, Letter-Spacing) für
-  Status ("Heute", Zusammenfassungs-Tags wie "12 Monate").
-- **Wochenkachel (Week-Strip Day Cell)** — 7-Spalten-Grid, pro Tag:
-  Wochentag-Label (Mono), Status-Icon (Haken = erledigt, Ring = offen, Punkt
-  in `--rest` = Ruhetag), Session-Label. Heutiger/aktiver Tag bekommt
-  `1px solid var(--accent)` + `--accent-soft`-Füllung statt nur `--border`.
-- **Meilenstein-Fortschrittsbalken** — dünner (`6–8px`) abgerundeter Balken,
-  `--rest`/`--surface-2` als Bahn, `--accent` als Füllung, Start-/Zielwert
-  als Mono-Labels an den Enden.
-- **Pace-Trend-Sparkline** — einfache SVG-Polyline in `--accent`, kein
-  Achsenschmuck, ein Endpunkt-Dot — bewusst reduziert, kein volles Chart.
-- **Chat-Bubble Coach** — `--surface`-Hintergrund, links ausgerichtet,
-  asymmetrischer Radius (`4px 16px 16px 16px`, "Sprechblasen-Ecke" oben
-  links), kleines Avatar-Icon links daneben.
-- **Chat-Bubble User** — `--accent-soft`-Hintergrund, rechts ausgerichtet,
-  gespiegelter asymmetrischer Radius (`16px 4px 16px 16px`), kein Avatar.
-- **Quick-Reply-Chip** — wie Chip, aber klickbar/interaktiv gedacht:
-  Default (`--surface` + `--border`) vs. ausgewählt (`--accent-soft` +
-  `1.5px solid var(--accent)`, `--accent`-Text).
-- **Plan-Karte** — Card-Variante für den strukturierten Plan-Vorschlag
-  (Onboarding, Spec 3 AC 1): Kopfzeile mit Zielwert + Zeitrahmen-Tag,
-  Phasenübersicht als proportional breite, farblich abgestufte
-  Segment-Leiste (helleres bis volles `--accent`), darunter eine
-  Wochenkachel-Reihe für "Woche 1 im Detail". Kein Fließtext-JSON-Dump —
-  die Struktur aus Spec 2 wird visuell abgebildet.
+- **Top bar** — logo/wordmark on the left (icon + "TEMPORA", Sora 700,
+  letter spacing), navigation/context on the right, `72–76px` height,
+  `1px solid var(--border)` at the bottom.
+- **Card** — `--surface` background, `1px solid var(--border)`, `16px`
+  radius. The base building block for hero, milestone, week, and history
+  panels.
+- **Button primary** — `--accent` background, `--accent-ink` text, Sora
+  600, `10px` radius, icon on the right (arrow/check) to signal action
+  direction.
+- **Button secondary** — transparent background, `1px solid var(--border)`,
+  `--text` color — for non-destructive secondary actions (e.g. "Request a
+  change").
+- **Chip/tag** — pill or rounded rectangle, `--surface`/`--accent-soft`
+  background, small caps labels (11–12px, Sora/Mono, letter spacing) for
+  status ("Today", summary tags like "12 months").
+- **Week-strip day cell** — 7-column grid, per day: weekday label (mono),
+  status icon (check = done, ring = open, dot in `--rest` = rest day),
+  session label. The current/active day gets `1px solid var(--accent)` +
+  `--accent-soft` fill instead of just `--border`.
+- **Milestone progress bar** — a thin (`6–8px`) rounded bar, `--rest`/
+  `--surface-2` as the track, `--accent` as the fill, start/target values
+  as mono labels at the ends.
+- **Pace-trend sparkline** — a simple SVG polyline in `--accent`, no axis
+  decoration, one endpoint dot — deliberately reduced, not a full chart.
+- **Chat bubble, coach** — `--surface` background, left-aligned,
+  asymmetric radius (`4px 16px 16px 16px`, "speech-bubble corner" top
+  left), small avatar icon next to it on the left.
+- **Chat bubble, user** — `--accent-soft` background, right-aligned,
+  mirrored asymmetric radius (`16px 4px 16px 16px`), no avatar.
+- **Quick-reply chip** — like a chip, but meant to be clickable/
+  interactive: default (`--surface` + `--border`) vs. selected
+  (`--accent-soft` + `1.5px solid var(--accent)`, `--accent` text).
+- **Plan card** — a card variant for the structured plan proposal
+  (onboarding, Spec 3 AC 1): a header row with the target value + a
+  timeframe tag, a phase overview as a proportionally-wide, tonally
+  graded segment bar (lighter through full `--accent`), followed by a
+  week-strip row for "Week 1 in detail". No prose JSON dump — the
+  structure from Spec 2 is represented visually.
 
-## Screens, die dieses System bereits nutzen
+## Screens already using this system
 
-- Dashboard (`docs/specs/04-dashboard/spec.md`) — Hauptansicht mit
-  Wochenübersicht, nächster Einheit, Meilenstein, Verlauf.
-- Onboarding-Chat (`docs/specs/03-onboarding/spec.md`, Abschnitt "Design")
-  — Start-Screen, geführter Chat-Dialog, Plan-Vorschlag mit Plan-Karte.
+- Dashboard (`docs/specs/04-dashboard/spec.md`) — the primary view with
+  week overview, next session, milestone, history.
+- Onboarding chat (`docs/specs/03-onboarding/spec.md`, "Design" section)
+  — start screen, guided chat dialog, plan proposal with the plan card.
 
-Beide als Artboards in derselben Design-Canvas (Link oben), Onboarding auf
-einer eigenen Canvas-Seite.
+Both as artboards on the same design canvas (link above), onboarding on
+its own canvas page.
 
 ## Maintenance
 
-Aktualisieren, wenn ein neuer Screen einen neuen Komponententyp oder Token
-einführt, oder wenn die Canvas-Referenz durch eine neue Version ersetzt
-wird. Neue Farb-Hues nur ergänzen, wenn ein Screen sie tatsächlich braucht
-(kein Vorratsanlegen von Tokens ohne Verwendung).
+Update whenever a new screen introduces a new component type or token, or
+when the canvas reference is replaced by a new version. Only add new color
+hues once a screen actually needs them (don't stockpile unused tokens).

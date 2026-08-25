@@ -2,120 +2,120 @@
 
 ## Scope
 
-Diese Anweisungen gelten für das gesamte Repository `tempora-coach` (Produktname:
-Tempora). Es gibt aktuell keine nested `AGENTS.md`-Dateien.
+These instructions apply to the entire `tempora-coach` repository (product
+name: Tempora). There are currently no nested `AGENTS.md` files.
 
 ## Read order
 
-1. Dieses `AGENTS.md` für ausführbare Arbeitsregeln.
-2. `docs/constitution.md` für nicht verhandelbare Invarianten.
-3. Das aufgabenrelevante Dokument: `docs/architecture.md`, die passende Spec/
-   Tickets unter `docs/specs/`, `docs/runbooks/runbook.md` oder
-   `docs/decisions/README.md`.
-4. `CLAUDE.md` für erzählerischen Projektkontext (Produktrahmen, fachlicher
-   Hintergrund) — ergänzt dieses Dokument, ersetzt es nicht.
+1. This `AGENTS.md` for executable working rules.
+2. `docs/constitution.md` for non-negotiable invariants.
+3. The document relevant to the task at hand: `docs/architecture.md`, the
+   matching spec/tickets under `docs/specs/`, `docs/runbooks/runbook.md`,
+   or `docs/decisions/README.md`.
+4. `CLAUDE.md` for narrative project context (product framing, domain
+   background) — supplements this document, does not replace it.
 
 ## Working directory and setup
 
-- Repository-Root: `/` (Next.js-Projekt wird direkt im Root angelegt, siehe
-  `docs/specs/00-fundament/tickets.md` Ticket A1)
-- Voraussetzungen: `[NEEDS CONFIRMATION: Node.js-Version — noch nicht
-  festgelegt, da Epic A1 "Projekt-Setup" noch nicht durchgeführt wurde]`
-- Install/Bootstrap: `[NEEDS CONFIRMATION: noch kein package.json im Repo —
-  wird mit Epic A1 angelegt]`
-- Environment-Vorbereitung: `.env` für Secrets (Strava Client-ID/Secret,
-  Anthropic API-Key) — Details siehe `docs/constitution.md`
+- Repository root: `/` (the Next.js project is set up directly at the
+  root, see `docs/specs/00-fundament/tickets.md` ticket A1)
+- Prerequisites: `[NEEDS CONFIRMATION: Node.js version — not yet decided,
+  since Epic A1 "Project setup" hasn't been done yet]`
+- Install/bootstrap: `[NEEDS CONFIRMATION: no package.json in the repo yet
+  — will be added with Epic A1]`
+- Environment setup: `.env` for secrets (Strava client ID/secret,
+  Anthropic API key) — details in `docs/constitution.md`
 
 ## Exact commands
 
-Stand: Das Repo enthält noch keinen Code (kein `package.json`, keine CI-
-Konfiguration). Die folgenden Befehle sind der in `CLAUDE.md` festgehaltene
-Plan, aber noch nicht verifiziert lauffähig.
+Status: The repo contains no code yet (no `package.json`, no CI config).
+The commands below are the plan recorded in `CLAUDE.md`, but not yet
+verified to run.
 
-| Zweck | Befehl | Erwartetes Ergebnis |
+| Purpose | Command | Expected result |
 | --- | --- | --- |
-| Dev-Server | `npm run dev` | Next.js Dev-Server startet (Epic A1) |
-| Build | `npm run build` | Production Build ohne Fehler (Epic A1) |
-| Format | `[NEEDS CONFIRMATION: kein Formatter konfiguriert]` | — |
-| Lint | `[NEEDS CONFIRMATION: kein Linter konfiguriert]` | — |
-| Typecheck | `[NEEDS CONFIRMATION: TypeScript strict mode ist vereinbart,
-  aber kein `tsc`-Skript existiert bisher]` | — |
-| Fokussierter Test | `[NEEDS CONFIRMATION: kein Test-Framework gewählt]` | — |
-| Vollständiger Test | `[NEEDS CONFIRMATION: kein Test-Framework gewählt]` | — |
-| DB-Migration | `[NEEDS CONFIRMATION: Prisma vereinbart, Schema/Migration
-  noch nicht angelegt — Epic A2]` | — |
+| Dev server | `npm run dev` | Next.js dev server starts (Epic A1) |
+| Build | `npm run build` | Production build with no errors (Epic A1) |
+| Format | `[NEEDS CONFIRMATION: no formatter configured]` | — |
+| Lint | `[NEEDS CONFIRMATION: no linter configured]` | — |
+| Typecheck | `[NEEDS CONFIRMATION: TypeScript strict mode is agreed on,
+  but no `tsc` script exists yet]` | — |
+| Focused test | `[NEEDS CONFIRMATION: no test framework chosen]` | — |
+| Full test suite | `[NEEDS CONFIRMATION: no test framework chosen]` | — |
+| DB migration | `[NEEDS CONFIRMATION: Prisma agreed on, schema/migration
+  not set up yet — Epic A2]` | — |
 
-**Sobald Epic A1/A2 abgeschlossen sind, MUSS diese Tabelle mit den echten
-Befehlen aktualisiert werden.**
+**Once Epic A1/A2 are done, this table MUST be updated with the real
+commands.**
 
 ## Quality gates
 
-Vor einer Fertig-Meldung, sobald Code existiert:
+Before reporting a task done, once code exists:
 
-- `[NEEDS CONFIRMATION: Formatierung/Format-Check-Befehl]`
-- `[NEEDS CONFIRMATION: Statische Analyse/Lint-Befehl]`
-- `[NEEDS CONFIRMATION: Tests für den geänderten Scope]`
-- Build erfolgreich (`npm run build`), sobald Epic A1 steht
-- Prisma-Migration läuft fehlerfrei durch, sobald Epic A2 steht
-- Fehlende Gates (weil noch nicht eingerichtet) müssen im Abschlussbericht
-  explizit benannt werden, nicht stillschweigend übersprungen werden
+- `[NEEDS CONFIRMATION: formatting/format-check command]`
+- `[NEEDS CONFIRMATION: static analysis/lint command]`
+- `[NEEDS CONFIRMATION: tests for the changed scope]`
+- Build succeeds (`npm run build`), once Epic A1 is in place
+- Prisma migration runs cleanly, once Epic A2 is in place
+- Missing gates (because not yet set up) must be named explicitly in the
+  completion report, not silently skipped
 
 ## Conventions
 
-- Sprache/Runtime: TypeScript (strict mode), Next.js App Router — genaue
-  Versionen `[NEEDS CONFIRMATION, wird mit Epic A1 festgelegt]`
-- Formatierung: `[NEEDS CONFIRMATION: kein Formatter/Style-Guide gewählt]`
-- Benennung: Code/Variablennamen auf Englisch (Standard-Konvention);
-  Kommentare/Doku auf Deutsch (persönliches Projekt), siehe `CLAUDE.md`
-- Testing: `[NEEDS CONFIRMATION: wann Tests Pflicht sind und wo sie liegen —
-  noch nicht entschieden]`
-- Dependencies: `[NEEDS CONFIRMATION: Freigabe-/Lockfile-Regeln noch nicht
-  definiert]`
-- Generierte Dateien: Prisma-Client/Migrations-Output ist generiert, nicht
-  von Hand editieren (sobald Epic A2 steht)
+- Language/runtime: TypeScript (strict mode), Next.js App Router — exact
+  versions `[NEEDS CONFIRMATION, to be set with Epic A1]`
+- Formatting: `[NEEDS CONFIRMATION: no formatter/style guide chosen]`
+- Naming: code/variable names in English (standard convention);
+  comments/docs in German (personal project), see `CLAUDE.md`
+- Testing: `[NEEDS CONFIRMATION: when tests are mandatory and where they
+  live — not yet decided]`
+- Dependencies: `[NEEDS CONFIRMATION: approval/lockfile rules not yet
+  defined]`
+- Generated files: Prisma client/migration output is generated, don't
+  edit by hand (once Epic A2 is in place)
 
 ## Boundaries and approvals
 
-- Nie Business-Logik im Frontend, die Plan-Daten mutiert — immer über die
-  API-Route (`docs/constitution.md` Invariante DATA-001)
-- Nie den kompletten Trainingsplan bei jeder Chat-Nachricht neu generieren —
-  nur die betroffenen Felder gezielt ändern
-- Nie Strava-Access-/Refresh-Tokens oder andere Secrets ins Repo oder in Logs
-  committen (`docs/constitution.md` Invariante SEC-001)
-- Menschliche Freigabe einholen vor: Merge in den Default-Branch, jeder
-  Schema-Migration, die bestehende Daten betrifft, und jeder Änderung an
-  Trainingsprinzipien-Regeln (Spike-Regel, Schmerz-Ampel-Schwellen)
-- Siehe `docs/constitution.md` für die vollständige Invariantenliste
+- Never mutate plan data via business logic in the frontend — always
+  through the API route (`docs/constitution.md` invariant DATA-001)
+- Never regenerate the entire training plan on every chat message — only
+  change the affected fields, targeted
+- Never commit Strava access/refresh tokens or other secrets into the
+  repo or logs (`docs/constitution.md` invariant SEC-001)
+- Get human approval before: merging into the default branch, any schema
+  migration that affects existing data, and any change to training
+  principle rules (spike rule, pain-traffic-light thresholds)
+- See `docs/constitution.md` for the full list of invariants
 
 ## Nested AGENTS.md precedence
 
-- Root-Regeln gelten repository-weit.
-- Es existieren aktuell keine nested `AGENTS.md`-Dateien.
+- Root rules apply repository-wide.
+- There are currently no nested `AGENTS.md` files.
 
 ## Task routing
 
-| Aufgabe | Erforderliches Dokument |
+| Task | Required document |
 | --- | --- |
-| Architektur-Änderung | `docs/architecture.md` + neue ADR in `docs/decisions/` |
-| Betriebs-/Deployment-Änderung | `docs/runbooks/runbook.md` |
-| Produkt-/Scope-Frage | `CLAUDE.md` ("Was ist das") + `docs/decisions/README.md` |
-| Neues Feature/Spec | `docs/specs/<name>/spec.md` (EARS-Acceptance-Criteria) |
-| UI-/Design-Frage | `docs/design-system.md` (Tokens, Komponenten) + "Design"-Abschnitt der jeweiligen Spec |
-| Umsetzungsreihenfolge | `docs/specs/<name>/tickets.md`, Übersicht in `docs/specs/README.md` |
-| Contribution-Workflow | `docs/CONTRIBUTING.md` |
-| Coaching-/Trainingslogik | `docs/research/` |
+| Architecture change | `docs/architecture.md` + new ADR in `docs/decisions/` |
+| Operations/deployment change | `docs/runbooks/runbook.md` |
+| Product/scope question | `CLAUDE.md` ("What this is") + `docs/decisions/README.md` |
+| New feature/spec | `docs/specs/<name>/spec.md` (EARS acceptance criteria) |
+| UI/design question | `docs/design-system.md` (tokens, components) + the "Design" section of the relevant spec |
+| Implementation order | `docs/specs/<name>/tickets.md`, overview in `docs/specs/README.md` |
+| Contribution workflow | `docs/CONTRIBUTING.md` |
+| Coaching/training logic | `docs/research/` |
 
 ## Completion report
 
-Jede abgeschlossene Aufgabe sollte enthalten: geänderte/erstellte Dateien,
-ausgeführte Verifikation (welche Quality Gates liefen, welche fehlten und
-warum), bekannte Risiken/offene Punkte, und Follow-ups (z.B. neue ADR nötig,
-Spec/Ticket-Update nötig).
+Every completed task should include: files changed/created, verification
+performed (which quality gates ran, which were missing and why), known
+risks/open points, and follow-ups (e.g. a new ADR needed, spec/ticket
+update needed).
 
 ## Maintenance
 
-Dieses Dokument aktualisieren, sobald Build-Tooling, Befehle, Teststrategie,
-Quality Gates, Konventionen, Boundaries oder Task-Routing sich ändern —
-insbesondere sofort nach Abschluss von Ticket A1/A2 aus `docs/specs/`, wenn die
-`[NEEDS CONFIRMATION]`-Platzhalter durch echte Befehle ersetzt werden können.
-Ziel-Obergrenze: 200 Zeilen.
+Update this document whenever build tooling, commands, test strategy,
+quality gates, conventions, boundaries, or task routing change —
+especially right after ticket A1/A2 from `docs/specs/` are done, once the
+`[NEEDS CONFIRMATION]` placeholders can be replaced with real commands.
+Target ceiling: 200 lines.

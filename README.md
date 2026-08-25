@@ -1,54 +1,52 @@
 # Tempora
 
-Tempora ist eine Webapp für einen strukturierten Lauf-Trainingsplan
-(aktuelles Ziel: 5 km unter 20 Minuten). Sie synct Lauf-Aktivitäten über
-Strava (siehe [ADR-0002](docs/decisions/0002-datenquelle-strava.md)), hält
-den Trainingsplan als strukturiertes Datenmodell statt nur als Text, zeigt
-ihn in einem Dashboard, und erlaubt Anpassungen über einen Chat-Layer.
+Tempora is a web app for a structured running training plan (current
+goal: 5 km under 20 minutes). It syncs running activities via Strava (see
+[ADR-0002](docs/decisions/0002-datenquelle-strava.md)), keeps the training
+plan as a structured data model instead of just text, shows it in a
+dashboard, and allows adjustments through a chat layer.
 
 ## Who this is for
 
-v1 ist bewusst auf einen einzelnen Nutzer zugeschnitten (siehe "Nicht in
-Scope" in [docs/specs/00-fundament/tickets.md](docs/specs/00-fundament/tickets.md)).
-Die Strava-OAuth-Architektur ist grundsätzlich multi-user-fähig, falls das
-später gewünscht wird.
+v1 is deliberately scoped to a single user (see "Out of scope" in
+[docs/specs/00-fundament/tickets.md](docs/specs/00-fundament/tickets.md)).
+The Strava OAuth architecture is fundamentally multi-user-capable in case
+that's wanted later.
 
 ## Prerequisites and setup
 
-- Voraussetzungen: `[NEEDS CONFIRMATION: Node.js-Version — noch nicht
-  festgelegt]`
-- Setup: Es existiert noch kein lauffähiger Code — das Projekt-Setup ist
+- Prerequisites: `[NEEDS CONFIRMATION: Node.js version — not yet decided]`
+- Setup: There's no runnable code yet — the project setup is
   [docs/specs/00-fundament/tickets.md](docs/specs/00-fundament/tickets.md)
-  Ticket A1 ("Projekt-Setup"). Sobald das erledigt ist, diesen Abschnitt
-  aktualisieren.
-- Agent-Befehle und Quality Gates: siehe [AGENTS.md](AGENTS.md)
+  ticket A1 ("Project setup"). Update this section once that's done.
+- Agent commands and quality gates: see [AGENTS.md](AGENTS.md)
 
 ## Use
 
-Aktuell gibt es keine lauffähige App — das Repository befindet sich in der
-Planungs-/Kontext-Phase. Der aktuelle Stand:
+There's currently no runnable app — the repository is in the
+planning/context phase. Current state:
 
-- [CLAUDE.md](CLAUDE.md) — Projektkontext und Produktrahmen
-- [docs/specs/](docs/specs/) — Feature-Specs (EARS-Acceptance-Criteria) und
-  zugehörige Tickets, je ein Unterordner pro Spec
+- [CLAUDE.md](CLAUDE.md) — project context and product framing
+- [docs/specs/](docs/specs/) — feature specs (EARS acceptance criteria)
+  and their tickets, one subfolder per spec
 
 ## Documentation
 
-- Agent-Anweisungen: [AGENTS.md](AGENTS.md)
-- Nicht verhandelbare Invarianten: [docs/constitution.md](docs/constitution.md)
-- Contribution-Workflow: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)
-- Architektur: [docs/architecture.md](docs/architecture.md)
-- Betrieb: [docs/runbooks/runbook.md](docs/runbooks/runbook.md)
-- Decision Records: [docs/decisions/README.md](docs/decisions/README.md)
-- Fachliche Recherche (Coaching-Logik): [docs/research/](docs/research/)
+- Agent instructions: [AGENTS.md](AGENTS.md)
+- Non-negotiable invariants: [docs/constitution.md](docs/constitution.md)
+- Contribution workflow: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)
+- Architecture: [docs/architecture.md](docs/architecture.md)
+- Operations: [docs/runbooks/runbook.md](docs/runbooks/runbook.md)
+- Decision records: [docs/decisions/README.md](docs/decisions/README.md)
+- Domain research (coaching logic): [docs/research/](docs/research/)
 
 ## Help and support
 
-Persönliches Projekt eines einzelnen Betreibers/Nutzers — kein öffentlicher
-Support-Kanal. Fragen/Bugs: direkt im Repo als Issue, sobald GitHub-Issues
-aktiviert sind (`[NEEDS CONFIRMATION]`).
+A personal project of a single operator/user — no public support channel.
+Questions/bugs: directly in the repo as an issue, once GitHub issues are
+enabled (`[NEEDS CONFIRMATION]`).
 
 ## License or usage terms
 
-`[NEEDS CONFIRMATION: keine LICENSE-Datei im Repo — privates Projekt, Lizenz
-noch nicht festgelegt]`
+`[NEEDS CONFIRMATION: no LICENSE file in the repo — private project,
+license not yet decided]`
