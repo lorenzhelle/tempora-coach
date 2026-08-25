@@ -12,11 +12,5 @@ out/
 *.db-journal
 prisma/dev.db*
 
-# Python sidecar
-__pycache__/
-*.pyc
-.venv/
-venv/
-
 # OS / editors
 .DS_Store

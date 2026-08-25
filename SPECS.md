@@ -6,28 +6,42 @@ direkt in Testfälle übersetzbar).
 
 ---
 
-## Spec 1: Garmin-Sync
+## Spec 1: Strava-Sync
 
-**Ziel:** Läufe automatisch aus Garmin Connect in die App-DB holen, ohne
-manuellen Export.
+**Ziel:** Läufe automatisch aus Strava (die Garmin-Uhr synct dorthin) in die
+App-DB holen, ohne manuellen Export. Siehe ADR-0002 für die Begründung
+Strava statt Garmin-Direktsync.
 
-**Ansatz:** Python-Sidecar mit `python-garminconnect`, läuft als Cronjob
-(z.B. alle 4h) oder on-demand per Trigger-Endpoint.
+**Ansatz:** Offizielle Strava-OAuth-API. Einmaliger Connect-Flow pro Nutzer
+(OAuth-Redirect, Access-/Refresh-Token speichern), danach Webhook-Endpoint,
+der bei neuen/geänderten Aktivitäten von Strava benachrichtigt wird.
+Periodischer Abgleich (z.B. täglich) als Fallback, falls ein Webhook-Event
+verloren geht.
+
+**Datenmodell `StravaConnection`:**
+```
+id, userId, stravaAthleteId, accessToken, refreshToken, expiresAt
+```
 
 **Datenmodell `Activity`:**
 ```
-id, garminActivityId (unique), date, distanceKm, durationSeconds,
+id, stravaActivityId (unique), date, distanceKm, durationSeconds,
 avgPaceSecPerKm, avgHeartRate (nullable), splits (JSON: pro-km Pace),
 feltEffort (nullable, manuell nachtragbar 1-10), notes (nullable)
 ```
 
 **Acceptance Criteria:**
-- WHEN der Cronjob läuft, THE SYSTEM SHALL neue Garmin-Aktivitäten seit dem
-  letzten Sync abrufen und als `Activity`-Einträge speichern.
-- IF eine Garmin-Aktivität bereits in der DB existiert (gleiche
-  `garminActivityId`), THEN THE SYSTEM SHALL sie nicht doppelt anlegen.
-- WHEN der Garmin-Login fehlschlägt (Token abgelaufen/ungültig), THE SYSTEM
-  SHALL den Fehler loggen und den nächsten Sync-Versuch nicht blockieren.
+- WHEN ein Nutzer den Strava-Connect-Flow abschließt, THE SYSTEM SHALL
+  Access-Token, Refresh-Token und Ablaufzeit in `StravaConnection` speichern.
+- WHEN ein Strava-Webhook-Event für eine neue Aktivität eintrifft, THE SYSTEM
+  SHALL die Aktivität abrufen und als `Activity`-Eintrag speichern.
+- IF eine Strava-Aktivität bereits in der DB existiert (gleiche
+  `stravaActivityId`), THEN THE SYSTEM SHALL sie nicht doppelt anlegen.
+- WHEN ein Access-Token abgelaufen ist, THE SYSTEM SHALL es automatisch via
+  Refresh-Token erneuern, bevor ein API-Aufruf fehlschlägt.
+- IF der Refresh-Token ungültig ist (Nutzer hat Zugriff in Strava widerrufen),
+  THEN THE SYSTEM SHALL den Fehler loggen, die Verbindung als getrennt
+  markieren und den nächsten Sync-Versuch für andere Nutzer nicht blockieren.
 - WHEN eine neue Aktivität gespeichert wurde, THE SYSTEM SHALL sie dem
   Dashboard und dem Chat-Kontext zur Verfügung stellen.
 
@@ -57,7 +71,7 @@ PlannedSession: id, trainingWeekId, dayOfWeek, type (enum: locker | tempo |
 **Acceptance Criteria:**
 - WHEN ein Plan erstellt wird, THE SYSTEM SHALL mindestens einen `Milestone`
   und die `TrainingWeek`-Einträge für die aktuelle Phase anlegen.
-- WHEN eine Garmin-Aktivität einer `PlannedSession` zeitlich/inhaltlich
+- WHEN eine Strava-Aktivität einer `PlannedSession` zeitlich/inhaltlich
   entspricht, THE SYSTEM SHALL sie verknüpfen können (manuell oder
   vorgeschlagen) und `completed = true` setzen.
 - IF ein Milestone-Zieldatum erreicht ist und die letzte Testlauf-Zeit unter
@@ -110,7 +124,7 @@ Fortschritt zu den Meilensteinen.
   `TrainingWeek` basierend auf dem heutigen Datum bestimmen und anzeigen.
 - IF eine `PlannedSession` in der Vergangenheit liegt und keine verknüpfte
   Aktivität hat, THEN THE SYSTEM SHALL sie als "verpasst" markieren.
-- WHEN eine neue Garmin-Aktivität synced wurde, THE SYSTEM SHALL das
+- WHEN eine neue Strava-Aktivität synced wurde, THE SYSTEM SHALL das
   Dashboard beim nächsten Laden aktualisiert anzeigen (kein manueller Refresh
   nötig).
 

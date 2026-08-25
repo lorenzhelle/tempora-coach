@@ -19,24 +19,39 @@ um es einzeln an einen Coding-Agenten zu geben (ein Ticket = eine Session).
 - **Akzeptanz:** Alle Modelle aus Spec 2 existieren als Tabellen, Relationen
   funktionieren (z.B. `PlannedSession.linkedActivityId` → `Activity`)
 
-## Epic B: Garmin-Sync (Spec 1)
+## Epic B: Strava-Sync (Spec 1, siehe ADR-0002)
 
-### B1 — Garmin-Sidecar Grundgerüst
-- Python/FastAPI-Projekt, `python-garminconnect` + `curl_cffi` einbinden
-- Login-Flow inkl. MFA-Handling, Token-Caching lokal testen
-- Endpoint `GET /activities/recent` gibt letzte Aktivitäten als JSON zurück
-- **Akzeptanz:** Lokaler Aufruf des Endpoints liefert echte Garmin-Aktivitäten
+### B1 — Strava-OAuth-App + Connect-Flow
+- Strava-API-App registrieren (Client-ID/Secret in `.env`)
+- OAuth-Redirect-Flow bauen: Nutzer verbindet sein Strava-Konto, Callback
+  speichert Access-/Refresh-Token in `StravaConnection`
+- **Akzeptanz:** Nach dem Connect-Flow steht ein gültiges Access-Token in der
+  DB, `StravaConnection` ist befüllt (Spec 1, AC 1)
 
-### B2 — Sync-Job: Garmin → DB
-- Next.js API Route oder Cronjob, der den Sidecar-Endpoint abfragt und neue
-  Aktivitäten in `Activity` speichert
-- Dedupe über `garminActivityId` (Spec 1, AC 2)
-- **Akzeptanz:** Zweimaliges Ausführen des Sync-Jobs erzeugt keine Duplikate
+### B2 — Webhook-Endpoint: Strava → DB
+- Webhook-Subscription bei Strava anlegen, Endpoint validiert den
+  Verifizierungs-Handshake
+- Bei eintreffendem Event: Aktivität von der Strava-API abrufen und als
+  `Activity` speichern
+- Dedupe über `stravaActivityId` (Spec 1, AC 3)
+- **Akzeptanz:** Neue Aktivität in Strava erzeugt (echt oder simuliertes
+  Webhook-Event) führt zu genau einem `Activity`-Eintrag, kein Duplikat bei
+  wiederholtem Event
 
-### B3 — Fehlerbehandlung Sync
-- Fehlerfall (Token abgelaufen, Netzwerkfehler) sauber loggen, Job bricht
-  nicht komplett ab (Spec 1, AC 3)
-- **Akzeptanz:** Simulierter Login-Fehler blockiert nachfolgende Syncs nicht
+### B3 — Token-Refresh + Fehlerbehandlung
+- Automatischer Refresh des Access-Tokens vor Ablauf (Spec 1, AC 4)
+- Fehlerfall (Refresh-Token ungültig, Netzwerkfehler) sauber loggen,
+  Verbindung als getrennt markieren, andere Syncs nicht blockieren
+  (Spec 1, AC 5)
+- **Akzeptanz:** Simulierter abgelaufener Access-Token wird automatisch
+  erneuert, ohne dass ein Sync fehlschlägt; simulierter ungültiger
+  Refresh-Token blockiert keine anderen Syncs
+
+### B4 — Periodischer Fallback-Abgleich
+- Täglicher Cronjob, der pro `StravaConnection` die letzten Aktivitäten
+  abgleicht, falls ein Webhook-Event verloren ging
+- **Akzeptanz:** Manuell ein Webhook-Event "verlieren" (nicht auslösen) →
+  Fallback-Job holt die fehlende Aktivität trotzdem nach
 
 ## Epic C: Onboarding-Chat (Spec 3)
 
@@ -105,9 +120,12 @@ um es einzeln an einen Coding-Agenten zu geben (ein Ticket = eine Session).
 
 ## Nicht in Scope (bewusst zurückgestellt)
 - Workout-Push zurück aufs Garmin-Gerät (Training API / Connect IQ)
-- Mehrbenutzer-Fähigkeit / Auth-System (siehe `docs/research/` für eine
-  spätere Multi-User-Option über Strava-OAuth, falls Friends&Family-Nutzung
-  gewünscht wird — für v1 bewusst nicht umgesetzt)
-- Strava als Alternativ-Datenquelle (für v1 verworfen zugunsten Garmin direkt;
-  offene Option für eine mögliche Multi-User-Erweiterung, siehe
+- Mehrbenutzer-Fähigkeit / echtes Auth-System für mehrere Nutzer-Accounts —
+  die Strava-OAuth-Architektur (ADR-0002) ist technisch multi-user-fähig,
+  aber v1 bleibt bewusst auf einen Nutzer beschränkt (kein Nutzer-Onboarding-
+  Flow, keine Rollen/Rechte)
+- Garmin-exklusive Metriken (HRV-Status, Body Battery, Training Load/Status)
+  — kommen über Strava nicht durch (siehe ADR-0002); falls später gewünscht,
+  wäre das ein separates Zusatzfeature
+- Apple Health als Datenquelle (kein Cloud-API, nur geräteseitig — siehe
   `docs/research/`)
