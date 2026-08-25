@@ -4,12 +4,13 @@
 
 Dieses Dokument beschreibt den **aktuellen** Stand, nicht ein Wunschbild.
 Stand jetzt existiert im Repository noch kein Code — die hier beschriebene
-Architektur ist die in [CLAUDE.md](../CLAUDE.md), [SPECS.md](../SPECS.md)
-und den ADRs in [docs/decisions/](decisions/README.md) verbindlich
-festgelegte **Zielarchitektur für die Implementierung**, noch nicht
-verifizierter Ist-Zustand eines laufenden Systems. Dieses Dokument MUSS
-aktualisiert werden, sobald Epic A ([TICKETS.md](../TICKETS.md)) umgesetzt
-ist, damit es wieder die reale Struktur statt der Planung beschreibt.
+Architektur ist die in [CLAUDE.md](../CLAUDE.md), den Specs unter
+[docs/specs/](specs/README.md) und den ADRs in
+[docs/decisions/](decisions/README.md) verbindlich festgelegte
+**Zielarchitektur für die Implementierung**, noch nicht verifizierter
+Ist-Zustand eines laufenden Systems. Dieses Dokument MUSS aktualisiert
+werden, sobald [00-fundament](specs/00-fundament/tickets.md) umgesetzt ist,
+damit es wieder die reale Struktur statt der Planung beschreibt.
 
 ## System context
 
@@ -41,8 +42,10 @@ verifiziert und muss dann hier nachgezogen werden]`
 ## Data model
 
 Das Plan-Datenmodell (`Plan`, `Milestone`, `TrainingWeek`, `PlannedSession`,
-`Activity`, `StravaConnection`) ist in [SPECS.md](../SPECS.md) Spec 1 und
-Spec 2 vollständig spezifiziert — hier nicht dupliziert, siehe dort.
+`Activity`, `StravaConnection`) ist in
+[Spec 1](specs/01-strava-sync/spec.md) und
+[Spec 2](specs/02-plan-datenmodell/spec.md) vollständig spezifiziert — hier
+nicht dupliziert, siehe dort.
 
 ## Critical flows
 
@@ -82,10 +85,10 @@ Verbindliche Architekturentscheidungen stehen als ADRs in
 - Agent-Anweisungen: [AGENTS.md](../AGENTS.md)
 - Invarianten: [docs/constitution.md](constitution.md)
 - Betrieb: [docs/runbooks/runbook.md](runbooks/runbook.md)
-- Feature-Specs: [SPECS.md](../SPECS.md)
+- Feature-Specs: [docs/specs/](specs/README.md)
 
 ## Maintenance
 
-Aktualisieren, sobald Epic A/B/C/D/E aus `TICKETS.md` umgesetzt werden und
+Aktualisieren, sobald die Tickets unter `docs/specs/` umgesetzt werden und
 die reale Struktur von der hier beschriebenen Planung abweicht, sowie bei
 jeder neuen Architektur-ADR.

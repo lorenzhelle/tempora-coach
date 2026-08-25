@@ -1,7 +1,7 @@
 # Decision Records
 
 Kurze ADRs (Architecture Decision Records) für Entscheidungen, die den
-Kontext-Layer (`CLAUDE.md`, `SPECS.md`, `TICKETS.md`) bindend festlegen.
+Kontext-Layer (`CLAUDE.md`, `docs/specs/`) bindend festlegen.
 Jede Entscheidung hier ist verbindlich für den aktuellen Stand — Widersprüche
 zwischen den Kontext-Dateien und einer ADR sind ein Bug im Kontext-Layer und
 sollten gefixt werden, sobald sie auffallen.

@@ -17,8 +17,8 @@
 
 Dieses Runbook soll den Betrieb der Tempora-App abdecken, sobald sie deployed
 ist (Vercel Free Tier, siehe `docs/architecture.md`). **Aktueller Stand:**
-Das Repository enthält noch keinen Code (Epic A in `TICKETS.md` ist noch
-nicht umgesetzt) — es gibt keine laufende Instanz, keine Dashboards, keine
+Das Repository enthält noch keinen Code (`docs/specs/00-fundament/tickets.md`
+ist noch nicht umgesetzt) — es gibt keine laufende Instanz, keine Dashboards, keine
 Alerts. Dieser Abschnitt und die folgenden MÜSSEN mit echten, verifizierten
 Werten befüllt werden, sobald ein erstes Deployment existiert, statt
 plausible aber unverifizierte Prozeduren zu veröffentlichen.
@@ -55,8 +55,8 @@ Vercel Git-Integration auf den Default-Branch, siehe docs/architecture.md]`
 
 ### Strava-Webhook-Subscription erneuern/prüfen
 
-`[NEEDS CONFIRMATION: Prozedur folgt mit Ticket B2 aus TICKETS.md, sobald
-der Webhook-Endpoint existiert]`
+`[NEEDS CONFIRMATION: Prozedur folgt mit Ticket B2 aus
+docs/specs/01-strava-sync/tickets.md, sobald der Webhook-Endpoint existiert]`
 
 ## Diagnostics
 

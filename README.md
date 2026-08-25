@@ -9,16 +9,18 @@ ihn in einem Dashboard, und erlaubt Anpassungen über einen Chat-Layer.
 ## Who this is for
 
 v1 ist bewusst auf einen einzelnen Nutzer zugeschnitten (siehe "Nicht in
-Scope" in [TICKETS.md](TICKETS.md)). Die Strava-OAuth-Architektur ist
-grundsätzlich multi-user-fähig, falls das später gewünscht wird.
+Scope" in [docs/specs/00-fundament/tickets.md](docs/specs/00-fundament/tickets.md)).
+Die Strava-OAuth-Architektur ist grundsätzlich multi-user-fähig, falls das
+später gewünscht wird.
 
 ## Prerequisites and setup
 
 - Voraussetzungen: `[NEEDS CONFIRMATION: Node.js-Version — noch nicht
   festgelegt]`
 - Setup: Es existiert noch kein lauffähiger Code — das Projekt-Setup ist
-  [TICKETS.md](TICKETS.md) Epic A1 ("Projekt-Setup"). Sobald das erledigt
-  ist, diesen Abschnitt aktualisieren.
+  [docs/specs/00-fundament/tickets.md](docs/specs/00-fundament/tickets.md)
+  Ticket A1 ("Projekt-Setup"). Sobald das erledigt ist, diesen Abschnitt
+  aktualisieren.
 - Agent-Befehle und Quality Gates: siehe [AGENTS.md](AGENTS.md)
 
 ## Use
@@ -27,9 +29,8 @@ Aktuell gibt es keine lauffähige App — das Repository befindet sich in der
 Planungs-/Kontext-Phase. Der aktuelle Stand:
 
 - [CLAUDE.md](CLAUDE.md) — Projektkontext und Produktrahmen
-- [SPECS.md](SPECS.md) — Feature-Specs mit EARS-Acceptance-Criteria
-- [TICKETS.md](TICKETS.md) — Umsetzungsreihenfolge, ein Ticket pro
-  Agent-Session
+- [docs/specs/](docs/specs/) — Feature-Specs (EARS-Acceptance-Criteria) und
+  zugehörige Tickets, je ein Unterordner pro Spec
 
 ## Documentation
 

@@ -9,15 +9,16 @@ Tempora). Es gibt aktuell keine nested `AGENTS.md`-Dateien.
 
 1. Dieses `AGENTS.md` für ausführbare Arbeitsregeln.
 2. `docs/constitution.md` für nicht verhandelbare Invarianten.
-3. Das aufgabenrelevante Dokument: `docs/architecture.md`, `SPECS.md`,
-   `TICKETS.md`, `docs/runbooks/runbook.md` oder `docs/decisions/README.md`.
+3. Das aufgabenrelevante Dokument: `docs/architecture.md`, die passende Spec/
+   Tickets unter `docs/specs/`, `docs/runbooks/runbook.md` oder
+   `docs/decisions/README.md`.
 4. `CLAUDE.md` für erzählerischen Projektkontext (Produktrahmen, fachlicher
    Hintergrund) — ergänzt dieses Dokument, ersetzt es nicht.
 
 ## Working directory and setup
 
 - Repository-Root: `/` (Next.js-Projekt wird direkt im Root angelegt, siehe
-  `TICKETS.md` Epic A1)
+  `docs/specs/00-fundament/tickets.md` Ticket A1)
 - Voraussetzungen: `[NEEDS CONFIRMATION: Node.js-Version — noch nicht
   festgelegt, da Epic A1 "Projekt-Setup" noch nicht durchgeführt wurde]`
 - Install/Bootstrap: `[NEEDS CONFIRMATION: noch kein package.json im Repo —
@@ -98,8 +99,8 @@ Vor einer Fertig-Meldung, sobald Code existiert:
 | Architektur-Änderung | `docs/architecture.md` + neue ADR in `docs/decisions/` |
 | Betriebs-/Deployment-Änderung | `docs/runbooks/runbook.md` |
 | Produkt-/Scope-Frage | `CLAUDE.md` ("Was ist das") + `docs/decisions/README.md` |
-| Neues Feature/Spec | `SPECS.md` (EARS-Acceptance-Criteria) |
-| Umsetzungsreihenfolge | `TICKETS.md` |
+| Neues Feature/Spec | `docs/specs/<name>/spec.md` (EARS-Acceptance-Criteria) |
+| Umsetzungsreihenfolge | `docs/specs/<name>/tickets.md`, Übersicht in `docs/specs/README.md` |
 | Contribution-Workflow | `docs/CONTRIBUTING.md` |
 | Coaching-/Trainingslogik | `docs/research/` |
 
@@ -114,6 +115,6 @@ Spec/Ticket-Update nötig).
 
 Dieses Dokument aktualisieren, sobald Build-Tooling, Befehle, Teststrategie,
 Quality Gates, Konventionen, Boundaries oder Task-Routing sich ändern —
-insbesondere sofort nach Abschluss von Epic A1/A2 aus `TICKETS.md`, wenn die
+insbesondere sofort nach Abschluss von Ticket A1/A2 aus `docs/specs/`, wenn die
 `[NEEDS CONFIRMATION]`-Platzhalter durch echte Befehle ersetzt werden können.
 Ziel-Obergrenze: 200 Zeilen.

@@ -3,7 +3,7 @@
 ## Status
 Entschieden — 2026-08-25 (löst die ursprüngliche Annahme "Garmin via
 inoffizielle Library + Python-Sidecar" ab, wie sie zuerst in
-CLAUDE.md/SPECS.md/TICKETS.md stand)
+CLAUDE.md/docs/specs/ stand)
 
 ## Kontext
 Zwei Optionen wurden evaluiert, um Laufdaten von der Garmin-Uhr in die App
@@ -48,14 +48,15 @@ API-Route (OAuth-Connect-Flow + Webhook-Handler).
   `.env`.
 - `Activity.garminActivityId` wird zu `Activity.stravaActivityId`.
 - Architektur vereinfacht sich: kein separater Sidecar-Host/Cronjob-Prozess
-  mehr nötig. Spec 1 und Epic B in `SPECS.md`/`TICKETS.md` sind entsprechend
-  auf Strava umgestellt (Details dort, nicht hier dupliziert).
+  mehr nötig. [Spec 1 und die zugehörigen Tickets](../specs/01-strava-sync/)
+  sind entsprechend auf Strava umgestellt (Details dort, nicht hier
+  dupliziert).
 - Laufende Kosten: 11,99 $/Monat für den Strava-API-Zugang (Betreiber
   zahlt, nicht die einzelnen Nutzer).
 - Architektur ist durch OAuth-pro-Nutzer grundsätzlich multi-user-fähig,
   auch wenn v1 weiterhin bewusst nur für einen Nutzer live geschaltet wird
-  (siehe "Nicht in Scope" in `TICKETS.md`) — das ist eine separate, noch
-  offene Entscheidung, keine Folge dieser ADR.
+  (siehe "Nicht in Scope" in `docs/specs/00-fundament/tickets.md`) — das ist
+  eine separate, noch offene Entscheidung, keine Folge dieser ADR.
 - Firstbeat-Analytics (HRV, Body Battery, Training Load) stehen nicht zur
   Verfügung. Falls später gewünscht: separates, optionales Zusatzfeature,
   nicht Teil von v1.

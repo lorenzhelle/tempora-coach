@@ -24,7 +24,7 @@ Coding-Agent) am Repository arbeitet.
   direkte Commits auf Feature-Branches ohne Review durch Dritte, da
   Einzelnutzer-Projekt]`
 - Sobald ein PR erstellt wird: Beschreibung fasst die Änderung und den Bezug
-  zu `SPECS.md`/`TICKETS.md` zusammen.
+  zur betroffenen Spec/den betroffenen Tickets unter `docs/specs/` zusammen.
 
 ## Review
 
@@ -35,9 +35,11 @@ Coding-Agent) am Repository arbeitet.
 ## Issues
 
 - `[NEEDS CONFIRMATION: GitHub Issues noch nicht als Tracking-Mechanismus
-  aktiviert — aktuell laufen offene Aufgaben über TICKETS.md]`
-- Neue Aufgaben, die nicht in `TICKETS.md` stehen, dort als neues Ticket
-  unter dem passenden Epic ergänzen, statt sie nur im Chat zu besprechen.
+  aktiviert — aktuell laufen offene Aufgaben über docs/specs/*/tickets.md]`
+- Neue Aufgaben, die in keiner `docs/specs/*/tickets.md` stehen, dort als
+  neues Ticket im passenden Spec-Ordner ergänzen (bzw. in
+  `docs/specs/00-fundament/tickets.md`, falls kein Spec-Bezug besteht),
+  statt sie nur im Chat zu besprechen.
 
 ## Security reporting
 

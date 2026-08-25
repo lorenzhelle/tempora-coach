@@ -1,8 +1,9 @@
 # Research
 
-Primärquellen-Recherche, die die Coaching-Logik in `SPECS.md` (Spec 3
-Onboarding, Spec 5 Chat-Anpassung) fundiert. Kein Code, sondern Referenz für
-System-Prompts und Plan-Regeln.
+Primärquellen-Recherche, die die Coaching-Logik in
+[Spec 3](../specs/03-onboarding/spec.md) (Onboarding) und
+[Spec 5](../specs/05-chat-anpassung/spec.md) (Chat-Anpassung) fundiert. Kein
+Code, sondern Referenz für System-Prompts und Plan-Regeln.
 
 - `progression-und-verletzungspraevention.md` — sicherer Umfangsaufbau (10%-Regel
   vs. RUNSAFE-Spike-Regel), Schmerz-Ampel-Modell, Assessment-Checkliste
