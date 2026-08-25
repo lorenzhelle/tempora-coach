@@ -1,0 +1,22 @@
+# Next.js
+node_modules/
+.next/
+out/
+
+# Env / Secrets
+.env
+.env*.local
+
+# SQLite
+*.db
+*.db-journal
+prisma/dev.db*
+
+# Python sidecar
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# OS / editors
+.DS_Store
