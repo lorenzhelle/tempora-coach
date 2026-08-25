@@ -91,13 +91,21 @@ GitHub repos via the `skills` CLI (`npx skills ...`) and committed —
 `skills-lock.json` records each skill's source/version for
 `npx skills update`. Installed: `supabase`,
 `supabase-postgres-best-practices` (Supabase/Postgres work),
-`deploy-to-vercel`, `vercel-cli-with-tokens` (Vercel deploy/CLI),
-`vercel-react-best-practices`, `next-dev-loop`,
+`vercel-react-best-practices` (React/Next.js performance), `next-dev-loop`,
 `next-cache-components-adoption`, `next-partial-prefetching-adoption`
-(Next.js/React). These are third-party content — review before trusting,
-they run with full agent permissions.
+(Next.js). These are third-party content — review before trusting, they
+run with full agent permissions. Deliberately **not** installed:
+`deploy-to-vercel`, `vercel-cli-with-tokens` — both default to (or fall
+back to) deploying via direct `vercel deploy` CLI invocation, which
+conflicts with this project's deploy path below.
 
 ## Boundaries and approvals
+
+- Deployment to Vercel always happens through the git-integration
+  pipeline (ticket A3): push to `main` → production, PR → preview, gated
+  by the CI checks in `.github/workflows/ci.yml`. Never invoke the Vercel
+  CLI (`vercel deploy`, or a skill/script that wraps it) to deploy
+  directly — that bypasses CI and produces an untracked deployment
 
 - Never mutate plan data via business logic in the frontend — always
   through the API route (`docs/constitution.md` invariant DATA-001)
