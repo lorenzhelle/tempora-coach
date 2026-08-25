@@ -51,7 +51,9 @@ Minimal-Signale ergänzen.
 ### Deployment
 
 `[NEEDS CONFIRMATION: Deployment-Prozess noch nicht eingerichtet — geplant:
-Vercel Git-Integration auf den Default-Branch, siehe docs/architecture.md]`
+Vercel Git-Integration auf den Default-Branch + CI-Checks (Lint/Typecheck/
+Build) vor jedem Merge, siehe docs/specs/00-fundament/tickets.md Ticket A3
+und docs/architecture.md]`
 
 ### Strava-Webhook-Subscription erneuern/prüfen
 

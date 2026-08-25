@@ -9,6 +9,21 @@ Kein Spec-Bezug — Basis-Setup, auf dem alle anderen Specs aufbauen.
 - **Akzeptanz:** `npm run dev` startet eine leere Startseite, DB-Migration
   läuft fehlerfrei durch
 
+### A3 — Vercel-Deployment + CI-Pipeline
+- Vercel-Projekt anlegen und mit dem GitHub-Repo verbinden (Git-Integration):
+  Push auf `main` deployt automatisch nach Production, jeder PR bekommt ein
+  Preview-Deployment
+- Secrets (Strava Client-ID/Secret, Anthropic API-Key, DB-Connection) als
+  Vercel Environment Variables hinterlegen (nie im Repo, siehe
+  `docs/constitution.md` SEC-001)
+- GitHub-Actions-Workflow, der vor jedem Merge Lint, Typecheck und Build
+  laufen lässt (Tests sobald ein Test-Framework gewählt ist, siehe
+  `AGENTS.md` "Exact commands")
+- **Akzeptanz:** Push auf `main` triggert ein Production-Deployment auf
+  Vercel; ein PR erzeugt automatisch ein Preview-Deployment; ein PR mit
+  fehlschlagendem Lint/Typecheck/Build wird von GitHub als "checks failed"
+  markiert und blockiert den Merge
+
 ---
 
 ## Nicht in Scope (bewusst zurückgestellt)

@@ -70,6 +70,9 @@ nicht dupliziert, siehe dort.
 - **Resilienz:** Strava-Sync über Webhooks mit periodischem Fallback-Abgleich
   (Ticket B4), damit verlorene Webhook-Events nicht zu fehlenden Aktivitäten
   führen.
+- **Deployment/CI:** Vercel Git-Integration (Push auf `main` → Production,
+  PR → Preview-Deployment) plus GitHub-Actions-CI (Lint/Typecheck/Build vor
+  Merge), siehe [Ticket A3](specs/00-fundament/tickets.md).
 
 ## ADR index
 
