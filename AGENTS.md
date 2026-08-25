@@ -100,6 +100,7 @@ Vor einer Fertig-Meldung, sobald Code existiert:
 | Betriebs-/Deployment-Änderung | `docs/runbooks/runbook.md` |
 | Produkt-/Scope-Frage | `CLAUDE.md` ("Was ist das") + `docs/decisions/README.md` |
 | Neues Feature/Spec | `docs/specs/<name>/spec.md` (EARS-Acceptance-Criteria) |
+| UI-/Design-Frage | `docs/design-system.md` (Tokens, Komponenten) + "Design"-Abschnitt der jeweiligen Spec |
 | Umsetzungsreihenfolge | `docs/specs/<name>/tickets.md`, Übersicht in `docs/specs/README.md` |
 | Contribution-Workflow | `docs/CONTRIBUTING.md` |
 | Coaching-/Trainingslogik | `docs/research/` |

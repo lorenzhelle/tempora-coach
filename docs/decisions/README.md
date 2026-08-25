@@ -13,3 +13,5 @@ die eine alte revidiert, bekommt eine neue Nummer und markiert die alte als
 - [ADR-0001](0001-app-name-tempora.md) — App-Name: Tempora
 - [ADR-0002](0002-datenquelle-strava.md) — Datenquelle: Strava statt
   Garmin-Direktsync
+- [ADR-0003](0003-chat-layer-vercel-ai-sdk.md) — Chat-Layer-Implementierung:
+  Vercel AI SDK

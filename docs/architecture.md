@@ -20,7 +20,9 @@ Abhängigkeiten:
 - **Strava-API** (OAuth + Webhooks) als einzige Datenquelle für
   Lauf-Aktivitäten — siehe [ADR-0002](decisions/0002-datenquelle-strava.md).
 - **Anthropic API (Claude)** für den Chat-Layer (Onboarding-Dialog und
-  Plan-Anpassungen), inkl. Tool Use für strukturierte Plan-Updates.
+  Plan-Anpassungen), inkl. Tool Use für strukturierte Plan-Updates —
+  angebunden über das Vercel AI SDK, siehe
+  [ADR-0003](decisions/0003-chat-layer-vercel-ai-sdk.md).
 - **SQLite** als einzige Datenhaltung (kein externer DB-Server für v1).
 
 ## Module map (geplant)
@@ -31,7 +33,8 @@ repository/
 ├── app/api/                Next.js API Routes — einziger Weg, Plan-Daten zu mutieren
 │   ├── strava/oauth/       OAuth-Connect-Flow (Spec 1)
 │   ├── strava/webhook/     Webhook-Endpoint für neue Aktivitäten (Spec 1)
-│   └── chat/               Anthropic-Anbindung, Tool-Definitionen (Spec 3, Spec 5)
+│   └── chat/               Vercel AI SDK + Anthropic-Anbindung, Tool-Definitionen
+│                           (Spec 3, Spec 5, ADR-0003)
 ├── prisma/                 Schema + Migrationen (Spec 2 Datenmodell)
 └── lib/                    geteilte Business-Logik (Plan-Regeln, Trainingsprinzipien-Check)
 ```
@@ -82,6 +85,8 @@ Verbindliche Architekturentscheidungen stehen als ADRs in
 - [ADR-0001](decisions/0001-app-name-tempora.md) — App-Name: Tempora
 - [ADR-0002](decisions/0002-datenquelle-strava.md) — Datenquelle: Strava
   statt Garmin-Direktsync
+- [ADR-0003](decisions/0003-chat-layer-vercel-ai-sdk.md) —
+  Chat-Layer-Implementierung: Vercel AI SDK
 
 ## Related documentation
 
@@ -89,6 +94,7 @@ Verbindliche Architekturentscheidungen stehen als ADRs in
 - Invarianten: [docs/constitution.md](constitution.md)
 - Betrieb: [docs/runbooks/runbook.md](runbooks/runbook.md)
 - Feature-Specs: [docs/specs/](specs/README.md)
+- Design-System: [docs/design-system.md](design-system.md)
 
 ## Maintenance
 

@@ -21,9 +21,11 @@ gewünscht wird.
 
 ## Tech-Stack & Architektur
 Next.js (App Router, TypeScript) Frontend + API Routes, SQLite via Prisma,
-Anthropic API für den Chat-Layer, Strava-Sync über OAuth + Webhooks (kein
-Sidecar, siehe ADR-0002), Hosting Vercel Free Tier. Details, Modul-Map und
-kritische Flows: [docs/architecture.md](docs/architecture.md).
+Anthropic API für den Chat-Layer über das Vercel AI SDK (siehe ADR-0003),
+Strava-Sync über OAuth + Webhooks (kein Sidecar, siehe ADR-0002), Hosting
+Vercel Free Tier. Details, Modul-Map und kritische Flows:
+[docs/architecture.md](docs/architecture.md). Visuelle Sprache:
+[docs/design-system.md](docs/design-system.md).
 
 ## Konventionen, Befehle, Anti-Patterns
 Kanonisch in [AGENTS.md](AGENTS.md) — dort auch der aktuelle Stand der
