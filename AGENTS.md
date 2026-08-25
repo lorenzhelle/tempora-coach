@@ -18,53 +18,56 @@ name: Tempora). There are currently no nested `AGENTS.md` files.
 ## Working directory and setup
 
 - Repository root: `/` (the Next.js project is set up directly at the
-  root, see `docs/specs/00-fundament/tickets.md` ticket A1)
-- Prerequisites: `[NEEDS CONFIRMATION: Node.js version — not yet decided,
-  since Epic A1 "Project setup" hasn't been done yet]`
-- Install/bootstrap: `[NEEDS CONFIRMATION: no package.json in the repo yet
-  — will be added with Epic A1]`
-- Environment setup: `.env` for secrets (Strava client ID/secret,
-  Anthropic API key) — details in `docs/constitution.md`
+  root, no `src/` directory)
+- Prerequisites: Node.js 22 (see `.nvmrc`), npm
+- Install/bootstrap: `npm install` (runs `prisma generate` via
+  `postinstall`)
+- Environment setup: copy `.env.example` to `.env` and fill in real
+  values — `DATABASE_URL`/`DIRECT_URL` (Supabase Postgres, see
+  [ADR-0004](docs/decisions/0004-datenbank-postgres-supabase.md)),
+  `STRAVA_CLIENT_ID`/`STRAVA_CLIENT_SECRET`, `ANTHROPIC_API_KEY` — details
+  in `docs/constitution.md`. Supabase project creation is a human-only
+  setup step (no dashboard access from a coding agent); local dev
+  requires a real, reachable Supabase project — there is no offline
+  SQLite fallback.
 
 ## Exact commands
 
-Status: The repo contains no code yet (no `package.json`, no CI config).
-The commands below are the plan recorded in `CLAUDE.md`, but not yet
-verified to run.
+Epic A (project setup, CI/deploy) is done; the Spec 2 data model is still
+empty (see `docs/specs/02-plan-datenmodell/tickets.md`).
 
 | Purpose | Command | Expected result |
 | --- | --- | --- |
-| Dev server | `npm run dev` | Next.js dev server starts (Epic A1) |
-| Build | `npm run build` | Production build with no errors (Epic A1) |
-| Format | `[NEEDS CONFIRMATION: no formatter configured]` | — |
-| Lint | `[NEEDS CONFIRMATION: no linter configured]` | — |
-| Typecheck | `[NEEDS CONFIRMATION: TypeScript strict mode is agreed on,
-  but no `tsc` script exists yet]` | — |
-| Focused test | `[NEEDS CONFIRMATION: no test framework chosen]` | — |
+| Install | `npm install` | Installs deps, generates the Prisma client |
+| Dev server | `npm run dev` | Next.js dev server starts on :3000 |
+| Build | `npm run build` | Production build with no errors |
+| Format | `npm run format` | Biome formats in place |
+| Format check | `npm run format:check` | Biome reports formatting issues without writing |
+| Lint | `npm run lint` | Biome check (lint + import organization) |
+| Typecheck | `npm run typecheck` | `next typegen` then `tsc --noEmit` |
+| Focused test | `[NEEDS CONFIRMATION: no test framework chosen — Vitest recommended, not yet wired up]` | — |
 | Full test suite | `[NEEDS CONFIRMATION: no test framework chosen]` | — |
-| DB migration | `[NEEDS CONFIRMATION: Prisma agreed on, schema/migration
-  not set up yet — Epic A2]` | — |
-
-**Once Epic A1/A2 are done, this table MUST be updated with the real
-commands.**
+| DB migration | `npx prisma migrate dev --name <change>` | Applies against the Supabase Postgres `DIRECT_URL`; requires a real `.env` (see "Environment setup" above) |
 
 ## Quality gates
 
-Before reporting a task done, once code exists:
+Before reporting a task done:
 
-- `[NEEDS CONFIRMATION: formatting/format-check command]`
-- `[NEEDS CONFIRMATION: static analysis/lint command]`
-- `[NEEDS CONFIRMATION: tests for the changed scope]`
-- Build succeeds (`npm run build`), once Epic A1 is in place
-- Prisma migration runs cleanly, once Epic A2 is in place
+- `npm run format:check`
+- `npm run lint`
+- `[NEEDS CONFIRMATION: tests for the changed scope — no framework chosen yet]`
+- `npm run typecheck`
+- `npm run build`
+- `npx prisma migrate dev` runs cleanly, for any schema change
 - Missing gates (because not yet set up) must be named explicitly in the
   completion report, not silently skipped
 
 ## Conventions
 
-- Language/runtime: TypeScript (strict mode), Next.js App Router — exact
-  versions `[NEEDS CONFIRMATION, to be set with Epic A1]`
-- Formatting: `[NEEDS CONFIRMATION: no formatter/style guide chosen]`
+- Language/runtime: TypeScript (strict mode), Next.js 16 App Router, Node
+  22 (see `.nvmrc`)
+- Formatting/linting: Biome (`biome.json`) — combines both, no separate
+  Prettier/ESLint config
 - Naming: code/variable names in English (standard convention);
   comments/docs in English — the context layer was translated from
   German to English (2026-08-25), see `CLAUDE.md`
@@ -72,8 +75,13 @@ Before reporting a task done, once code exists:
   live — not yet decided]`
 - Dependencies: `[NEEDS CONFIRMATION: approval/lockfile rules not yet
   defined]`
-- Generated files: Prisma client/migration output is generated, don't
-  edit by hand (once Epic A2 is in place)
+- Generated files: Prisma client output (`app/generated/prisma`,
+  gitignored, regenerated via `postinstall`) and `.next/` are generated,
+  don't edit by hand
+- Database: Postgres on Supabase, no local SQLite (see
+  [ADR-0004](docs/decisions/0004-datenbank-postgres-supabase.md)) —
+  `DATABASE_URL` (pooled) for the app at runtime, `DIRECT_URL` (direct)
+  for Prisma CLI/migrations
 
 ## Boundaries and approvals
 
@@ -120,3 +128,13 @@ quality gates, conventions, boundaries, or task routing change —
 especially right after ticket A1/A2 from `docs/specs/` are done, once the
 `[NEEDS CONFIRMATION]` placeholders can be replaced with real commands.
 Target ceiling: 200 lines.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

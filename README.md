@@ -15,16 +15,24 @@ that's wanted later.
 
 ## Prerequisites and setup
 
-- Prerequisites: `[NEEDS CONFIRMATION: Node.js version — not yet decided]`
-- Setup: There's no runnable code yet — the project setup is
-  [docs/specs/00-fundament/tickets.md](docs/specs/00-fundament/tickets.md)
-  ticket A1 ("Project setup"). Update this section once that's done.
+- Prerequisites: Node.js 22 (see `.nvmrc`), npm, a
+  [Supabase](https://supabase.com) Postgres project (see
+  [ADR-0004](docs/decisions/0004-datenbank-postgres-supabase.md) — no
+  local SQLite fallback, local dev needs a real reachable database)
+- Setup:
+  1. `npm install`
+  2. `cp .env.example .env` and fill in `DATABASE_URL`/`DIRECT_URL` from
+     your Supabase project's connection info, plus
+     `STRAVA_CLIENT_ID`/`STRAVA_CLIENT_SECRET`/`ANTHROPIC_API_KEY`
+  3. `npx prisma migrate dev`
+  4. `npm run dev` — serves the app at `localhost:3000`
 - Agent commands and quality gates: see [AGENTS.md](AGENTS.md)
 
 ## Use
 
-There's currently no runnable app — the repository is in the
-planning/context phase. Current state:
+The Next.js app scaffold, Prisma/Postgres wiring, and CI/deploy pipeline
+(Epic A) are in place; the app itself (dashboard, chat, Strava sync) is
+not yet built — see [docs/specs/](docs/specs/) for what's next.
 
 - [CLAUDE.md](CLAUDE.md) — project context and product framing
 - [docs/specs/](docs/specs/) — feature specs (EARS acceptance criteria)
