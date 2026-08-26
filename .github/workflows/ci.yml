@@ -33,6 +33,12 @@ jobs:
       - run: npm run test:e2e
         env:
           CI: true
+          # proxy.ts refreshes the Supabase session on every request (including
+          # the landing page), so e2e needs a real, reachable Supabase project
+          # (see docs/decisions/0005-multi-user-supabase-auth.md). These repo
+          # secrets are a human-only setup step, same as the Vercel env vars.
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

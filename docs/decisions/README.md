@@ -17,3 +17,5 @@ by ADR-XXXX" instead of deleting it.
   Vercel AI SDK
 - [ADR-0004](0004-datenbank-postgres-supabase.md) — Database: Postgres on
   Supabase instead of local SQLite
+- [ADR-0005](0005-multi-user-supabase-auth.md) — Multi-user support via
+  Supabase Auth

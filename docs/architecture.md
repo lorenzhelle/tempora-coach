@@ -9,6 +9,10 @@ lint/typecheck/build on every PR and push to `main`. The Spec 2 data
 model itself is still empty — models are added incrementally as the
 epics that consume them (Epic B, Epic C) are implemented, not
 front-loaded here (see `docs/specs/02-plan-datenmodell/tickets.md`).
+Ticket A4 (Supabase Auth) is also implemented — see
+[ADR-0005](decisions/0005-multi-user-supabase-auth.md); still open there:
+a real signup/login E2E test (needs a seeded test account) and GitHub
+repo secrets for the `e2e` CI job, both human-only steps.
 Vercel project creation/connection and the real Supabase/Strava/Anthropic
 credentials remain manual, human-only setup steps (no dashboard access
 from a coding agent) — see [ADR-0004](decisions/0004-datenbank-postgres-supabase.md).
@@ -29,20 +33,43 @@ External dependencies:
   runtime, direct connection for migrations). See
   [ADR-0004](decisions/0004-datenbank-postgres-supabase.md) (supersedes
   the earlier local-SQLite assumption).
+- **Supabase Auth** for user accounts (email/password), a separate
+  Supabase surface from the Postgres hosting above — reached through the
+  Supabase JS client (`@supabase/supabase-js`, `@supabase/ssr`), not
+  through Prisma. See
+  [ADR-0005](decisions/0005-multi-user-supabase-auth.md). Row Level
+  Security does not apply to Prisma-managed tables (Prisma bypasses
+  PostgREST/RLS via its direct connection) — authorization for those
+  stays in API-route code.
+  **The Supabase JS client is Auth-only in this app** — `signInWithPassword`,
+  `signUp`, `signOut`, `getUser`, `exchangeCodeForSession`. It's never used
+  to query `Plan`/`Activity`/etc. (no `.from(...)` calls), so there is no
+  overlap with Prisma to resolve. Don't add PostgREST-style data access via
+  the Supabase client as an alternative to Prisma: it would require RLS on
+  every table — a second authorization system running alongside the
+  API-route checks DATA-001 already requires — and would make the Spec 2
+  relational queries (`Plan → Milestone → TrainingWeek → PlannedSession →
+  Activity`, the spike-rule lookback) harder to express than Prisma's query
+  builder. Keep data access on Prisma; keep the Supabase client on Auth.
 
 ## Module map
 
 ```
 repository/
 ├── app/                    Next.js App Router — UI routes (dashboard, chat, onboarding)
-├── app/api/                Next.js API routes — the only way to mutate plan data
-│   ├── strava/oauth/       OAuth connect flow (Spec 1, not yet implemented)
-│   ├── strava/webhook/     Webhook endpoint for new activities (Spec 1, not yet implemented)
-│   └── chat/               Vercel AI SDK + Anthropic integration, tool definitions
+│   ├── login/, signup/     Supabase Auth forms (ADR-0005)
+│   ├── auth/callback/      Route Handler exchanging an emailed confirmation code for a session
+│   └── api/                Next.js API routes — the only way to mutate plan data
+│       ├── strava/oauth/   OAuth connect flow (Spec 1, not yet implemented)
+│       ├── strava/webhook/ Webhook endpoint for new activities (Spec 1, not yet implemented)
+│       └── chat/           Vercel AI SDK + Anthropic integration, tool definitions
 │                           (Spec 3, Spec 5, ADR-0003 — not yet implemented)
 ├── prisma/                 Schema (currently empty — see "Status" above) + migrations
-└── lib/                    shared business logic; currently just the Prisma client singleton
-                           (lib/prisma.ts)
+├── proxy.ts                Next.js 16's renamed `middleware.ts` — refreshes the
+│                           Supabase session cookie on every request (ADR-0005)
+└── lib/
+    ├── prisma.ts           Prisma client singleton
+    └── supabase/           Browser/server Supabase clients + the proxy.ts session helper (ADR-0005)
 ```
 
 Verified against the real structure scaffolded in Epic A: root-level
@@ -80,7 +107,11 @@ per-epic rollout.
   never directly from frontend code (see `docs/constitution.md`
   DATA-001).
 - **Security:** Strava tokens are kept encrypted/server-side, never in
-  client code or logs (see `docs/constitution.md` SEC-001).
+  client code or logs (see `docs/constitution.md` SEC-001). User sessions
+  are managed by Supabase Auth via cookies (`proxy.ts`); Row Level
+  Security does not gate Prisma-managed tables — authorization for those
+  is enforced in API-route code (see `docs/constitution.md` ARCH-002,
+  ADR-0005).
 - **Resilience:** Strava sync via webhooks with a periodic fallback
   reconciliation (ticket B4), so lost webhook events don't lead to
   missing activities.
@@ -100,6 +131,8 @@ Binding architecture decisions live as ADRs in
   implementation: Vercel AI SDK
 - [ADR-0004](decisions/0004-datenbank-postgres-supabase.md) — Database:
   Postgres on Supabase instead of local SQLite
+- [ADR-0005](decisions/0005-multi-user-supabase-auth.md) — Multi-user
+  support via Supabase Auth
 
 ## Related documentation
 
