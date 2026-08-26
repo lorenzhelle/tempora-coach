@@ -40,11 +40,15 @@ ADR in `docs/decisions/`) — never silently via a code change.
   webhooks), no more Garmin direct-sync sidecar (see
   [ADR-0002](decisions/0002-datenquelle-strava.md)). Changing the data
   source requires a new ADR that explicitly supersedes ADR-0002.
-- **ARCH-002** — v1 stays deliberately limited to a single user (no auth
-  system for multiple accounts). Expanding to multi-user is a separate,
-  still-open decision (see "Out of scope" in
-  `docs/specs/00-fundament/tickets.md`) and requires its own ADR before it
-  is implemented.
+- **ARCH-002** — Multi-user support is enabled via Supabase Auth (see
+  [ADR-0005](decisions/0005-multi-user-supabase-auth.md)), which
+  supersedes the earlier single-user-only limitation. Row Level Security
+  does **not** protect Prisma-managed tables — Prisma connects directly
+  to Postgres via `@prisma/adapter-pg`, bypassing PostgREST/RLS entirely;
+  authorization for those tables stays an application-layer concern in
+  API routes (see DATA-001), not a Postgres policy. Per-user data scoping
+  in the schema itself, roles/permissions, and invite-gating remain
+  separate, still-open decisions (see ADR-0005 "Consequences").
 
 ## Training principles (domain safety rules)
 

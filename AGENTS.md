@@ -25,11 +25,17 @@ name: Tempora). There are currently no nested `AGENTS.md` files.
 - Environment setup: copy `.env.example` to `.env` and fill in real
   values — `DATABASE_URL`/`DIRECT_URL` (Supabase Postgres, see
   [ADR-0004](docs/decisions/0004-datenbank-postgres-supabase.md)),
+  `NEXT_PUBLIC_SUPABASE_URL`/`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+  (Supabase Auth, see
+  [ADR-0005](docs/decisions/0005-multi-user-supabase-auth.md)),
   `STRAVA_CLIENT_ID`/`STRAVA_CLIENT_SECRET`, `ANTHROPIC_API_KEY` — details
   in `docs/constitution.md`. Supabase project creation is a human-only
   setup step (no dashboard access from a coding agent); local dev
   requires a real, reachable Supabase project — there is no offline
-  SQLite fallback.
+  SQLite fallback. `proxy.ts` calls Supabase's Auth server on every
+  request, so `npm run dev`/`npm run test:e2e` need real Supabase Auth
+  values too, not just placeholders (`npm run build` doesn't — no page
+  touches them at build time).
 
 ## Exact commands
 
@@ -52,16 +58,27 @@ empty (see `docs/specs/02-plan-datenmodell/tickets.md`).
 
 ## E2E testing
 
-Playwright (`playwright.config.ts`, tests in `e2e/`), first test added:
-`e2e/landing.spec.ts`. The config auto-starts `npm run dev` as the test
-server (`webServer`) — no need to start it manually first. In this
-sandbox, Chromium is pre-installed outside Playwright's own version-pinned
-cache; the config points at it via `existsSync("/opt/pw-browsers/chromium")`
-and falls back to Playwright's normal resolution everywhere else (CI runs
-`npx playwright install --with-deps chromium` first, see
+Playwright (`playwright.config.ts`, tests in `e2e/`): `e2e/landing.spec.ts`,
+`e2e/login.spec.ts`, `e2e/signup.spec.ts` — render-only checks (page loads,
+expected heading/form visible, no console errors), no real signup/login
+round trip yet (`[NEEDS CONFIRMATION]`: needs a seeded test account plus a
+decision on Supabase's email-confirmation setting, both human/
+dashboard-only — see ticket A4 in `docs/specs/00-fundament/tickets.md`).
+The config auto-starts `npm run dev` as the test server (`webServer`) — no
+need to start it manually first. Since `proxy.ts` calls Supabase's Auth
+server on every request (ADR-0005), `npm run test:e2e` needs real
+`NEXT_PUBLIC_SUPABASE_URL`/`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` values
+(from `.env.local` locally; from GitHub repo secrets in CI — a human-only
+setup step, currently outstanding, that blocks the `e2e` CI job until
+added). In this sandbox, Chromium is pre-installed outside Playwright's
+own version-pinned cache; the config points at it via
+`existsSync("/opt/pw-browsers/chromium")` and falls back to Playwright's
+normal resolution everywhere else, i.e. real dev machines and CI (which
+runs `npx playwright install --with-deps chromium` first, see
 `.github/workflows/ci.yml`). **Never run `npx playwright install` in this
 sandbox** — it will fail to match the pre-installed browser and isn't
-needed.
+needed (outside this sandbox, e.g. on a real dev machine, it's the normal
+way to get Chromium installed).
 
 ## Quality gates
 
