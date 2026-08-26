@@ -3,14 +3,21 @@ node_modules/
 .next/
 out/
 
+# TypeScript
+*.tsbuildinfo
+
 # Env / Secrets
 .env
 .env*.local
 
-# SQLite
-*.db
-*.db-journal
-prisma/dev.db*
-
 # OS / editors
 .DS_Store
+
+# Generated Prisma client (regenerated via `prisma generate` / postinstall)
+/app/generated/prisma
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

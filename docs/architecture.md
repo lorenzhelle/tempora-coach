@@ -2,15 +2,16 @@
 
 ## Status
 
-This document describes the **current** state, not an aspirational one.
-As of now, no code exists in the repository — the architecture described
-here is the **target architecture for the implementation**, bindingly
-laid out in [CLAUDE.md](../CLAUDE.md), the specs under
-[docs/specs/](specs/README.md), and the ADRs in
-[docs/decisions/](decisions/README.md); it is not yet the verified
-as-built state of a running system. This document MUST be updated once
-[00-fundament](specs/00-fundament/tickets.md) is implemented, so it again
-describes the real structure instead of the plan.
+Epic A (`00-fundament` tickets A1/A3, and A2 as redefined in
+`docs/specs/02-plan-datenmodell/tickets.md`) is implemented: the Next.js
+app is scaffolded, Prisma is wired to Postgres, and CI runs
+lint/typecheck/build on every PR and push to `main`. The Spec 2 data
+model itself is still empty — models are added incrementally as the
+epics that consume them (Epic B, Epic C) are implemented, not
+front-loaded here (see `docs/specs/02-plan-datenmodell/tickets.md`).
+Vercel project creation/connection and the real Supabase/Strava/Anthropic
+credentials remain manual, human-only setup steps (no dashboard access
+from a coding agent) — see [ADR-0004](decisions/0004-datenbank-postgres-supabase.md).
 
 ## System context
 
@@ -23,24 +24,30 @@ External dependencies:
   plan adjustments), including tool use for structured plan updates —
   connected via the Vercel AI SDK, see
   [ADR-0003](decisions/0003-chat-layer-vercel-ai-sdk.md).
-- **SQLite** as the only data store (no external DB server for v1).
+- **Postgres, hosted on Supabase**, as the only data store — connected
+  via Prisma's `@prisma/adapter-pg` driver adapter (pooled connection at
+  runtime, direct connection for migrations). See
+  [ADR-0004](decisions/0004-datenbank-postgres-supabase.md) (supersedes
+  the earlier local-SQLite assumption).
 
-## Module map (planned)
+## Module map
 
 ```
 repository/
 ├── app/                    Next.js App Router — UI routes (dashboard, chat, onboarding)
 ├── app/api/                Next.js API routes — the only way to mutate plan data
-│   ├── strava/oauth/       OAuth connect flow (Spec 1)
-│   ├── strava/webhook/     Webhook endpoint for new activities (Spec 1)
+│   ├── strava/oauth/       OAuth connect flow (Spec 1, not yet implemented)
+│   ├── strava/webhook/     Webhook endpoint for new activities (Spec 1, not yet implemented)
 │   └── chat/               Vercel AI SDK + Anthropic integration, tool definitions
-│                           (Spec 3, Spec 5, ADR-0003)
-├── prisma/                 Schema + migrations (Spec 2 data model)
-└── lib/                    shared business logic (plan rules, training-principles check)
+│                           (Spec 3, Spec 5, ADR-0003 — not yet implemented)
+├── prisma/                 Schema (currently empty — see "Status" above) + migrations
+└── lib/                    shared business logic; currently just the Prisma client singleton
+                           (lib/prisma.ts)
 ```
 
-`[NEEDS CONFIRMATION: exact folder structure will only be verified with
-Epic A1 and must then be updated here]`
+Verified against the real structure scaffolded in Epic A: root-level
+`app/`, no `src/` directory, Prisma's generated client output lives at
+`app/generated/prisma` (gitignored, regenerated via `postinstall`).
 
 ## Data model
 
@@ -48,7 +55,9 @@ The plan data model (`Plan`, `Milestone`, `TrainingWeek`, `PlannedSession`,
 `Activity`, `StravaConnection`) is fully specified in
 [Spec 1](specs/01-strava-sync/spec.md) and
 [Spec 2](specs/02-plan-datenmodell/spec.md) — not duplicated here, see
-there.
+there. As of Epic A, none of these models exist in `prisma/schema.prisma`
+yet; see `docs/specs/02-plan-datenmodell/tickets.md` for the incremental,
+per-epic rollout.
 
 ## Critical flows
 
@@ -89,6 +98,8 @@ Binding architecture decisions live as ADRs in
   instead of a direct Garmin sync
 - [ADR-0003](decisions/0003-chat-layer-vercel-ai-sdk.md) — Chat layer
   implementation: Vercel AI SDK
+- [ADR-0004](decisions/0004-datenbank-postgres-supabase.md) — Database:
+  Postgres on Supabase instead of local SQLite
 
 ## Related documentation
 

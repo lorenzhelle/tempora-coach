@@ -15,3 +15,5 @@ by ADR-XXXX" instead of deleting it.
   a direct Garmin sync
 - [ADR-0003](0003-chat-layer-vercel-ai-sdk.md) — Chat layer implementation:
   Vercel AI SDK
+- [ADR-0004](0004-datenbank-postgres-supabase.md) — Database: Postgres on
+  Supabase instead of local SQLite
