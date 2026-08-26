@@ -45,9 +45,23 @@ empty (see `docs/specs/02-plan-datenmodell/tickets.md`).
 | Format check | `npm run format:check` | Biome reports formatting issues without writing |
 | Lint | `npm run lint` | Biome check (lint + import organization) |
 | Typecheck | `npm run typecheck` | `next typegen` then `tsc --noEmit` |
-| Focused test | `[NEEDS CONFIRMATION: no test framework chosen — Vitest recommended, not yet wired up]` | — |
-| Full test suite | `[NEEDS CONFIRMATION: no test framework chosen]` | — |
+| E2E test | `npm run test:e2e` | Playwright (`e2e/`), auto-starts `npm run dev` against it — see "E2E testing" below |
+| E2E test (UI mode) | `npm run test:e2e:ui` | Playwright's interactive test runner |
+| Unit test | `[NEEDS CONFIRMATION: no unit test framework chosen — Vitest recommended, not yet wired up]` | — |
 | DB migration | `npx prisma migrate dev --name <change>` | Applies against the Supabase Postgres `DIRECT_URL`; requires a real `.env` (see "Environment setup" above) |
+
+## E2E testing
+
+Playwright (`playwright.config.ts`, tests in `e2e/`), first test added:
+`e2e/landing.spec.ts`. The config auto-starts `npm run dev` as the test
+server (`webServer`) — no need to start it manually first. In this
+sandbox, Chromium is pre-installed outside Playwright's own version-pinned
+cache; the config points at it via `existsSync("/opt/pw-browsers/chromium")`
+and falls back to Playwright's normal resolution everywhere else (CI runs
+`npx playwright install --with-deps chromium` first, see
+`.github/workflows/ci.yml`). **Never run `npx playwright install` in this
+sandbox** — it will fail to match the pre-installed browser and isn't
+needed.
 
 ## Quality gates
 
@@ -55,7 +69,8 @@ Before reporting a task done:
 
 - `npm run format:check`
 - `npm run lint`
-- `[NEEDS CONFIRMATION: tests for the changed scope — no framework chosen yet]`
+- `npm run test:e2e` for any change touching a route/page
+- `[NEEDS CONFIRMATION: unit tests for the changed scope — no framework chosen yet]`
 - `npm run typecheck`
 - `npm run build`
 - `npx prisma migrate dev` runs cleanly, for any schema change

@@ -15,3 +15,9 @@ out/
 
 # Generated Prisma client (regenerated via `prisma generate` / postinstall)
 /app/generated/prisma
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
