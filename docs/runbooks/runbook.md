@@ -72,13 +72,16 @@ GitHub-admin dashboard access):**
    Variables): add every var from `.env.example`
    (`DATABASE_URL`/`DIRECT_URL`, `NEXT_PUBLIC_SUPABASE_URL`/
    `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `STRAVA_CLIENT_ID`/
-   `STRAVA_CLIENT_SECRET`, `ANTHROPIC_API_KEY`), scoped per environment:
-   - **Production**: the real Supabase/Strava/Anthropic values.
-   - **Preview**: point at a *separate* Supabase project, not
-     production — same var names, different project's URL/keys — so
-     that PR preview deployments never read or write production data.
-     Strava/Anthropic credentials can stay shared with Production (no
-     per-PR Strava app) unless a later ticket says otherwise.
+   `STRAVA_CLIENT_SECRET`, `ANTHROPIC_API_KEY`).
+   - For now: apply the same values to **all environments**
+     (Production, Preview, Development) — a single Supabase project on
+     the free tier, no per-PR isolation. Deliberate, accepted trade-off
+     for v1 (single-user scope, see `CLAUDE.md` "What this is"): Supabase
+     Branching would give every PR its own isolated DB automatically
+     (via the Supabase GitHub integration + Vercel integration), but
+     requires the Supabase **Pro Plan**, which we're deliberately not
+     paying for yet. Revisit if PR previews start mutating data in ways
+     that matter, or once the Pro Plan is worth it for other reasons.
    - Never put concrete secret values in this repo or in this document
      (SEC-001).
 3. **Gate production deploys on CI**: Vercel deploys whatever lands on

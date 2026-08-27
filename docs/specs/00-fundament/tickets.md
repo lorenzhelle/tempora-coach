@@ -28,11 +28,13 @@ No spec relation — baseline setup that all other specs build on.
   setup (no dashboard access from a coding agent, see `AGENTS.md`
   "Boundaries and approvals") — step-by-step checklist in
   `docs/runbooks/runbook.md` "Deployment": connect the Vercel project,
-  set Production/Preview environment variables (Preview against a
-  separate Supabase project, not production), and enable GitHub branch
-  protection on `main` requiring the `ci`/`e2e` checks — that branch
-  protection rule is what actually blocks a failing PR from merging (and
-  therefore from reaching production), not anything on the Vercel side
+  set environment variables, and enable GitHub branch protection on
+  `main` requiring the `ci`/`e2e` checks — that branch protection rule is
+  what actually blocks a failing PR from merging (and therefore from
+  reaching production), not anything on the Vercel side. Preview
+  deployments deliberately reuse the single free-tier Supabase project
+  for now (no per-PR DB isolation) — Supabase Branching would give that
+  but needs the Pro Plan, not worth it yet for a single-user v1
 
 ### A4 — Authentication (Supabase Auth)
 - Wire up Supabase Auth (email/password) via `@supabase/supabase-js` +
