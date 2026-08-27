@@ -28,8 +28,10 @@ name: Tempora). There are currently no nested `AGENTS.md` files.
   `NEXT_PUBLIC_SUPABASE_URL`/`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
   (Supabase Auth, see
   [ADR-0005](docs/decisions/0005-multi-user-supabase-auth.md)),
-  `STRAVA_CLIENT_ID`/`STRAVA_CLIENT_SECRET`, `ANTHROPIC_API_KEY` — details
-  in `docs/constitution.md`. Supabase project creation is a human-only
+  `STRAVA_CLIENT_ID`/`STRAVA_CLIENT_SECRET`, `ANTHROPIC_API_KEY`,
+  `DEEPGRAM_API_KEY` (voice-memo transcription in the onboarding chat, see
+  `docs/specs/03-onboarding/spec.md`) — details in
+  `docs/constitution.md`. Supabase project creation is a human-only
   setup step (no dashboard access from a coding agent); local dev
   requires a real, reachable Supabase project — there is no offline
   SQLite fallback. `proxy.ts` calls Supabase's Auth server on every
