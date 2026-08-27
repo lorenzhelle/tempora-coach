@@ -57,50 +57,73 @@ signals.
 
 Steady state (once the one-time setup below is done): a PR runs only the
 `ci` job (lint/typecheck/build) — no preview deployment. A push to `main`
-runs `ci`, then `e2e`; only once both pass does the `deploy-production`
-job call a Vercel Deploy Hook to actually trigger a production
-deployment. e2e is a pre-production gate, not a per-PR check — it needs a
-real, reachable Supabase project (see below), which is only worth paying
-the run time for once, right before a deploy, not on every PR push.
+auto-builds as a Vercel **Preview** deployment (ordinary git integration,
+just scoped to `main` only — see `vercel.json`), while GitHub Actions
+runs `ci` then `e2e` against that same commit; only once both pass does
+the `promote-production` job call the Vercel API to promote that exact
+Preview build to Production. e2e is a pre-production gate, not a per-PR
+check — it needs a real, reachable Supabase project (see below), which is
+only worth paying the run time for once, right before a promotion, not
+on every PR push.
 
-Never invoke `vercel deploy` directly (see `AGENTS.md` "Boundaries and
-approvals") — the Deploy Hook, called only after `ci`/`e2e` pass, is the
-only sanctioned way a deployment gets created. `vercel.json` sets
-`git.deploymentEnabled: false`, which turns off Vercel's own
-git-triggered auto-deploys (both preview-on-PR and auto-deploy-on-push)
-without affecting the Deploy Hook — Deploy Hooks are explicitly exempt
-from that setting.
+Never invoke `vercel deploy` or the Vercel promote API directly outside
+this pipeline (see `AGENTS.md` "Boundaries and approvals") — production
+only ever gets a new deployment once `ci`/`e2e` have both passed on the
+same commit.
 
 **One-time setup (human/dashboard-only — a coding agent has no Vercel or
 GitHub-admin dashboard access):**
 
 1. **Connect the project**: Vercel → Add New Project → import
    `lorenzhelle/tempora-coach`. Next.js is auto-detected, no build
-   command override needed. `vercel.json` (already in the repo) disables
-   its automatic git deployments — that's expected, deployments now only
-   happen via the Deploy Hook in step 3.
-2. **Environment variables** (Vercel → Project Settings → Environment
-   Variables, Production): add every var from `.env.example`
+   command override needed.
+2. **Point Production Branch away from `main`**: Vercel → Project
+   Settings → Git → Production Branch → change it to any other value
+   (e.g. `vercel-production` — it doesn't need to exist as a real
+   branch). Without this, Vercel treats every deploy of `main` as a
+   Production deployment automatically, which defeats the point of
+   promoting only after `ci`/`e2e` pass. With it changed, `main` builds
+   land as ordinary Preview deployments, exactly like any other branch.
+3. **Environment variables** (Vercel → Project Settings → Environment
+   Variables): add every var from `.env.example`
    (`DATABASE_URL`/`DIRECT_URL`, `NEXT_PUBLIC_SUPABASE_URL`/
    `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `STRAVA_CLIENT_ID`/
-   `STRAVA_CLIENT_SECRET`, `ANTHROPIC_API_KEY`) with the real values.
-   Never put concrete secret values in this repo or in this document
-   (SEC-001).
-3. **Create a Deploy Hook**: Vercel → Project Settings → Git → Deploy
-   Hooks → create one named e.g. "production-ci" targeting the `main`
-   branch → copy the generated URL. Treat it like a bearer token (anyone
-   with the URL can trigger a deployment) — store it as the
-   `VERCEL_DEPLOY_HOOK_URL` GitHub Actions repo secret (Settings →
-   Secrets and variables → Actions), never in the repo.
-4. **`e2e` CI job secrets**: `NEXT_PUBLIC_SUPABASE_URL` and
+   `STRAVA_CLIENT_SECRET`, `ANTHROPIC_API_KEY`) with the real values, for
+   both the Production and Preview environments (the `main` branch build
+   that later gets promoted is technically a Preview deployment while it
+   waits on `ci`/`e2e`, so it needs working env vars too). Never put
+   concrete secret values in this repo or in this document (SEC-001).
+4. **Collect the four `VERCEL_*` GitHub secrets** (Settings → Secrets and
+   variables → Actions on the GitHub repo):
+   - `VERCEL_TOKEN` — a Vercel Account/Team API token (Vercel → Account
+     Settings → Tokens), scoped no wider than necessary.
+   - `VERCEL_PROJECT_ID` and `VERCEL_ORG_ID` — from Vercel → Project
+     Settings → General ("Project ID", "Team ID" — leave `VERCEL_ORG_ID`
+     unset if the project is under a personal account, not a team).
+   - `VERCEL_MAIN_BRANCH_URL` — the stable alias Vercel assigns to the
+     latest deployment of `main` (visible on the project's Deployments
+     tab after the first push to `main`, or predictable as
+     `<project>-git-main-<team-or-username>.vercel.app`).
+   Treat all four like credentials — never in the repo, only as GitHub
+   Actions secrets.
+5. **`e2e` CI job secrets**: `NEXT_PUBLIC_SUPABASE_URL` and
    `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` as GitHub Actions repo secrets
    — outstanding since ticket A4, blocks the `e2e` job (and therefore the
-   Deploy Hook call) from ever succeeding until added.
-5. **Require `ci` before merge**: GitHub → repo Settings → Branches → add
+   promotion) from ever succeeding until added.
+6. **Require `ci` before merge**: GitHub → repo Settings → Branches → add
    a protection rule on `main` → "Require status checks to pass before
    merging" → select `ci` (the only job that runs on every PR; `e2e` and
-   `deploy-production` only run post-merge on push to `main`, so don't
+   `promote-production` only run post-merge on push to `main`, so don't
    list them as required PR checks).
+
+**Unverified**: this exact promotion mechanism (`.github/workflows/ci.yml`
+job `promote-production`, polling `GET /v13/deployments/{url}` then
+`POST /v10/projects/{id}/promote/{deploymentId}`) has not been run
+against a real Vercel project yet — none exists. If it doesn't work as
+written once one does, the fallback is Vercel's own "Promote to
+Production" button in the deployment's dashboard view (manual, one click,
+no code involved) — use that rather than debugging the automation under
+time pressure, then fix the workflow afterward.
 
 ### Strava sync mechanism
 
