@@ -115,9 +115,12 @@ per-epic rollout.
 - **Resilience:** Strava sync via webhooks with a periodic fallback
   reconciliation (ticket B4), so lost webhook events don't lead to
   missing activities.
-- **Deployment/CI:** Vercel git integration (push to `main` → production,
-  PR → preview deployment) plus GitHub Actions CI (lint/typecheck/build
-  before merge), see [ticket A3](specs/00-fundament/tickets.md).
+- **Deployment/CI:** GitHub Actions gates production: every push to
+  `main` runs `ci` (lint/typecheck/build) then `e2e`, and only once both
+  pass does a `deploy-production` job call a Vercel Deploy Hook to
+  actually trigger the deployment (Vercel's own git-triggered auto-deploy
+  is disabled via `vercel.json`). PRs only run `ci` — no preview
+  deployments. See [ticket A3](specs/00-fundament/tickets.md).
 
 ## ADR index
 

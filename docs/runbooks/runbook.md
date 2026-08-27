@@ -55,48 +55,52 @@ signals.
 
 ### Deployment
 
-Steady state (once the one-time setup below is done): push to `main` →
-Vercel production deployment; every PR → its own Vercel preview
-deployment. Never invoke `vercel deploy` directly (see `AGENTS.md`
-"Boundaries and approvals") — the git-integration path is the only
-sanctioned way to deploy, and it's what keeps a deploy tied to a commit
-that actually passed CI.
+Steady state (once the one-time setup below is done): a PR runs only the
+`ci` job (lint/typecheck/build) — no preview deployment. A push to `main`
+runs `ci`, then `e2e`; only once both pass does the `deploy-production`
+job call a Vercel Deploy Hook to actually trigger a production
+deployment. e2e is a pre-production gate, not a per-PR check — it needs a
+real, reachable Supabase project (see below), which is only worth paying
+the run time for once, right before a deploy, not on every PR push.
+
+Never invoke `vercel deploy` directly (see `AGENTS.md` "Boundaries and
+approvals") — the Deploy Hook, called only after `ci`/`e2e` pass, is the
+only sanctioned way a deployment gets created. `vercel.json` sets
+`git.deploymentEnabled: false`, which turns off Vercel's own
+git-triggered auto-deploys (both preview-on-PR and auto-deploy-on-push)
+without affecting the Deploy Hook — Deploy Hooks are explicitly exempt
+from that setting.
 
 **One-time setup (human/dashboard-only — a coding agent has no Vercel or
 GitHub-admin dashboard access):**
 
 1. **Connect the project**: Vercel → Add New Project → import
    `lorenzhelle/tempora-coach`. Next.js is auto-detected, no build
-   command override needed.
+   command override needed. `vercel.json` (already in the repo) disables
+   its automatic git deployments — that's expected, deployments now only
+   happen via the Deploy Hook in step 3.
 2. **Environment variables** (Vercel → Project Settings → Environment
-   Variables): add every var from `.env.example`
+   Variables, Production): add every var from `.env.example`
    (`DATABASE_URL`/`DIRECT_URL`, `NEXT_PUBLIC_SUPABASE_URL`/
    `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `STRAVA_CLIENT_ID`/
-   `STRAVA_CLIENT_SECRET`, `ANTHROPIC_API_KEY`).
-   - For now: apply the same values to **all environments**
-     (Production, Preview, Development) — a single Supabase project on
-     the free tier, no per-PR isolation. Deliberate, accepted trade-off
-     for v1 (single-user scope, see `CLAUDE.md` "What this is"): Supabase
-     Branching would give every PR its own isolated DB automatically
-     (via the Supabase GitHub integration + Vercel integration), but
-     requires the Supabase **Pro Plan**, which we're deliberately not
-     paying for yet. Revisit if PR previews start mutating data in ways
-     that matter, or once the Pro Plan is worth it for other reasons.
-   - Never put concrete secret values in this repo or in this document
-     (SEC-001).
-3. **Gate production deploys on CI**: Vercel deploys whatever lands on
-   `main`, so the actual gate is GitHub branch protection, not the
-   Vercel build. GitHub → repo Settings → Branches → add a protection
-   rule on `main` → "Require status checks to pass before merging" →
-   select both jobs from `.github/workflows/ci.yml` (`ci`, `e2e`). This
-   also blocks a preview deployment's underlying PR from being merged
-   while checks are red — previews themselves still build on every push
-   (that's expected; you want to see a preview before checks finish).
+   `STRAVA_CLIENT_SECRET`, `ANTHROPIC_API_KEY`) with the real values.
+   Never put concrete secret values in this repo or in this document
+   (SEC-001).
+3. **Create a Deploy Hook**: Vercel → Project Settings → Git → Deploy
+   Hooks → create one named e.g. "production-ci" targeting the `main`
+   branch → copy the generated URL. Treat it like a bearer token (anyone
+   with the URL can trigger a deployment) — store it as the
+   `VERCEL_DEPLOY_HOOK_URL` GitHub Actions repo secret (Settings →
+   Secrets and variables → Actions), never in the repo.
 4. **`e2e` CI job secrets**: `NEXT_PUBLIC_SUPABASE_URL` and
    `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` as GitHub Actions repo secrets
-   (Settings → Secrets and variables → Actions) — outstanding since
-   ticket A4, blocks the `e2e` job from passing (and therefore blocks
-   merges once step 3 is enabled) until added.
+   — outstanding since ticket A4, blocks the `e2e` job (and therefore the
+   Deploy Hook call) from ever succeeding until added.
+5. **Require `ci` before merge**: GitHub → repo Settings → Branches → add
+   a protection rule on `main` → "Require status checks to pass before
+   merging" → select `ci` (the only job that runs on every PR; `e2e` and
+   `deploy-production` only run post-merge on push to `main`, so don't
+   list them as required PR checks).
 
 ### Strava sync mechanism
 

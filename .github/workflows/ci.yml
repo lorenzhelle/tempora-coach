@@ -20,7 +20,12 @@ jobs:
       - run: npm run typecheck
       - run: npm run build
 
+  # Only runs on push to main, not on every PR — no preview deployments
+  # exist to test against, and this is the gate before production, not a
+  # per-PR check. See docs/runbooks/runbook.md "Deployment".
   e2e:
+    if: github.event_name == 'push'
+    needs: ci
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -45,3 +50,16 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 7
+
+  # Vercel's own git-triggered auto-deploys are disabled (vercel.json
+  # git.deploymentEnabled: false) — this Deploy Hook call is the only
+  # thing that creates a production deployment, and only fires once ci
+  # and e2e have both passed on main. See docs/runbooks/runbook.md
+  # "Deployment" for the one-time Deploy Hook setup.
+  deploy-production:
+    if: github.event_name == 'push'
+    needs: [ci, e2e]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel production deployment
+        run: curl -fsS -X POST "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}"
