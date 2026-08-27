@@ -27,9 +27,12 @@ procedures.
 
 ## Access and safety prerequisites
 
-- Required access: `[NEEDS CONFIRMATION: Vercel project access, Strava
-  app dashboard access — not yet set up]`
-- Required tools: `[NEEDS CONFIRMATION]`
+- Required access: Vercel project access (dashboard), GitHub repo admin
+  access (branch protection), Strava app dashboard access — Vercel
+  project creation/connection and branch protection are human-only setup
+  steps, no dashboard access from a coding agent (see `AGENTS.md`
+  "Boundaries and approvals")
+- Required tools: Vercel dashboard, GitHub repo Settings, browser
 - Approval gates: see `docs/constitution.md` ("Human vs. agent approval
   gates") — destructive operations (DB reset, force-push) require human
   approval
@@ -52,10 +55,56 @@ signals.
 
 ### Deployment
 
-`[NEEDS CONFIRMATION: deployment process not yet set up — planned: Vercel
-git integration on the default branch + CI checks (lint/typecheck/build)
-before every merge, see docs/specs/00-fundament/tickets.md ticket A3 and
-docs/architecture.md]`
+Steady state (once the one-time setup below is done): push to `main` →
+Vercel production deployment; every PR → its own Vercel preview
+deployment. Never invoke `vercel deploy` directly (see `AGENTS.md`
+"Boundaries and approvals") — the git-integration path is the only
+sanctioned way to deploy, and it's what keeps a deploy tied to a commit
+that actually passed CI.
+
+**One-time setup (human/dashboard-only — a coding agent has no Vercel or
+GitHub-admin dashboard access):**
+
+1. **Connect the project**: Vercel → Add New Project → import
+   `lorenzhelle/tempora-coach`. Next.js is auto-detected, no build
+   command override needed.
+2. **Environment variables** (Vercel → Project Settings → Environment
+   Variables): add every var from `.env.example`
+   (`DATABASE_URL`/`DIRECT_URL`, `NEXT_PUBLIC_SUPABASE_URL`/
+   `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `STRAVA_CLIENT_ID`/
+   `STRAVA_CLIENT_SECRET`, `ANTHROPIC_API_KEY`), scoped per environment:
+   - **Production**: the real Supabase/Strava/Anthropic values.
+   - **Preview**: point at a *separate* Supabase project, not
+     production — same var names, different project's URL/keys — so
+     that PR preview deployments never read or write production data.
+     Strava/Anthropic credentials can stay shared with Production (no
+     per-PR Strava app) unless a later ticket says otherwise.
+   - Never put concrete secret values in this repo or in this document
+     (SEC-001).
+3. **Gate production deploys on CI**: Vercel deploys whatever lands on
+   `main`, so the actual gate is GitHub branch protection, not the
+   Vercel build. GitHub → repo Settings → Branches → add a protection
+   rule on `main` → "Require status checks to pass before merging" →
+   select both jobs from `.github/workflows/ci.yml` (`ci`, `e2e`). This
+   also blocks a preview deployment's underlying PR from being merged
+   while checks are red — previews themselves still build on every push
+   (that's expected; you want to see a preview before checks finish).
+4. **`e2e` CI job secrets**: `NEXT_PUBLIC_SUPABASE_URL` and
+   `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` as GitHub Actions repo secrets
+   (Settings → Secrets and variables → Actions) — outstanding since
+   ticket A4, blocks the `e2e` job from passing (and therefore blocks
+   merges once step 3 is enabled) until added.
+
+### Strava sync mechanism
+
+Already decided, not a deployment choice: Strava sync runs on real
+webhooks (one app-wide subscription), not polling — see
+[ADR-0002](../decisions/0002-datenquelle-strava.md). Ticket B4's
+"periodic fallback reconciliation" is a safety net for missed webhook
+events, not a replacement primary mechanism. Nothing to configure on
+Vercel for this beyond the webhook route existing (Spec 1, not yet
+implemented) and its endpoint URL being registered with Strava's API
+once deployed.
 
 ### Renew/check the Strava webhook subscription
 
@@ -100,8 +149,10 @@ After every operation/mitigation:
 
 - Trigger: `[NEEDS CONFIRMATION]`
 - Known-good reference: last successful Vercel deployment (git commit)
-- Procedure: `[NEEDS CONFIRMATION: Vercel rollback mechanism not yet
-  verified]`
+- Procedure: Vercel → Project → Deployments → find the last known-good
+  production deployment → "..." menu → "Instant Rollback". This
+  repoints production traffic without a new build/deploy. `[NEEDS
+  CONFIRMATION: not yet verified against a real deployment]`
 - Data protection measures: SQLite backup before every schema migration
   `[NEEDS CONFIRMATION: concrete backup mechanism not yet set up]`
 

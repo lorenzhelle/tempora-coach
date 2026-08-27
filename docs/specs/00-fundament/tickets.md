@@ -23,6 +23,16 @@ No spec relation — baseline setup that all other specs build on.
   Vercel; a PR automatically gets a preview deployment; a PR with a
   failing lint/typecheck/build is marked "checks failed" by GitHub and
   blocks the merge
+- **Status:** the GitHub Actions side is done (`.github/workflows/ci.yml`
+  runs `ci` and `e2e`). The Vercel side is still a manual, human-only
+  setup (no dashboard access from a coding agent, see `AGENTS.md`
+  "Boundaries and approvals") — step-by-step checklist in
+  `docs/runbooks/runbook.md` "Deployment": connect the Vercel project,
+  set Production/Preview environment variables (Preview against a
+  separate Supabase project, not production), and enable GitHub branch
+  protection on `main` requiring the `ci`/`e2e` checks — that branch
+  protection rule is what actually blocks a failing PR from merging (and
+  therefore from reaching production), not anything on the Vercel side
 
 ### A4 — Authentication (Supabase Auth)
 - Wire up Supabase Auth (email/password) via `@supabase/supabase-js` +
