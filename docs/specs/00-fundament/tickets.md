@@ -10,19 +10,41 @@ No spec relation — baseline setup that all other specs build on.
   migration runs without errors
 
 ### A3 — Vercel deployment + CI pipeline
-- Create a Vercel project and connect it to the GitHub repo (git
-  integration): a push to `main` auto-deploys to production, every PR
-  gets a preview deployment
+- Create a Vercel project connected to the GitHub repo, with
+  git-triggered auto-deploys enabled only for `main` (`vercel.json`
+  `git.deploymentEnabled: {"main": true, "**": false}`) — no preview
+  deployments per PR, and `main`'s Production Branch dashboard setting
+  pointed elsewhere so pushes to `main` land as **Preview** builds, not
+  Production
+- A GitHub Actions workflow (`.github/workflows/ci.yml`) that on every PR
+  runs `ci` (lint, typecheck, build); on every push to `main` runs `ci`
+  then `e2e`, and only once both pass, a `promote-production` job calls
+  the Vercel API to promote that commit's already-built Preview
+  deployment to Production — e2e gates production, but doesn't run on
+  every PR
 - Store secrets (Strava client ID/secret, Anthropic API key, DB
   connection) as Vercel environment variables (never in the repo, see
-  `docs/constitution.md` SEC-001)
-- A GitHub Actions workflow that runs lint, typecheck, and build before
-  every merge (tests once a test framework is chosen, see `AGENTS.md`
-  "Exact commands")
-- **Acceptance:** a push to `main` triggers a production deployment on
-  Vercel; a PR automatically gets a preview deployment; a PR with a
-  failing lint/typecheck/build is marked "checks failed" by GitHub and
-  blocks the merge
+  `docs/constitution.md` SEC-001); the Vercel API access needed to
+  promote (`VERCEL_TOKEN`, `VERCEL_PROJECT_ID`, `VERCEL_ORG_ID`,
+  `VERCEL_MAIN_BRANCH_URL`) is stored as GitHub Actions repo secrets,
+  never in the repo
+- **Acceptance:** a push to `main` produces a Preview build, then runs
+  `ci` and `e2e`, and only if both pass is that build promoted to
+  Production; a PR runs only `ci` and gets no preview deployment; a PR
+  with a failing lint/typecheck/build is marked "checks failed" by
+  GitHub and blocks the merge
+- **Status:** the GitHub Actions/`vercel.json` side is done, but
+  **unverified against a real Vercel project** (none exists yet) — flag
+  this explicitly rather than claiming it works; the fallback if the
+  automated promotion doesn't work is Vercel's built-in "Promote to
+  Production" dashboard button (manual, one click, no code involved).
+  The Vercel side is a manual, human-only setup (no dashboard access from
+  a coding agent, see `AGENTS.md` "Boundaries and approvals") —
+  step-by-step checklist in `docs/runbooks/runbook.md` "Deployment":
+  connect the Vercel project, set environment variables, point the
+  Production Branch setting away from `main`, collect the four
+  `VERCEL_*` GitHub secrets, and enable GitHub branch protection on
+  `main` requiring the `ci` check (the only job that runs on every PR)
 
 ### A4 — Authentication (Supabase Auth)
 - Wire up Supabase Auth (email/password) via `@supabase/supabase-js` +

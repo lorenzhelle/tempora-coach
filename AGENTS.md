@@ -133,11 +133,19 @@ conflicts with this project's deploy path below.
 
 ## Boundaries and approvals
 
-- Deployment to Vercel always happens through the git-integration
-  pipeline (ticket A3): push to `main` → production, PR → preview, gated
-  by the CI checks in `.github/workflows/ci.yml`. Never invoke the Vercel
-  CLI (`vercel deploy`, or a skill/script that wraps it) to deploy
-  directly — that bypasses CI and produces an untracked deployment
+- Deployment to Vercel always happens through the CI-gated pipeline
+  (ticket A3): push to `main` → Vercel's git integration auto-builds it
+  as a **Preview** deployment (not Production — see `vercel.json` and the
+  Production Branch dashboard setting in `docs/runbooks/runbook.md`) →
+  GitHub Actions runs `ci` (lint/typecheck/build) then `e2e` → only once
+  both pass does the `promote-production` job call the Vercel API to
+  promote that same Preview deployment to Production. No preview
+  deployments for PRs — `vercel.json`'s `git.deploymentEnabled` only
+  turns on git-triggered builds for `main`, PRs only run `ci`. Never
+  invoke the Vercel CLI/API to create an ad-hoc deployment (`vercel
+  deploy`, or a skill/script that wraps it) or to promote one before
+  `ci`/`e2e` have passed — that bypasses this pipeline and produces an
+  untracked or unverified production deployment
 
 - Never mutate plan data via business logic in the frontend — always
   through the API route (`docs/constitution.md` invariant DATA-001)
