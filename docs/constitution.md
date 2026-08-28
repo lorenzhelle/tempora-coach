@@ -6,8 +6,9 @@ ADR in `docs/decisions/`) — never silently via a code change.
 
 ## Security
 
-- **SEC-001** — Strava access/refresh tokens, the Anthropic API key, and
-  all other secrets must never end up in the Git repository (code, config,
+- **SEC-001** — Strava access/refresh tokens, the AI Gateway API key
+  (see [ADR-0006](decisions/0006-vercel-ai-gateway.md)), and all other
+  secrets must never end up in the Git repository (code, config,
   logs, commit history). They live exclusively in `.env` (local) or in the
   hosting platform's secret mechanisms (Vercel environment variables).
 - **SEC-002** — Strava access tokens expire after 6h. The refresh must
@@ -29,10 +30,19 @@ ADR in `docs/decisions/`) — never silently via a code change.
   `stravaActivityId`. A repeated sync run or a duplicate webhook event must
   never produce duplicate `Activity` entries (see
   `docs/specs/01-strava-sync/spec.md` Spec 1, AC 3).
-- **DATA-003** — A chat-based adjustment changes only the affected fields
-  of a plan, never regenerates the entire plan (see
+- **DATA-003** — A targeted chat-based adjustment changes only the
+  affected fields of a plan, never regenerates the entire plan (see
   `docs/specs/05-chat-anpassung/spec.md` Spec 5, AC 1). This prevents
-  already-confirmed parts of the plan from being overwritten unintentionally.
+  already-confirmed parts of the plan from being overwritten
+  unintentionally. The one sanctioned exception is a **full replan** (see
+  [ADR-0008](decisions/0008-full-horizon-deterministic-plan-generation.md)):
+  a distinct, explicit operation that re-runs the deterministic
+  progression algorithm over all not-yet-completed `TrainingWeek`/
+  `PlannedSession` rows given updated inputs (e.g. an illness or a missed
+  block) — it must never modify a row already marked `completed`, and
+  outside onboarding it requires explicit user confirmation before
+  applying (see SAFE-001/SAFE-002 below). Ordinary targeted edits stay
+  exactly as constrained as before.
 
 ## Architecture boundaries
 
@@ -76,7 +86,7 @@ ADR in `docs/decisions/`) — never silently via a code change.
 
 - Owner: `[NEEDS CONFIRMATION: formal owner — currently the sole
   user/operator of the project]`
-- Last reviewed: 2026-08-25
+- Last reviewed: 2026-08-28
 - Change process: An invariant is only changed through a new ADR, never
   through a silent code or doc change.
 

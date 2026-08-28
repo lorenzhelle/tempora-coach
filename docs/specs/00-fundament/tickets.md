@@ -22,7 +22,7 @@ No spec relation — baseline setup that all other specs build on.
   the Vercel API to promote that commit's already-built Preview
   deployment to Production — e2e gates production, but doesn't run on
   every PR
-- Store secrets (Strava client ID/secret, Anthropic API key, DB
+- Store secrets (Strava client ID/secret, AI Gateway API key, DB
   connection) as Vercel environment variables (never in the repo, see
   `docs/constitution.md` SEC-001); the Vercel API access needed to
   promote (`VERCEL_TOKEN`, `VERCEL_PROJECT_ID`, `VERCEL_ORG_ID`,

@@ -95,8 +95,8 @@ Prisma stays the only path to app data; the Supabase client stays Auth-only.
   new human-only CI setup step (see ticket A4).
 - `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` join
   `.env.example`; both are publishable-by-design (not secrets per
-  `docs/constitution.md` SEC-001, unlike the Strava/Anthropic credentials
-  and the Prisma `DATABASE_URL`/`DIRECT_URL`).
+  `docs/constitution.md` SEC-001, unlike the Strava/AI Gateway
+  credentials and the Prisma `DATABASE_URL`/`DIRECT_URL`).
 
 ## Related documentation
 - Constitution: [docs/constitution.md](../constitution.md) (ARCH-002)

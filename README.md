@@ -23,7 +23,7 @@ that's wanted later.
   1. `npm install`
   2. `cp .env.example .env` and fill in `DATABASE_URL`/`DIRECT_URL` from
      your Supabase project's connection info, plus
-     `STRAVA_CLIENT_ID`/`STRAVA_CLIENT_SECRET`/`ANTHROPIC_API_KEY`
+     `STRAVA_CLIENT_ID`/`STRAVA_CLIENT_SECRET`/`AI_GATEWAY_API_KEY`
   3. `npx prisma migrate dev`
   4. `npm run dev` — serves the app at `localhost:3000`
 - Agent commands and quality gates: see [AGENTS.md](AGENTS.md)

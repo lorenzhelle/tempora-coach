@@ -21,7 +21,8 @@ fundamentally multi-user-capable in case that's wanted later.
 
 ## Tech stack & architecture
 Next.js (App Router, TypeScript) frontend + API routes, SQLite via Prisma,
-Anthropic API for the chat layer via the Vercel AI SDK (see ADR-0003),
+Claude via Vercel AI Gateway for the chat layer, connected through the
+Vercel AI SDK (see ADR-0003, ADR-0006),
 Strava sync via OAuth + webhooks (no sidecar, see ADR-0002), hosting on
 Vercel Free Tier. Details, module map, and critical flows:
 [docs/architecture.md](docs/architecture.md). Visual language:

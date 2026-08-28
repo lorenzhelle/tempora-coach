@@ -19,3 +19,9 @@ by ADR-XXXX" instead of deleting it.
   Supabase instead of local SQLite
 - [ADR-0005](0005-multi-user-supabase-auth.md) — Multi-user support via
   Supabase Auth
+- [ADR-0006](0006-vercel-ai-gateway.md) — Model provider connection:
+  Vercel AI Gateway instead of a direct Anthropic provider
+- [ADR-0007](0007-vercel-ai-gateway-transcription.md) — Voice-memo
+  transcription: Vercel AI Gateway instead of a direct Deepgram provider
+- [ADR-0008](0008-full-horizon-deterministic-plan-generation.md) — Full-
+  horizon plan generation via a deterministic progression algorithm

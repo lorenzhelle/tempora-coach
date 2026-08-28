@@ -13,9 +13,9 @@ Ticket A4 (Supabase Auth) is also implemented — see
 [ADR-0005](decisions/0005-multi-user-supabase-auth.md); still open there:
 a real signup/login E2E test (needs a seeded test account) and GitHub
 repo secrets for the `e2e` CI job, both human-only steps.
-Vercel project creation/connection and the real Supabase/Strava/Anthropic
-credentials remain manual, human-only setup steps (no dashboard access
-from a coding agent) — see [ADR-0004](decisions/0004-datenbank-postgres-supabase.md).
+Vercel project creation/connection and the real Supabase/Strava/AI
+Gateway credentials remain manual, human-only setup steps (no dashboard
+access from a coding agent) — see [ADR-0004](decisions/0004-datenbank-postgres-supabase.md).
 
 ## System context
 
@@ -24,10 +24,13 @@ External dependencies:
 
 - **Strava API** (OAuth + webhooks) as the sole data source for running
   activities — see [ADR-0002](decisions/0002-datenquelle-strava.md).
-- **Anthropic API (Claude)** for the chat layer (onboarding dialog and
-  plan adjustments), including tool use for structured plan updates —
-  connected via the Vercel AI SDK, see
-  [ADR-0003](decisions/0003-chat-layer-vercel-ai-sdk.md).
+- **Claude, via Vercel AI Gateway,** for the chat layer (onboarding
+  dialog and plan adjustments), including tool use for structured plan
+  updates — connected via the Vercel AI SDK (`streamText`, a plain
+  `"anthropic/claude-sonnet-5"` model-id string, no direct Anthropic
+  provider package), see
+  [ADR-0003](decisions/0003-chat-layer-vercel-ai-sdk.md) and
+  [ADR-0006](decisions/0006-vercel-ai-gateway.md).
 - **Postgres, hosted on Supabase**, as the only data store — connected
   via Prisma's `@prisma/adapter-pg` driver adapter (pooled connection at
   runtime, direct connection for migrations). See
@@ -62,8 +65,8 @@ repository/
 │   └── api/                Next.js API routes — the only way to mutate plan data
 │       ├── strava/oauth/   OAuth connect flow (Spec 1, not yet implemented)
 │       ├── strava/webhook/ Webhook endpoint for new activities (Spec 1, not yet implemented)
-│       └── chat/           Vercel AI SDK + Anthropic integration, tool definitions
-│                           (Spec 3, Spec 5, ADR-0003 — not yet implemented)
+│       └── chat/           Vercel AI SDK, Claude via AI Gateway, tool definitions
+│                           (Spec 3, Spec 5, ADR-0003, ADR-0006)
 ├── prisma/                 Schema (currently empty — see "Status" above) + migrations
 ├── proxy.ts                Next.js 16's renamed `middleware.ts` — refreshes the
 │                           Supabase session cookie on every request (ADR-0005)
@@ -92,14 +95,22 @@ per-epic rollout.
    activity from the Strava API → deduplicates via `stravaActivityId` →
    stores it as an `Activity` → available to the dashboard and chat
    context.
-2. **Onboarding** (Spec 3): Chat asks for the key inputs → Claude
-   generates a structured plan proposal (JSON) → user confirms → the plan
-   is persisted to `Plan`/`Milestone`/`TrainingWeek`/`PlannedSession`.
+2. **Onboarding** (Spec 3): Chat asks for the key inputs (including day/
+   time-budget and risk-stratification questions added in
+   [ADR-0008](decisions/0008-full-horizon-deterministic-plan-generation.md))
+   → a deterministic progression algorithm computes the full plan for the
+   whole horizon (capped at 12 months), Claude only writes the free-text
+   phase/session prose within that structure → user confirms → the plan
+   is persisted to `Plan`/`Milestone`/`TrainingWeek`/`PlannedSession` for
+   the full horizon.
 3. **Chat-based adjustment** (Spec 5): User request in chat → Claude gets
-   the current plan state + recent activities as context → identifies the
-   affected field → checks it against training principles (spike rule,
-   see `docs/research/`) → changes it in a targeted way, warns on a
-   violation instead of silently applying it.
+   the current plan state + recent activities as context → either
+   identifies the affected field and changes it in a targeted way, or —
+   for a full replan (ADR-0008) — re-runs the progression algorithm over
+   the not-yet-completed part of the plan; checks either kind of change
+   against training principles (spike rule, see `docs/research/`) and
+   warns on a violation instead of silently applying it; a replan outside
+   onboarding additionally requires explicit confirmation before applying.
 
 ## Cross-cutting concerns
 
@@ -136,6 +147,14 @@ Binding architecture decisions live as ADRs in
   Postgres on Supabase instead of local SQLite
 - [ADR-0005](decisions/0005-multi-user-supabase-auth.md) — Multi-user
   support via Supabase Auth
+- [ADR-0006](decisions/0006-vercel-ai-gateway.md) — Model provider
+  connection: Vercel AI Gateway instead of a direct Anthropic provider
+- [ADR-0007](decisions/0007-vercel-ai-gateway-transcription.md) — Voice-
+  memo transcription: Vercel AI Gateway instead of a direct Deepgram
+  provider
+- [ADR-0008](decisions/0008-full-horizon-deterministic-plan-generation.md)
+  — Full-horizon plan generation via a deterministic progression
+  algorithm
 
 ## Related documentation
 

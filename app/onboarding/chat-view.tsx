@@ -2,6 +2,7 @@
 
 import { useChat } from "@ai-sdk/react";
 import { type FormEvent, useRef, useState } from "react";
+import { SignOutButton } from "@/app/sign-out-button";
 import type {
   PlanProposal,
   QuickReplies as QuickRepliesType,
@@ -13,6 +14,7 @@ import { VoiceRecorder } from "./voice-recorder";
 export function OnboardingChat() {
   const { messages, sendMessage, status } = useChat();
   const [input, setInput] = useState("");
+  const [voiceRecording, setVoiceRecording] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const isBusy = status === "submitted" || status === "streaming";
@@ -32,10 +34,11 @@ export function OnboardingChat() {
 
   return (
     <main className="mx-auto flex h-dvh max-w-[720px] flex-col">
-      <header className="flex h-[72px] shrink-0 items-center border-b border-border px-5">
+      <header className="flex h-[72px] shrink-0 items-center justify-between border-b border-border px-5">
         <span className="font-heading font-bold tracking-[0.04em]">
           TEMPORA
         </span>
+        <SignOutButton />
       </header>
 
       <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-5">
@@ -65,9 +68,15 @@ export function OnboardingChat() {
               );
             }
 
+            // Both tools execute immediately server-side (see
+            // app/api/chat/route.ts) purely so the tool call always gets a
+            // matching result; the actual UI is rendered from `input` here,
+            // as soon as it's available, regardless of whether the (unused)
+            // output has resolved yet too.
             if (
               part.type === "tool-suggestQuickReplies" &&
-              part.state === "input-available"
+              (part.state === "input-available" ||
+                part.state === "output-available")
             ) {
               const { options } = part.input as QuickRepliesType;
               return (
@@ -82,7 +91,8 @@ export function OnboardingChat() {
 
             if (
               part.type === "tool-proposePlan" &&
-              part.state === "input-available"
+              (part.state === "input-available" ||
+                part.state === "output-available")
             ) {
               return (
                 <PlanCard
@@ -102,20 +112,28 @@ export function OnboardingChat() {
         onSubmit={handleSubmit}
         className="flex shrink-0 items-center gap-2.5 border-t border-border px-5 py-4"
       >
-        <VoiceRecorder onTranscribed={send} disabled={isBusy} />
+        <VoiceRecorder
+          onTranscribed={send}
+          onPartialTranscript={setInput}
+          onRecordingChange={(recording) => {
+            setVoiceRecording(recording);
+            if (recording) setInput("");
+          }}
+          disabled={isBusy}
+        />
         <input
           ref={inputRef}
           type="text"
           value={input}
           onChange={(event) => setInput(event.target.value)}
           placeholder="Schreib deine Antwort…"
-          disabled={isBusy}
+          disabled={isBusy || voiceRecording}
           className="flex-1 rounded-control border border-border bg-surface-2 px-3.5 py-2.5 text-[15px] focus:-outline-offset-1 focus:outline-[1.5px] focus:outline-accent"
         />
         <button
           type="submit"
           className="cursor-pointer rounded-control bg-accent px-4 py-2.5 font-heading font-semibold text-accent-ink disabled:cursor-not-allowed disabled:opacity-50"
-          disabled={isBusy || !input.trim()}
+          disabled={isBusy || voiceRecording || !input.trim()}
         >
           Senden
         </button>

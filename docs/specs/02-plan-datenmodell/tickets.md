@@ -14,7 +14,11 @@ code exercising them yet:
   (Strava sync).
 - `Plan`, `Milestone`, `TrainingWeek`, `PlannedSession` → added with
   Epic C / [Spec 3](../03-onboarding/spec.md) (onboarding — the flow that
-  actually creates a `Plan`).
+  actually creates a `Plan`), including the onboarding-intake fields on
+  `Plan` added by
+  [ADR-0008](../../decisions/0008-full-horizon-deterministic-plan-generation.md)
+  (`longRunDay`, `scheduleRegularity`, `gymAccess`, `ageYears`,
+  `heightCm`, `weightKg`).
 
 What Epic A itself delivers: the Prisma↔Postgres wiring (datasource,
 migration tooling, driver adapter) working end-to-end against an empty
