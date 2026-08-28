@@ -111,7 +111,8 @@ visual signal for "measurement" in this system.
 - Dashboard (`docs/specs/04-dashboard/spec.md`) — the primary view with
   week overview, next session, milestone, history.
 - Onboarding chat (`docs/specs/03-onboarding/spec.md`, "Design" section)
-  — start screen, guided chat dialog, plan proposal with the plan card.
+  — one continuous chat screen (guided dialog, plan proposal with the
+  plan card inline), no separate start screen.
 
 Both as artboards on the same design canvas (link above), onboarding on
 its own canvas page.
