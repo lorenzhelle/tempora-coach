@@ -10,12 +10,12 @@ export function QuickReplies({
   disabled?: boolean;
 }) {
   return (
-    <div className="quick-replies">
+    <div className="max-w-[80%] self-start flex flex-wrap gap-2">
       {options.map((option) => (
         <button
           key={option}
           type="button"
-          className="quick-reply-chip"
+          className="cursor-pointer rounded-chip border border-border bg-surface px-3 py-1.5 font-heading text-[13px] hover:border-accent disabled:cursor-not-allowed disabled:opacity-50"
           onClick={() => onSelect(option)}
           disabled={disabled}
         >

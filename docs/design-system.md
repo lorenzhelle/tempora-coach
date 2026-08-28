@@ -65,46 +65,6 @@ visual signal for "measurement" in this system.
 - Card inner padding: `26px–32px` at desktop width (1440px layouts).
 - Grid spacing (`gap`) between peer elements: `12px–20px`.
 
-## Component inventory
-
-- **Top bar** — logo/wordmark on the left (icon + "TEMPORA", Sora 700,
-  letter spacing), navigation/context on the right, `72–76px` height,
-  `1px solid var(--border)` at the bottom.
-- **Card** — `--surface` background, `1px solid var(--border)`, `16px`
-  radius. The base building block for hero, milestone, week, and history
-  panels.
-- **Button primary** — `--accent` background, `--accent-ink` text, Sora
-  600, `10px` radius, icon on the right (arrow/check) to signal action
-  direction.
-- **Button secondary** — transparent background, `1px solid var(--border)`,
-  `--text` color — for non-destructive secondary actions (e.g. "Request a
-  change").
-- **Chip/tag** — pill or rounded rectangle, `--surface`/`--accent-soft`
-  background, small caps labels (11–12px, Sora/Mono, letter spacing) for
-  status ("Today", summary tags like "12 months").
-- **Week-strip day cell** — 7-column grid, per day: weekday label (mono),
-  status icon (check = done, ring = open, dot in `--rest` = rest day),
-  session label. The current/active day gets `1px solid var(--accent)` +
-  `--accent-soft` fill instead of just `--border`.
-- **Milestone progress bar** — a thin (`6–8px`) rounded bar, `--rest`/
-  `--surface-2` as the track, `--accent` as the fill, start/target values
-  as mono labels at the ends.
-- **Pace-trend sparkline** — a simple SVG polyline in `--accent`, no axis
-  decoration, one endpoint dot — deliberately reduced, not a full chart.
-- **Chat bubble, coach** — `--surface` background, left-aligned,
-  asymmetric radius (`4px 16px 16px 16px`, "speech-bubble corner" top
-  left), small avatar icon next to it on the left.
-- **Chat bubble, user** — `--accent-soft` background, right-aligned,
-  mirrored asymmetric radius (`16px 4px 16px 16px`), no avatar.
-- **Quick-reply chip** — like a chip, but meant to be clickable/
-  interactive: default (`--surface` + `--border`) vs. selected
-  (`--accent-soft` + `1.5px solid var(--accent)`, `--accent` text).
-- **Plan card** — a card variant for the structured plan proposal
-  (onboarding, Spec 3 AC 1): a header row with the target value + a
-  timeframe tag, a phase overview as a proportionally-wide, tonally
-  graded segment bar (lighter through full `--accent`), followed by a
-  week-strip row for "Week 1 in detail". No prose JSON dump — the
-  structure from Spec 2 is represented visually.
 
 ## Screens already using this system
 
@@ -117,8 +77,9 @@ visual signal for "measurement" in this system.
 Both as artboards on the same design canvas (link above), onboarding on
 its own canvas page.
 
-## Maintenance
+## Implementation
 
-Update whenever a new screen introduces a new component type or token, or
-when the canvas reference is replaced by a new version. Only add new color
-hues once a screen actually needs them (don't stockpile unused tokens).
+Tokens above are exposed as Tailwind v4 theme variables via `@theme` in
+`app/globals.css` (e.g. `--color-accent`, `--radius-card`) — build UI with
+the resulting utilities (`bg-accent`, `rounded-card`, ...) rather than raw
+oklch values.

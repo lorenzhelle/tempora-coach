@@ -63,11 +63,17 @@ export function VoiceRecorder({
   };
 
   return (
-    <div className="voice-recorder">
-      {error && <span className="voice-recorder-error">{error}</span>}
+    <div className="relative flex items-center">
+      {error && (
+        <span className="absolute bottom-[46px] left-0 w-max max-w-[220px] rounded-chip border border-border bg-surface px-2.5 py-1.5 text-xs text-warn">
+          {error}
+        </span>
+      )}
       <button
         type="button"
-        className={`mic-button${recording ? " recording" : ""}`}
+        className={`h-10 w-10 shrink-0 cursor-pointer rounded-control border bg-surface-2 text-sm disabled:cursor-not-allowed disabled:opacity-50 ${
+          recording ? "border-warn text-warn" : "border-border text-text"
+        }`}
         onClick={recording ? stopRecording : startRecording}
         disabled={disabled || transcribing}
         aria-label={recording ? "Aufnahme stoppen" : "Sprachmemo aufnehmen"}

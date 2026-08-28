@@ -31,14 +31,16 @@ export function OnboardingChat() {
   const focusInput = () => inputRef.current?.focus();
 
   return (
-    <main className="onboarding">
-      <header className="onboarding-header">
-        <span className="wordmark">TEMPORA</span>
+    <main className="mx-auto flex h-dvh max-w-[720px] flex-col">
+      <header className="flex h-[72px] shrink-0 items-center border-b border-border px-5">
+        <span className="font-heading font-bold tracking-[0.04em]">
+          TEMPORA
+        </span>
       </header>
 
-      <div className="chat-history">
+      <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-5">
         {messages.length === 0 && (
-          <p className="chat-bubble chat-bubble-coach">
+          <p className="max-w-[80%] self-start rounded-[4px_16px_16px_16px] bg-surface px-4 py-3 text-[15px] leading-normal whitespace-pre-wrap">
             Hey! Lass uns deinen Trainingsplan aufsetzen — erzähl mir kurz, was
             dein Laufziel ist, oder schick mir eine Sprachmemo.
           </p>
@@ -52,10 +54,10 @@ export function OnboardingChat() {
               return (
                 <p
                   key={key}
-                  className={`chat-bubble ${
+                  className={`max-w-[80%] px-4 py-3 text-[15px] leading-normal whitespace-pre-wrap ${
                     message.role === "user"
-                      ? "chat-bubble-user"
-                      : "chat-bubble-coach"
+                      ? "self-end rounded-[16px_4px_16px_16px] bg-accent-soft"
+                      : "self-start rounded-[4px_16px_16px_16px] bg-surface"
                   }`}
                 >
                   {part.text}
@@ -96,7 +98,10 @@ export function OnboardingChat() {
         )}
       </div>
 
-      <form onSubmit={handleSubmit} className="chat-input-row">
+      <form
+        onSubmit={handleSubmit}
+        className="flex shrink-0 items-center gap-2.5 border-t border-border px-5 py-4"
+      >
         <VoiceRecorder onTranscribed={send} disabled={isBusy} />
         <input
           ref={inputRef}
@@ -105,10 +110,11 @@ export function OnboardingChat() {
           onChange={(event) => setInput(event.target.value)}
           placeholder="Schreib deine Antwort…"
           disabled={isBusy}
+          className="flex-1 rounded-control border border-border bg-surface-2 px-3.5 py-2.5 text-[15px] focus:-outline-offset-1 focus:outline-[1.5px] focus:outline-accent"
         />
         <button
           type="submit"
-          className="btn-primary"
+          className="cursor-pointer rounded-control bg-accent px-4 py-2.5 font-heading font-semibold text-accent-ink disabled:cursor-not-allowed disabled:opacity-50"
           disabled={isBusy || !input.trim()}
         >
           Senden
