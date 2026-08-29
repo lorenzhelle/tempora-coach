@@ -5,6 +5,9 @@
   "engines": {
     "node": ">=22"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -13,6 +16,8 @@
     "format": "biome format --write",
     "format:check": "biome format",
     "typecheck": "next typegen && tsc --noEmit",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "postinstall": "prisma generate"
@@ -43,6 +48,7 @@
     "postcss": "^8.5.26",
     "prisma": "^7.10.0",
     "tailwindcss": "^4.3.3",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.11"
   }
 }
