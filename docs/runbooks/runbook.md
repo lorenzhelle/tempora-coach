@@ -18,9 +18,8 @@
 
 This runbook is meant to cover operating the Tempora app once it's
 deployed (Vercel Free Tier, see `docs/architecture.md`). **Current state:**
-the repository contains no code yet
-(`docs/specs/00-fundament/tickets.md` hasn't been implemented) — there's
-no running instance, no dashboards, no alerts. This section and the ones
+no Vercel project exists yet — there's no running instance, no
+dashboards, no alerts. This section and the ones
 below MUST be filled in with real, verified values once a first
 deployment exists, instead of publishing plausible but unverified
 procedures.
@@ -138,8 +137,8 @@ once deployed.
 
 ### Renew/check the Strava webhook subscription
 
-`[NEEDS CONFIRMATION: procedure follows with ticket B2 from
-docs/specs/01-strava-sync/tickets.md, once the webhook endpoint exists]`
+`[NEEDS CONFIRMATION: procedure follows once the webhook endpoint exists
+— see issue B2, milestone 01-strava-sync]`
 
 ## Diagnostics
 

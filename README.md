@@ -6,12 +6,7 @@ goal: 5 km under 20 minutes). It syncs running activities via Strava (see
 plan as a structured data model instead of just text, shows it in a
 dashboard, and allows adjustments through a chat layer.
 
-## Who this is for
 
-v1 is deliberately scoped to a single user (see "Out of scope" in
-[docs/specs/00-fundament/tickets.md](docs/specs/00-fundament/tickets.md)).
-The Strava OAuth architecture is fundamentally multi-user-capable in case
-that's wanted later.
 
 ## Prerequisites and setup
 
@@ -35,8 +30,10 @@ The Next.js app scaffold, Prisma/Postgres wiring, and CI/deploy pipeline
 not yet built — see [docs/specs/](docs/specs/) for what's next.
 
 - [CLAUDE.md](CLAUDE.md) — project context and product framing
-- [docs/specs/](docs/specs/) — feature specs (EARS acceptance criteria)
-  and their tickets, one subfolder per spec
+- [docs/specs/](docs/specs/) — feature specs (EARS acceptance criteria),
+  one subfolder per spec; implementation is tracked as
+  [GitHub Issues](https://github.com/lorenzhelle/tempora-coach/issues),
+  one milestone per spec
 
 ## Documentation
 
@@ -51,8 +48,8 @@ not yet built — see [docs/specs/](docs/specs/) for what's next.
 ## Help and support
 
 A personal project of a single operator/user — no public support channel.
-Questions/bugs: directly in the repo as an issue, once GitHub issues are
-enabled (`[NEEDS CONFIRMATION]`).
+Questions/bugs: directly in the repo as a
+[GitHub issue](https://github.com/lorenzhelle/tempora-coach/issues).
 
 ## License or usage terms
 

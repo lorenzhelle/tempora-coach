@@ -2,14 +2,13 @@
 
 ## Status
 
-Epic A (`00-fundament` tickets A1/A3, and A2 as redefined in
-`docs/specs/02-plan-datenmodell/tickets.md`) is implemented: the Next.js
-app is scaffolded, Prisma is wired to Postgres, and CI runs
-lint/typecheck/build on every PR and push to `main`. The Spec 2 data
-model itself is still empty — models are added incrementally as the
-epics that consume them (Epic B, Epic C) are implemented, not
-front-loaded here (see `docs/specs/02-plan-datenmodell/tickets.md`).
-Ticket A4 (Supabase Auth) is also implemented — see
+Foundation setup (Next.js scaffold, Prisma↔Postgres wiring, CI) is
+implemented: the Next.js app is scaffolded, Prisma is wired to Postgres,
+and CI runs lint/typecheck/build on every PR and push to `main`. The Spec
+2 data model itself is still empty — models are added incrementally as
+the specs that consume them (Spec 1, Spec 3) are implemented, not
+front-loaded here (see "Data model" below). Supabase Auth is also
+implemented — see
 [ADR-0005](decisions/0005-multi-user-supabase-auth.md); still open there:
 a real signup/login E2E test (needs a seeded test account) and GitHub
 repo secrets for the `e2e` CI job, both human-only steps.
@@ -85,9 +84,14 @@ The plan data model (`Plan`, `Milestone`, `TrainingWeek`, `PlannedSession`,
 `Activity`, `StravaConnection`) is fully specified in
 [Spec 1](specs/01-strava-sync/spec.md) and
 [Spec 2](specs/02-plan-datenmodell/spec.md) — not duplicated here, see
-there. As of Epic A, none of these models exist in `prisma/schema.prisma`
-yet; see `docs/specs/02-plan-datenmodell/tickets.md` for the incremental,
-per-epic rollout.
+there. None of these models exist in `prisma/schema.prisma` yet. They are
+deliberately not created in one shot; each is added when the spec that
+actually consumes it is implemented, so the schema never carries a model
+with no code exercising it: `Activity` with Spec 1 (Strava sync); `Plan`,
+`Milestone`, `TrainingWeek`, `PlannedSession` with Spec 3 (onboarding —
+the flow that actually creates a `Plan`), including the onboarding-intake
+fields on `Plan` added by
+[ADR-0008](decisions/0008-full-horizon-deterministic-plan-generation.md).
 
 ## Critical flows
 
@@ -131,30 +135,12 @@ per-epic rollout.
   builds for `main`; PRs get none) → GitHub Actions runs `ci`
   (lint/typecheck/build) then `e2e` → only once both pass does a
   `promote-production` job call the Vercel API to promote that build to
-  Production. See [ticket A3](specs/00-fundament/tickets.md).
+  Production.
 
 ## ADR index
 
-Binding architecture decisions live as ADRs in
-[docs/decisions/](decisions/README.md):
-
-- [ADR-0001](decisions/0001-app-name-tempora.md) — App name: Tempora
-- [ADR-0002](decisions/0002-datenquelle-strava.md) — Data source: Strava
-  instead of a direct Garmin sync
-- [ADR-0003](decisions/0003-chat-layer-vercel-ai-sdk.md) — Chat layer
-  implementation: Vercel AI SDK
-- [ADR-0004](decisions/0004-datenbank-postgres-supabase.md) — Database:
-  Postgres on Supabase instead of local SQLite
-- [ADR-0005](decisions/0005-multi-user-supabase-auth.md) — Multi-user
-  support via Supabase Auth
-- [ADR-0006](decisions/0006-vercel-ai-gateway.md) — Model provider
-  connection: Vercel AI Gateway instead of a direct Anthropic provider
-- [ADR-0007](decisions/0007-vercel-ai-gateway-transcription.md) — Voice-
-  memo transcription: Vercel AI Gateway instead of a direct Deepgram
-  provider
-- [ADR-0008](decisions/0008-full-horizon-deterministic-plan-generation.md)
-  — Full-horizon plan generation via a deterministic progression
-  algorithm
+Binding architecture decisions live as ADRs, indexed in
+[docs/decisions/README.md](decisions/README.md) — not duplicated here.
 
 ## Related documentation
 

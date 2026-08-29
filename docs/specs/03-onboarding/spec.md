@@ -32,9 +32,10 @@ in this Claude chat), not via a form.
    during onboarding may trigger a full replan of the still-unconfirmed
    draft directly, without an extra confirm step (ADR-0008) — "Confirm
    plan" remains the one gate before persistence.
-4. On confirmation: the plan is created in the DB (ticket C3 — ships
-   after the chat/agent integration in tickets C1/C2, see
-   [tickets.md](tickets.md)).
+4. On confirmation: the plan is created in the DB — tracked as
+   [issue C3](https://github.com/lorenzhelle/tempora-coach/issues/11) in
+   milestone `03-onboarding` (chat UI scaffold and Claude integration,
+   formerly tickets C1/C2, are done).
 
 **Design:** One continuous chat screen (`/onboarding`, auth-gated — signed-
 out visitors are redirected to `/login`) in the "Performance Dark" design

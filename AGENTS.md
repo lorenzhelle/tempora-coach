@@ -45,8 +45,8 @@ name: Tempora). There are currently no nested `AGENTS.md` files.
 
 ## Exact commands
 
-Epic A (project setup, CI/deploy) is done; the Spec 2 data model is still
-empty (see `docs/specs/02-plan-datenmodell/tickets.md`).
+Foundation setup (project setup, CI/deploy) is done; the Spec 2 data model
+is still empty (see `docs/architecture.md` "Data model").
 
 | Purpose | Command | Expected result |
 | --- | --- | --- |
@@ -69,7 +69,7 @@ Playwright (`playwright.config.ts`, tests in `e2e/`): `e2e/landing.spec.ts`,
 expected heading/form visible, no console errors), no real signup/login
 round trip yet (`[NEEDS CONFIRMATION]`: needs a seeded test account plus a
 decision on Supabase's email-confirmation setting, both human/
-dashboard-only — see ticket A4 in `docs/specs/00-fundament/tickets.md`).
+dashboard-only — see [ADR-0005](docs/decisions/0005-multi-user-supabase-auth.md)).
 The config auto-starts `npm run dev` as the test server (`webServer`) — no
 need to start it manually first. Since `proxy.ts` calls Supabase's Auth
 server on every request (ADR-0005), `npm run test:e2e` needs real
@@ -178,7 +178,7 @@ conflicts with this project's deploy path below.
 | Product/scope question | `CLAUDE.md` ("What this is") + `docs/decisions/README.md` |
 | New feature/spec | `docs/specs/<name>/spec.md` (EARS acceptance criteria) |
 | UI/design question | `docs/design-system.md` (tokens, components) + the "Design" section of the relevant spec |
-| Implementation order | `docs/specs/<name>/tickets.md`, overview in `docs/specs/README.md` |
+| Implementation task tracking | GitHub Issues, one milestone per spec — see `docs/specs/README.md` and `docs/CONTRIBUTING.md` "Specs vs. issues vs. ADRs" |
 | Contribution workflow | `docs/CONTRIBUTING.md` |
 | Coaching/training logic | `docs/research/` |
 
