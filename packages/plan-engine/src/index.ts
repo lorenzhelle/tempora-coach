@@ -4,9 +4,7 @@
 //
 // See ADR-0009 for why this is a workspace package, and
 // docs/research/designing-a-plan-generator.md for the design this
-// implements. evaluateIntake() — the other half of "the agent elicits, the
-// engine computes" — lands in a follow-up PR; generatePlan() here already
-// assumes a complete IntakeProfile.
+// implements.
 
 export { riegelPredict } from "./fitness/riegel";
 export {
@@ -15,6 +13,21 @@ export {
   vdotFromResult,
   vo2Cost,
 } from "./fitness/vdot";
+export type {
+  IntakeFieldKey,
+  IntakeFieldMeta,
+  IntakeStatus,
+  PartialIntakeProfile,
+} from "./intake";
+export {
+  dayOfWeekSchema,
+  evaluateIntake,
+  experienceSchema,
+  INTAKE_FIELDS,
+  intakeProfileSchema,
+  partialIntakeProfileSchema,
+  scheduleRegularitySchema,
+} from "./intake";
 export { generatePlan } from "./pipeline/index";
 export type { CatalogEntry } from "./rules/catalog";
 export { RULE_CATALOG } from "./rules/catalog";
