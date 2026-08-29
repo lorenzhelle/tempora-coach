@@ -32,12 +32,11 @@ procedures.
   steps, no dashboard access from a coding agent (see `AGENTS.md`
   "Boundaries and approvals")
 - Required tools: Vercel dashboard, GitHub repo Settings, browser
-- Approval gates: see `docs/constitution.md` ("Human vs. agent approval
-  gates") — destructive operations (DB reset, force-push) require human
-  approval
+- Approval gates: see `AGENTS.md` ("Boundaries and approvals") —
+  destructive operations (DB reset, force-push) require human approval
 - Secret handling: secrets live in Vercel environment variables or a
-  local `.env` (never in the git repo, see `docs/constitution.md`
-  SEC-001) — NEVER put concrete values into this document
+  local `.env` (never in the git repo) — NEVER put concrete values into
+  this document
 - Stop conditions: `[NEEDS CONFIRMATION]`
 
 ## Signals and healthy state
@@ -148,8 +147,7 @@ once deployed.
    `[NEEDS CONFIRMATION: exact check command/endpoint follows with
    ticket B2]`
 2. Check whether `StravaConnection.expiresAt` is in the past (an expired
-   token that wasn't refreshed automatically — a violation of
-   `docs/constitution.md` SEC-002)
+   token that wasn't refreshed automatically)
 3. Manually trigger the fallback reconciliation (ticket B4) to check
    whether it's a lost webhook event
 
@@ -172,8 +170,7 @@ deployment exists and real failure modes are known]`
 After every operation/mitigation:
 
 1. `[NEEDS CONFIRMATION: primary health signal]`
-2. Confirm that no duplicate `Activity` entries were created (see
-   `docs/constitution.md` DATA-002)
+2. Confirm that no duplicate `Activity` entries were created
 3. Confirm that the training plan is consistent in the DB (no orphaned
    `PlannedSession` entries without a `TrainingWeek`)
 
@@ -202,13 +199,13 @@ themselves]`
 ## Post-incident follow-up
 
 - Record the timeline and root cause once a first incident occurs
-- For a recurring root cause: consider a new ADR or constitution
-  invariant (see `docs/decisions/README.md`)
+- For a recurring root cause: consider a new ADR (see
+  `docs/decisions/README.md`)
 
 ## Related documentation
 
 - Agent instructions and development gates: [AGENTS.md](../../AGENTS.md)
-- Non-negotiable invariants: [docs/constitution.md](../constitution.md)
+- Rules and conventions: [docs/rules.md](../rules.md)
 - Architecture and dependencies: [docs/architecture.md](../architecture.md)
 - Decision history: [docs/decisions/README.md](../decisions/README.md)
 

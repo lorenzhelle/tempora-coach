@@ -119,13 +119,11 @@ fields on `Plan` added by
 ## Cross-cutting concerns
 
 - **Consistency:** Plan mutations run exclusively through API routes,
-  never directly from frontend code (see `docs/constitution.md`
-  DATA-001).
+  never directly from frontend code.
 - **Security:** Strava tokens are kept encrypted/server-side, never in
-  client code or logs (see `docs/constitution.md` SEC-001). User sessions
-  are managed by Supabase Auth via cookies (`proxy.ts`); Row Level
-  Security does not gate Prisma-managed tables — authorization for those
-  is enforced in API-route code (see `docs/constitution.md` ARCH-002,
+  client code or logs. User sessions are managed by Supabase Auth via
+  cookies (`proxy.ts`); Row Level Security does not gate Prisma-managed
+  tables — authorization for those is enforced in API-route code (see
   ADR-0005).
 - **Resilience:** Strava sync via webhooks with a periodic fallback
   reconciliation (ticket B4), so lost webhook events don't lead to
@@ -145,7 +143,6 @@ Binding architecture decisions live as ADRs, indexed in
 ## Related documentation
 
 - Agent instructions: [AGENTS.md](../AGENTS.md)
-- Invariants: [docs/constitution.md](constitution.md)
 - Operations: [docs/runbooks/runbook.md](runbooks/runbook.md)
 - Feature specs: [docs/specs/](specs/README.md)
 - Design system: [docs/design-system.md](design-system.md)

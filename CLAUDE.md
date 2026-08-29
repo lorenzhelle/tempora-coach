@@ -4,8 +4,8 @@
 > (product framing, domain background). For portable agent rules
 > (exact commands, quality gates, conventions, boundaries),
 > [AGENTS.md](AGENTS.md) is the canonical source; for architecture,
-> [docs/architecture.md](docs/architecture.md); for non-negotiable
-> invariants, [docs/constitution.md](docs/constitution.md). In case of
+> [docs/architecture.md](docs/architecture.md); for repo-wide rules and
+> conventions, [docs/rules.md](docs/rules.md). In case of
 > conflict between this document and one of these sources, the more
 > specialized file governs.
 
@@ -14,25 +14,18 @@ A web app for a running training plan (current goal: 5 km under 20 minutes
 in 12 months), synced with Strava (see ADR-0002), a dashboard with a weekly
 plan/progress view, and a chat layer for adjusting the plan. Not a
 chat-only interface — the dashboard is the primary view, chat is
-supplementary (model: Runna, but much simpler). v1 is deliberately scoped
-down (see "Out of scope" below), but the Strava OAuth architecture and
-Supabase Auth are fundamentally multi-user-capable in case that's wanted
-later.
+supplementary (model: Runna, but much simpler). Tempora should be grounded in research and theory and easy to use for runners, focus on hobby and intermediate runners, not pros.
 
 
 ## Tech stack & architecture
 Next.js (App Router, TypeScript) frontend + API routes, Postgres on
 Supabase via Prisma (see ADR-0004), Claude via Vercel AI Gateway for the
 chat layer, connected through the Vercel AI SDK (see ADR-0003, ADR-0006),
-Strava sync via OAuth + webhooks (no sidecar, see ADR-0002), hosting on
+Strava sync via OAuth + webhooks. hosting on
 Vercel Free Tier. Details, module map, and critical flows:
 [docs/architecture.md](docs/architecture.md). Visual language:
 [docs/design-system.md](docs/design-system.md).
 
-## Conventions, commands, anti-patterns
-Canonical in [AGENTS.md](AGENTS.md) — also holds the current state of
-`[NEEDS CONFIRMATION]` gaps (e.g. lint/test setup, which only comes into
-being with Epic A1). Not duplicated here.
 
 ## Domain background
 The coaching logic (progression rates, pain traffic-light model, spike

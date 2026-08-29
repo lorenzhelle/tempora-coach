@@ -8,7 +8,7 @@ name: Tempora). There are currently no nested `AGENTS.md` files.
 ## Read order
 
 1. This `AGENTS.md` for executable working rules.
-2. `docs/constitution.md` for non-negotiable invariants.
+2. `docs/rules.md` for repo-wide conventions.
 3. The document relevant to the task at hand: `docs/architecture.md`, the
    matching spec/tickets under `docs/specs/`, `docs/runbooks/runbook.md`,
    or `docs/decisions/README.md`.
@@ -33,9 +33,8 @@ name: Tempora). There are currently no nested `AGENTS.md` files.
   [ADR-0006](docs/decisions/0006-vercel-ai-gateway.md); also covers
   onboarding voice-memo transcription, see
   [ADR-0007](docs/decisions/0007-vercel-ai-gateway-transcription.md) — not
-  needed once deployed on Vercel itself, where OIDC is used automatically)
-  — details in `docs/constitution.md`. Supabase project creation is a
-  human-only
+  needed once deployed on Vercel itself, where OIDC is used automatically).
+  Supabase project creation is a human-only
   setup step (no dashboard access from a coding agent); local dev
   requires a real, reachable Supabase project — there is no offline
   SQLite fallback. `proxy.ts` calls Supabase's Auth server on every
@@ -154,15 +153,15 @@ conflicts with this project's deploy path below.
   untracked or unverified production deployment
 
 - Never mutate plan data via business logic in the frontend — always
-  through the API route (`docs/constitution.md` invariant DATA-001)
+  through the API route
 - Never regenerate the entire training plan on every chat message — only
   change the affected fields, targeted
 - Never commit Strava access/refresh tokens or other secrets into the
-  repo or logs (`docs/constitution.md` invariant SEC-001)
+  repo or logs
 - Get human approval before: merging into the default branch, any schema
   migration that affects existing data, and any change to training
   principle rules (spike rule, pain-traffic-light thresholds)
-- See `docs/constitution.md` for the full list of invariants
+- See `docs/rules.md` for repo-wide conventions
 
 ## Nested AGENTS.md precedence
 

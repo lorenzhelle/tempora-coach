@@ -38,7 +38,7 @@ not yet built — see [docs/specs/](docs/specs/) for what's next.
 ## Documentation
 
 - Agent instructions: [AGENTS.md](AGENTS.md)
-- Non-negotiable invariants: [docs/constitution.md](docs/constitution.md)
+- Rules and conventions: [docs/rules.md](docs/rules.md)
 - Contribution workflow: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)
 - Architecture: [docs/architecture.md](docs/architecture.md)
 - Operations: [docs/runbooks/runbook.md](docs/runbooks/runbook.md)

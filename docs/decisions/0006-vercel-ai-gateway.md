@@ -64,9 +64,8 @@ direct `@ai-sdk/anthropic` provider connection.
 - `package.json`: `@ai-sdk/anthropic` dependency removed
   (`@ai-sdk/react`, `@ai-sdk/deepgram`, and `ai` itself are unaffected —
   only the Anthropic-specific provider package goes).
-- `.env.example`, `AGENTS.md`, `README.md`, `docs/constitution.md`
-  (SEC-001), `docs/runbooks/runbook.md`, and
-  `docs/specs/00-fundament/tickets.md` are updated to reference
+- `.env.example`, `AGENTS.md`, `README.md`, `docs/runbooks/runbook.md`,
+  and `docs/specs/00-fundament/tickets.md` are updated to reference
   `AI_GATEWAY_API_KEY` instead of `ANTHROPIC_API_KEY`.
 - `docs/architecture.md`'s "System context" and module-map entries for
   the chat layer are updated to name Vercel AI Gateway instead of a

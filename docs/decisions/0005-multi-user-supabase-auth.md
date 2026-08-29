@@ -1,13 +1,13 @@
 # ADR-0005: Multi-user support via Supabase Auth
 
 ## Status
-Decided — 2026-08-26 (supersedes the "v1 stays single-user" part of
-[ARCH-002](../constitution.md), by explicit direction from the project
-operator; revises the multi-user bullet under "Out of scope" in
+Decided — 2026-08-26 (supersedes the "v1 stays single-user" part of the
+former invariant ARCH-002, by explicit direction from the
+project operator; revises the multi-user bullet under "Out of scope" in
 `docs/specs/00-fundament/tickets.md`)
 
 ## Context
-`docs/constitution.md` (ARCH-002) and `docs/specs/00-fundament/tickets.md`
+The former invariant ARCH-002 and `docs/specs/00-fundament/tickets.md`
 ("Out of scope") deliberately limited v1 to a single user: no signup
 flow, no roles/permissions. ADR-0002 already noted the Strava OAuth
 architecture is technically multi-user-capable, but treated expanding to
@@ -56,8 +56,9 @@ This app's tables are never reached that way — Prisma connects directly
 to Postgres via `@prisma/adapter-pg` with its own connection role, which
 bypasses RLS entirely. **Authorization for Prisma-managed tables stays an
 application-layer concern in Next.js API routes** (already required by
-`docs/constitution.md` DATA-001 — mutations only through API routes), not
-a Postgres policy. If a table is ever *also* exposed through Supabase's
+the former invariant DATA-001 — mutations only through
+API routes), not a Postgres policy. If a table is ever *also* exposed
+through Supabase's
 Data API directly, RLS becomes required for that table (per the
 vendored `supabase` skill's checklist) — not applicable to any table
 today.
@@ -76,9 +77,9 @@ the spike-rule lookback) harder to express than Prisma's query builder.
 Prisma stays the only path to app data; the Supabase client stays Auth-only.
 
 ## Consequences
-- `docs/constitution.md` ARCH-002 is revised: multi-user is enabled via
-  Supabase Auth; the RLS point above is called out there too so it isn't
-  silently assumed later.
+- The former invariant ARCH-002 is revised: multi-user is
+  enabled via Supabase Auth; the RLS point above is called out there too
+  so it isn't silently assumed later.
 - `docs/specs/00-fundament/tickets.md`'s "Out of scope" bullet on
   multi-user is revised to point here instead of deferring; a new ticket
   A4 covers the concrete implementation.
@@ -94,12 +95,11 @@ Prisma stays the only path to app data; the Supabase client stays Auth-only.
   page) — GitHub repo secrets for the Supabase URL/publishable key are a
   new human-only CI setup step (see ticket A4).
 - `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` join
-  `.env.example`; both are publishable-by-design (not secrets per
-  `docs/constitution.md` SEC-001, unlike the Strava/AI Gateway
-  credentials and the Prisma `DATABASE_URL`/`DIRECT_URL`).
+  `.env.example`; both are publishable-by-design (not secrets, unlike the
+  Strava/AI Gateway credentials and the Prisma `DATABASE_URL`/`DIRECT_URL`).
 
 ## Related documentation
-- Constitution: [docs/constitution.md](../constitution.md) (ARCH-002)
+- Rules and conventions: [docs/rules.md](../rules.md)
 - Architecture: [docs/architecture.md](../architecture.md)
 - Foundation setup: [docs/specs/00-fundament/tickets.md](../specs/00-fundament/tickets.md) (ticket A4)
 - Database decision: [ADR-0004](0004-datenbank-postgres-supabase.md)

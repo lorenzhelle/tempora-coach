@@ -14,8 +14,8 @@ never modifies a `TrainingWeek`/`PlannedSession` already marked
 `completed`, and — unlike during onboarding, where a replan of the
 still-unconfirmed draft applies directly — a full replan here requires an
 explicit confirm step before applying (see AC below;
-[ADR-0008](../../decisions/0008-full-horizon-deterministic-plan-generation.md),
-[DATA-003](../../constitution.md#data-integrity)). A separate, more
+[ADR-0008](../../decisions/0008-full-horizon-deterministic-plan-generation.md)).
+A separate, more
 surgical capability for manually moving a single session without a full
 replan is out of scope here — deferred to a future dashboard-editing
 ticket.

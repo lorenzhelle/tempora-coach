@@ -1,8 +1,8 @@
 # ADR-0008: Full-horizon plan generation via a deterministic progression algorithm
 
 ## Status
-Decided — 2026-08-28 (revises [DATA-003](../constitution.md#data-integrity);
-revises [Spec 2](../specs/02-plan-datenmodell/spec.md) and
+Decided — 2026-08-28 (revises the former invariant
+DATA-003; revises [Spec 2](../specs/02-plan-datenmodell/spec.md) and
 [Spec 3](../specs/03-onboarding/spec.md); extends
 [Spec 5](../specs/05-chat-anpassung/spec.md))
 
@@ -30,9 +30,9 @@ plan" should actually mean, given:
   phase boundaries adaptive to progress rather than a fixed calendar, and
   re-testing every 4–6 weeks — in tension with committing to a full
   calendar upfront, resolved below via the replanning concept.
-- `docs/constitution.md` DATA-003 says a chat-based adjustment "never
-  regenerates the entire plan" — too strict once a legitimate full
-  reset (e.g. after an illness) is wanted.
+- The former invariant DATA-003 said a chat-based
+  adjustment "never regenerates the entire plan" — too strict once a
+  legitimate full reset (e.g. after an illness) is wanted.
 - The onboarding chat currently never asks which days the user can train,
   yet `PlannedSession.dayOfWeek` is a required field the LLM must invent
   with zero guidance; and no workout type is ever explained to the user.
@@ -131,9 +131,10 @@ plan" should actually mean, given:
   single session (main dashboard) stays a separate, later ticket.
 
 ## Consequences
-- `docs/constitution.md` **DATA-003** is revised: a full replan (point 8
-  above) is the one sanctioned exception to "never regenerate the whole
-  plan." Ad-hoc targeted chat edits (Spec 5, AC 1, ticket E2) remain
+- The former invariant **DATA-003** is revised: a full
+  replan (point 8 above) is the one sanctioned exception to "never
+  regenerate the whole plan." Ad-hoc targeted chat edits (Spec 5, AC 1,
+  ticket E2) remain
   constrained exactly as before — this ADR narrows what counts as
   "regenerating the entire plan," it doesn't loosen it for ordinary
   edits.
@@ -156,8 +157,7 @@ plan" should actually mean, given:
   UI). This ADR only settles the design those tickets implement.
 
 ## Related documentation
-- Constitution: [docs/constitution.md](../constitution.md) (DATA-003,
-  SAFE-001, SAFE-002)
+- Rules and conventions: [docs/rules.md](../rules.md)
 - Data model: [Spec 2](../specs/02-plan-datenmodell/spec.md)
 - Onboarding: [Spec 3](../specs/03-onboarding/spec.md)
 - Chat-based adjustment: [Spec 5](../specs/05-chat-anpassung/spec.md)

@@ -17,8 +17,8 @@ living doc; a later ADR amends/supersedes it explicitly instead.
 future agent could plausibly re-derive it differently without this
 record (choice of a vendor/provider, data source, or storage engine;
 anything that changes what's committed to the repo vs. held as a secret;
-anything that revises an existing invariant in `docs/constitution.md`).
-An implementation choice made *within* an already-decided architecture
+anything that revises an existing decision recorded here). An
+implementation choice made *within* an already-decided architecture
 (e.g. which component holds a piece of state) doesn't need one — that
 level of detail belongs in code comments, the relevant spec, or a PR
 description instead.
