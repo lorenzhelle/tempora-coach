@@ -69,6 +69,10 @@ repository/
 ├── prisma/                 Schema (currently empty — see "Status" above) + migrations
 ├── proxy.ts                Next.js 16's renamed `middleware.ts` — refreshes the
 │                           Supabase session cookie on every request (ADR-0005)
+├── packages/               Framework-agnostic logic, npm workspaces (not `lib/`)
+│   └── plan-engine/        @tempora/plan-engine — fitness index, training paces,
+│                           progression/volume/allocation rules. Pure, no DB/
+│                           network/clock access. Vitest-tested (ADR-0009).
 └── lib/
     ├── prisma.ts           Prisma client singleton
     └── supabase/           Browser/server Supabase clients + the proxy.ts session helper (ADR-0005)

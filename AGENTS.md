@@ -58,7 +58,7 @@ is still empty (see `docs/architecture.md` "Data model").
 | Typecheck | `npm run typecheck` | `next typegen` then `tsc --noEmit` |
 | E2E test | `npm run test:e2e` | Playwright (`e2e/`), auto-starts `npm run dev` against it — see "E2E testing" below |
 | E2E test (UI mode) | `npm run test:e2e:ui` | Playwright's interactive test runner |
-| Unit test | `[NEEDS CONFIRMATION: no unit test framework chosen — Vitest recommended, not yet wired up]` | — |
+| Unit test | `npm run test:unit` | Vitest (`vitest.config.mts`), scoped to `packages/**/*.test.ts` — currently `packages/plan-engine` only (ADR-0009) |
 | DB migration | `npx prisma migrate dev --name <change>` | Applies against the Supabase Postgres `DIRECT_URL`; requires a real `.env` (see "Environment setup" above) |
 
 ## E2E testing
@@ -92,7 +92,7 @@ Before reporting a task done:
 - `npm run format:check`
 - `npm run lint`
 - `npm run test:e2e` for any change touching a route/page
-- `[NEEDS CONFIRMATION: unit tests for the changed scope — no framework chosen yet]`
+- `npm run test:unit` for any change touching `packages/plan-engine`
 - `npm run typecheck`
 - `npm run build`
 - `npx prisma migrate dev` runs cleanly, for any schema change
