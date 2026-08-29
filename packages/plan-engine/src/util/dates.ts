@@ -66,3 +66,21 @@ export function datesForWeek(weekStartDate: string): Record<DayOfWeek, string> {
   });
   return Object.fromEntries(entries) as Record<DayOfWeek, string>;
 }
+
+/** The 7 DayOfWeek labels in cyclic order starting at `startDay`. */
+export function orderedFrom(startDay: DayOfWeek): DayOfWeek[] {
+  const startIndex = ALL_DAYS_OF_WEEK.indexOf(startDay);
+  return Array.from({ length: 7 }, (_, i) => {
+    const day = ALL_DAYS_OF_WEEK[(startIndex + i) % 7];
+    if (!day) throw new Error("unreachable: modulo 7 index out of range");
+    return day;
+  });
+}
+
+/** Shortest distance (in days) between two weekdays around the 7-day cycle. */
+export function cyclicDistance(a: DayOfWeek, b: DayOfWeek): number {
+  const diff = Math.abs(
+    ALL_DAYS_OF_WEEK.indexOf(a) - ALL_DAYS_OF_WEEK.indexOf(b),
+  );
+  return Math.min(diff, 7 - diff);
+}

@@ -250,8 +250,11 @@ export const STRENGTH_SESSIONS_PER_WEEK = 2;
  * volume; individual reps bounded to 3-5 min (Daniels caps reps here to
  * avoid anaerobic/lactate spillover); recovery close to the work interval's
  * own duration. `repDistanceCandidatesKm` are the "clean" track/road
- * distances the rep-distance calculation picks from. See
- * docs/research/intervalltraining-nach-zieldistanz.md Block F /
+ * distances the rep-distance calculation picks from. The final session
+ * distance is the lesser of this cap and qualitySessionDistanceKm's
+ * allocation-consistent amount (see rules/session.ts) — this cap alone
+ * isn't allowed to push a week's quality volume outside the 80/20 target.
+ * See docs/research/intervalltraining-nach-zieldistanz.md Block F /
  * "Implications for session.interval_structure".
  */
 export const INTERVAL_SESSION = {
@@ -263,3 +266,14 @@ export const INTERVAL_SESSION = {
   minRepCount: 3,
   repDistanceCandidatesKm: [0.2, 0.4, 0.8, 1.0, 1.2, 1.6],
 };
+
+/**
+ * Tempo/interval session distance bounds. The share itself isn't a fixed
+ * fraction here — it's derived from EASY_SHARE so the two can't drift
+ * apart (see qualitySessionDistanceKm in rules/session.ts); these are
+ * just sane floor/ceiling clamps on the result.
+ */
+export const QUALITY_SESSION = { minKm: 3, maxKm: 10 };
+
+/** Bumped whenever a rule's numbers or logic change, so a stored plan's trace can be tied to the rule version that produced it. */
+export const RULE_SET_VERSION = "0.1.0";
