@@ -1,18 +1,19 @@
 # Specs
 
-Every spec has its own subfolder with `spec.md` (goal, data model,
-acceptance criteria in EARS format) and `tickets.md` (the implementation
-order for that spec). `00-fundament/` contains setup tickets not tied to
-any spec (no `spec.md` there).
+Every spec has a `spec.md` (goal, data model, acceptance criteria in EARS
+format) — the durable feature contract, kept in-repo. Implementation is
+tracked as GitHub Issues, grouped under one milestone per spec (see
+[docs/CONTRIBUTING.md](../CONTRIBUTING.md) "Specs vs. issues vs. ADRs" for
+why the split works this way).
 
-- [00-fundament](00-fundament/tickets.md) — project setup (no spec relation)
-- [01-strava-sync](01-strava-sync/spec.md) — Strava sync
-- [02-plan-datenmodell](02-plan-datenmodell/spec.md) — plan data model
-- [03-onboarding](03-onboarding/spec.md) — onboarding — plan creation in chat
-- [04-dashboard](04-dashboard/spec.md) — dashboard
-- [05-chat-anpassung](05-chat-anpassung/spec.md) — chat-based plan adjustment
+- Foundation (project setup, no spec relation) — done, see
+  `docs/architecture.md` "Status"
+- [01-strava-sync](01-strava-sync/spec.md) — Strava sync — [milestone](https://github.com/lorenzhelle/tempora-coach/milestone/1)
+- [02-plan-datenmodell](02-plan-datenmodell/spec.md) — plan data model —
+  models are added incrementally by the specs that consume them (see
+  `docs/architecture.md` "Data model"), no separate milestone
+- [03-onboarding](03-onboarding/spec.md) — onboarding — plan creation in chat — [milestone](https://github.com/lorenzhelle/tempora-coach/milestone/2)
+- [04-dashboard](04-dashboard/spec.md) — dashboard — [milestone](https://github.com/lorenzhelle/tempora-coach/milestone/3)
+- [05-chat-anpassung](05-chat-anpassung/spec.md) — chat-based plan adjustment — [milestone](https://github.com/lorenzhelle/tempora-coach/milestone/4)
 
-Implementation order across all specs: 00 → 02 → 01 → 03 → 04 → 05
-(matches the earlier epic order A → B → C → D → E from the former
-`TICKETS.md`, with epic A split across 00-fundament and
-02-plan-datenmodell).
+Implementation order across all specs: Foundation → 02 → 01 → 03 → 04 → 05.

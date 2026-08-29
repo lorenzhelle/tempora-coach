@@ -15,13 +15,15 @@ in 12 months), synced with Strava (see ADR-0002), a dashboard with a weekly
 plan/progress view, and a chat layer for adjusting the plan. Not a
 chat-only interface — the dashboard is the primary view, chat is
 supplementary (model: Runna, but much simpler). v1 is deliberately scoped
-to a single user (see "Out of scope" in
-`docs/specs/00-fundament/tickets.md`), but the Strava OAuth architecture is
-fundamentally multi-user-capable in case that's wanted later.
+down (see "Out of scope" below), but the Strava OAuth architecture and
+Supabase Auth are fundamentally multi-user-capable in case that's wanted
+later.
+
 
 ## Tech stack & architecture
-Next.js (App Router, TypeScript) frontend + API routes, SQLite via Prisma,
-Anthropic API for the chat layer via the Vercel AI SDK (see ADR-0003),
+Next.js (App Router, TypeScript) frontend + API routes, Postgres on
+Supabase via Prisma (see ADR-0004), Claude via Vercel AI Gateway for the
+chat layer, connected through the Vercel AI SDK (see ADR-0003, ADR-0006),
 Strava sync via OAuth + webhooks (no sidecar, see ADR-0002), hosting on
 Vercel Free Tier. Details, module map, and critical flows:
 [docs/architecture.md](docs/architecture.md). Visual language:

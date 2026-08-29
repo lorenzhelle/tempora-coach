@@ -1,25 +1,23 @@
-import { deepgram } from "@ai-sdk/deepgram";
-import { transcribe } from "ai";
+import { gateway } from "@ai-sdk/gateway";
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
-export async function POST(request: Request) {
+// Mints a short-lived Gateway client secret for the browser to open its own
+// streaming-transcription WebSocket with (see voice-recorder.tsx). No audio
+// passes through this server — google/gemini-3.5-transcribe-live is a
+// streaming-only model, so transcription happens client-side via
+// experimental_streamTranscribe, not a server-side transcribe() call.
+export async function POST() {
   const supabase = await createClient();
   const { data } = await supabase.auth.getUser();
   if (!data.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const formData = await request.formData();
-  const audio = formData.get("audio");
-  if (!(audio instanceof File)) {
-    return NextResponse.json({ error: "Missing audio file" }, { status: 400 });
-  }
-
-  const { text } = await transcribe({
-    model: deepgram.transcription("nova-3"),
-    audio: new Uint8Array(await audio.arrayBuffer()),
+  const { token, url } = await gateway.experimental_transcription.getToken({
+    model: "google/gemini-3.5-transcribe-live",
+    expiresAfterSeconds: 300, // max — headroom before the client opens the socket
   });
 
-  return NextResponse.json({ text });
+  return NextResponse.json({ token, url });
 }

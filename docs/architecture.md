@@ -2,20 +2,19 @@
 
 ## Status
 
-Epic A (`00-fundament` tickets A1/A3, and A2 as redefined in
-`docs/specs/02-plan-datenmodell/tickets.md`) is implemented: the Next.js
-app is scaffolded, Prisma is wired to Postgres, and CI runs
-lint/typecheck/build on every PR and push to `main`. The Spec 2 data
-model itself is still empty — models are added incrementally as the
-epics that consume them (Epic B, Epic C) are implemented, not
-front-loaded here (see `docs/specs/02-plan-datenmodell/tickets.md`).
-Ticket A4 (Supabase Auth) is also implemented — see
+Foundation setup (Next.js scaffold, Prisma↔Postgres wiring, CI) is
+implemented: the Next.js app is scaffolded, Prisma is wired to Postgres,
+and CI runs lint/typecheck/build on every PR and push to `main`. The Spec
+2 data model itself is still empty — models are added incrementally as
+the specs that consume them (Spec 1, Spec 3) are implemented, not
+front-loaded here (see "Data model" below). Supabase Auth is also
+implemented — see
 [ADR-0005](decisions/0005-multi-user-supabase-auth.md); still open there:
 a real signup/login E2E test (needs a seeded test account) and GitHub
 repo secrets for the `e2e` CI job, both human-only steps.
-Vercel project creation/connection and the real Supabase/Strava/Anthropic
-credentials remain manual, human-only setup steps (no dashboard access
-from a coding agent) — see [ADR-0004](decisions/0004-datenbank-postgres-supabase.md).
+Vercel project creation/connection and the real Supabase/Strava/AI
+Gateway credentials remain manual, human-only setup steps (no dashboard
+access from a coding agent) — see [ADR-0004](decisions/0004-datenbank-postgres-supabase.md).
 
 ## System context
 
@@ -24,10 +23,13 @@ External dependencies:
 
 - **Strava API** (OAuth + webhooks) as the sole data source for running
   activities — see [ADR-0002](decisions/0002-datenquelle-strava.md).
-- **Anthropic API (Claude)** for the chat layer (onboarding dialog and
-  plan adjustments), including tool use for structured plan updates —
-  connected via the Vercel AI SDK, see
-  [ADR-0003](decisions/0003-chat-layer-vercel-ai-sdk.md).
+- **Claude, via Vercel AI Gateway,** for the chat layer (onboarding
+  dialog and plan adjustments), including tool use for structured plan
+  updates — connected via the Vercel AI SDK (`streamText`, a plain
+  `"anthropic/claude-sonnet-5"` model-id string, no direct Anthropic
+  provider package), see
+  [ADR-0003](decisions/0003-chat-layer-vercel-ai-sdk.md) and
+  [ADR-0006](decisions/0006-vercel-ai-gateway.md).
 - **Postgres, hosted on Supabase**, as the only data store — connected
   via Prisma's `@prisma/adapter-pg` driver adapter (pooled connection at
   runtime, direct connection for migrations). See
@@ -62,8 +64,8 @@ repository/
 │   └── api/                Next.js API routes — the only way to mutate plan data
 │       ├── strava/oauth/   OAuth connect flow (Spec 1, not yet implemented)
 │       ├── strava/webhook/ Webhook endpoint for new activities (Spec 1, not yet implemented)
-│       └── chat/           Vercel AI SDK + Anthropic integration, tool definitions
-│                           (Spec 3, Spec 5, ADR-0003 — not yet implemented)
+│       └── chat/           Vercel AI SDK, Claude via AI Gateway, tool definitions
+│                           (Spec 3, Spec 5, ADR-0003, ADR-0006)
 ├── prisma/                 Schema (currently empty — see "Status" above) + migrations
 ├── proxy.ts                Next.js 16's renamed `middleware.ts` — refreshes the
 │                           Supabase session cookie on every request (ADR-0005)
@@ -82,9 +84,14 @@ The plan data model (`Plan`, `Milestone`, `TrainingWeek`, `PlannedSession`,
 `Activity`, `StravaConnection`) is fully specified in
 [Spec 1](specs/01-strava-sync/spec.md) and
 [Spec 2](specs/02-plan-datenmodell/spec.md) — not duplicated here, see
-there. As of Epic A, none of these models exist in `prisma/schema.prisma`
-yet; see `docs/specs/02-plan-datenmodell/tickets.md` for the incremental,
-per-epic rollout.
+there. None of these models exist in `prisma/schema.prisma` yet. They are
+deliberately not created in one shot; each is added when the spec that
+actually consumes it is implemented, so the schema never carries a model
+with no code exercising it: `Activity` with Spec 1 (Strava sync); `Plan`,
+`Milestone`, `TrainingWeek`, `PlannedSession` with Spec 3 (onboarding —
+the flow that actually creates a `Plan`), including the onboarding-intake
+fields on `Plan` added by
+[ADR-0008](decisions/0008-full-horizon-deterministic-plan-generation.md).
 
 ## Critical flows
 
@@ -92,14 +99,22 @@ per-epic rollout.
    activity from the Strava API → deduplicates via `stravaActivityId` →
    stores it as an `Activity` → available to the dashboard and chat
    context.
-2. **Onboarding** (Spec 3): Chat asks for the key inputs → Claude
-   generates a structured plan proposal (JSON) → user confirms → the plan
-   is persisted to `Plan`/`Milestone`/`TrainingWeek`/`PlannedSession`.
+2. **Onboarding** (Spec 3): Chat asks for the key inputs (including day/
+   time-budget and risk-stratification questions added in
+   [ADR-0008](decisions/0008-full-horizon-deterministic-plan-generation.md))
+   → a deterministic progression algorithm computes the full plan for the
+   whole horizon (capped at 12 months), Claude only writes the free-text
+   phase/session prose within that structure → user confirms → the plan
+   is persisted to `Plan`/`Milestone`/`TrainingWeek`/`PlannedSession` for
+   the full horizon.
 3. **Chat-based adjustment** (Spec 5): User request in chat → Claude gets
-   the current plan state + recent activities as context → identifies the
-   affected field → checks it against training principles (spike rule,
-   see `docs/research/`) → changes it in a targeted way, warns on a
-   violation instead of silently applying it.
+   the current plan state + recent activities as context → either
+   identifies the affected field and changes it in a targeted way, or —
+   for a full replan (ADR-0008) — re-runs the progression algorithm over
+   the not-yet-completed part of the plan; checks either kind of change
+   against training principles (spike rule, see `docs/research/`) and
+   warns on a violation instead of silently applying it; a replan outside
+   onboarding additionally requires explicit confirmation before applying.
 
 ## Cross-cutting concerns
 
@@ -120,22 +135,12 @@ per-epic rollout.
   builds for `main`; PRs get none) → GitHub Actions runs `ci`
   (lint/typecheck/build) then `e2e` → only once both pass does a
   `promote-production` job call the Vercel API to promote that build to
-  Production. See [ticket A3](specs/00-fundament/tickets.md).
+  Production.
 
 ## ADR index
 
-Binding architecture decisions live as ADRs in
-[docs/decisions/](decisions/README.md):
-
-- [ADR-0001](decisions/0001-app-name-tempora.md) — App name: Tempora
-- [ADR-0002](decisions/0002-datenquelle-strava.md) — Data source: Strava
-  instead of a direct Garmin sync
-- [ADR-0003](decisions/0003-chat-layer-vercel-ai-sdk.md) — Chat layer
-  implementation: Vercel AI SDK
-- [ADR-0004](decisions/0004-datenbank-postgres-supabase.md) — Database:
-  Postgres on Supabase instead of local SQLite
-- [ADR-0005](decisions/0005-multi-user-supabase-auth.md) — Multi-user
-  support via Supabase Auth
+Binding architecture decisions live as ADRs, indexed in
+[docs/decisions/README.md](decisions/README.md) — not duplicated here.
 
 ## Related documentation
 

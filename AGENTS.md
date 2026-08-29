@@ -28,10 +28,14 @@ name: Tempora). There are currently no nested `AGENTS.md` files.
   `NEXT_PUBLIC_SUPABASE_URL`/`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
   (Supabase Auth, see
   [ADR-0005](docs/decisions/0005-multi-user-supabase-auth.md)),
-  `STRAVA_CLIENT_ID`/`STRAVA_CLIENT_SECRET`, `ANTHROPIC_API_KEY`,
-  `DEEPGRAM_API_KEY` (voice-memo transcription in the onboarding chat, see
-  `docs/specs/03-onboarding/spec.md`) — details in
-  `docs/constitution.md`. Supabase project creation is a human-only
+  `STRAVA_CLIENT_ID`/`STRAVA_CLIENT_SECRET`, `AI_GATEWAY_API_KEY` (Claude
+  via Vercel AI Gateway, see
+  [ADR-0006](docs/decisions/0006-vercel-ai-gateway.md); also covers
+  onboarding voice-memo transcription, see
+  [ADR-0007](docs/decisions/0007-vercel-ai-gateway-transcription.md) — not
+  needed once deployed on Vercel itself, where OIDC is used automatically)
+  — details in `docs/constitution.md`. Supabase project creation is a
+  human-only
   setup step (no dashboard access from a coding agent); local dev
   requires a real, reachable Supabase project — there is no offline
   SQLite fallback. `proxy.ts` calls Supabase's Auth server on every
@@ -41,8 +45,8 @@ name: Tempora). There are currently no nested `AGENTS.md` files.
 
 ## Exact commands
 
-Epic A (project setup, CI/deploy) is done; the Spec 2 data model is still
-empty (see `docs/specs/02-plan-datenmodell/tickets.md`).
+Foundation setup (project setup, CI/deploy) is done; the Spec 2 data model
+is still empty (see `docs/architecture.md` "Data model").
 
 | Purpose | Command | Expected result |
 | --- | --- | --- |
@@ -65,7 +69,7 @@ Playwright (`playwright.config.ts`, tests in `e2e/`): `e2e/landing.spec.ts`,
 expected heading/form visible, no console errors), no real signup/login
 round trip yet (`[NEEDS CONFIRMATION]`: needs a seeded test account plus a
 decision on Supabase's email-confirmation setting, both human/
-dashboard-only — see ticket A4 in `docs/specs/00-fundament/tickets.md`).
+dashboard-only — see [ADR-0005](docs/decisions/0005-multi-user-supabase-auth.md)).
 The config auto-starts `npm run dev` as the test server (`webServer`) — no
 need to start it manually first. Since `proxy.ts` calls Supabase's Auth
 server on every request (ADR-0005), `npm run test:e2e` needs real
@@ -174,7 +178,7 @@ conflicts with this project's deploy path below.
 | Product/scope question | `CLAUDE.md` ("What this is") + `docs/decisions/README.md` |
 | New feature/spec | `docs/specs/<name>/spec.md` (EARS acceptance criteria) |
 | UI/design question | `docs/design-system.md` (tokens, components) + the "Design" section of the relevant spec |
-| Implementation order | `docs/specs/<name>/tickets.md`, overview in `docs/specs/README.md` |
+| Implementation task tracking | GitHub Issues, one milestone per spec — see `docs/specs/README.md` and `docs/CONTRIBUTING.md` "Specs vs. issues vs. ADRs" |
 | Contribution workflow | `docs/CONTRIBUTING.md` |
 | Coaching/training logic | `docs/research/` |
 

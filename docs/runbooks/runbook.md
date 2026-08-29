@@ -18,9 +18,8 @@
 
 This runbook is meant to cover operating the Tempora app once it's
 deployed (Vercel Free Tier, see `docs/architecture.md`). **Current state:**
-the repository contains no code yet
-(`docs/specs/00-fundament/tickets.md` hasn't been implemented) — there's
-no running instance, no dashboards, no alerts. This section and the ones
+no Vercel project exists yet — there's no running instance, no
+dashboards, no alerts. This section and the ones
 below MUST be filled in with real, verified values once a first
 deployment exists, instead of publishing plausible but unverified
 procedures.
@@ -88,7 +87,7 @@ GitHub-admin dashboard access):**
    Variables): add every var from `.env.example`
    (`DATABASE_URL`/`DIRECT_URL`, `NEXT_PUBLIC_SUPABASE_URL`/
    `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `STRAVA_CLIENT_ID`/
-   `STRAVA_CLIENT_SECRET`, `ANTHROPIC_API_KEY`) with the real values, for
+   `STRAVA_CLIENT_SECRET`, `AI_GATEWAY_API_KEY`) with the real values, for
    both the Production and Preview environments (the `main` branch build
    that later gets promoted is technically a Preview deployment while it
    waits on `ci`/`e2e`, so it needs working env vars too). Never put
@@ -138,8 +137,8 @@ once deployed.
 
 ### Renew/check the Strava webhook subscription
 
-`[NEEDS CONFIRMATION: procedure follows with ticket B2 from
-docs/specs/01-strava-sync/tickets.md, once the webhook endpoint exists]`
+`[NEEDS CONFIRMATION: procedure follows once the webhook endpoint exists
+— see issue B2, milestone 01-strava-sync]`
 
 ## Diagnostics
 
@@ -156,7 +155,10 @@ docs/specs/01-strava-sync/tickets.md, once the webhook endpoint exists]`
 
 ### Chat isn't generating a plan proposal, or generates a broken one
 
-1. Check whether the Anthropic API key is valid
+1. Check whether the AI Gateway API key (`AI_GATEWAY_API_KEY`) is valid —
+   or, for a deployment on Vercel itself, whether the automatic OIDC
+   token is being picked up (see
+   [ADR-0006](../decisions/0006-vercel-ai-gateway.md))
 2. Check whether the tool definition (Spec 3) matches the current Prisma
    schema (Spec 2)
 

@@ -1,7 +1,10 @@
 # ADR-0003: Chat layer implementation — Vercel AI SDK
 
 ## Status
-Decided — 2026-08-25
+Decided — 2026-08-25 (amended by [ADR-0006](0006-vercel-ai-gateway.md)
+2026-08-28 — the model-provider connection below, `@ai-sdk/anthropic`, is
+replaced by Vercel AI Gateway; the choice of the Vercel AI SDK itself, and
+of Claude as the model, are unaffected and still governed by this ADR)
 
 ## Context
 The chat layer (onboarding dialog, [Spec 3](../specs/03-onboarding/spec.md);
@@ -36,7 +39,11 @@ The chat layer is built with the **Vercel AI SDK**.
 
 - `@ai-sdk/anthropic` remains the model provider — **no** change to the
   existing choice of Anthropic/Claude as the LLM, only to the
-  client/server integration.
+  client/server integration. **Superseded by
+  [ADR-0006](0006-vercel-ai-gateway.md):** the model provider is now
+  Vercel AI Gateway (a plain `"anthropic/claude-sonnet-5"` model-id
+  string, no `@ai-sdk/anthropic` package) — still Claude, still called
+  through the same `streamText`/`useChat` integration described below.
 - API routes under `app/api/chat/` use `streamText` (free-form chat
   responses) or `generateObject`/tool definitions with a Zod schema
   (structured plan proposal, targeted plan updates).
@@ -46,8 +53,9 @@ The chat layer is built with the **Vercel AI SDK**.
   parsed out of prose.
 
 ## Consequences
-- New dependencies: `ai`, `@ai-sdk/anthropic` (added to `package.json`
-  with Epic A1/A2).
+- New dependencies: `ai` (added to `package.json` with Epic A1/A2);
+  `@ai-sdk/anthropic` was also added here but has since been removed
+  again per [ADR-0006](0006-vercel-ai-gateway.md).
 - [Ticket C1/C2](../specs/03-onboarding/tickets.md) (chat UI scaffold,
   Anthropic integration) are built directly against `useChat`/
   `streamText`, not against a homegrown streaming solution.
@@ -61,6 +69,8 @@ The chat layer is built with the **Vercel AI SDK**.
   implemented.
 
 ## Related documentation
+- Amended by: [ADR-0006](0006-vercel-ai-gateway.md) (model-provider
+  connection: Vercel AI Gateway instead of `@ai-sdk/anthropic`)
 - Architecture: [docs/architecture.md](../architecture.md)
 - Onboarding design (screens that show this chat UI):
   [docs/specs/03-onboarding/spec.md](../specs/03-onboarding/spec.md)
