@@ -1,22 +1,38 @@
-// Phase-gate rules (pipeline step "phases"). Gates are keyed to volume
-// reached, not the calendar, so a runner who starts at high volume gets
-// quality work from week 1 and phase boundaries stay adaptive rather than
-// fixed to a calendar — see docs/research/onboarding-und-trainingsmethodik.md.
+// Phase-gate rules (pipeline step "phases"). Gates are keyed to weeks of
+// consistent base training completed, tiered by experience, not to an
+// absolute weekly-volume figure — no RCT ties intensity readiness to a
+// specific km/week number, and gating on volume alone ignores that
+// beginners carry a higher baseline injury risk than returning/continuous
+// runners at the same volume. Tempo and interval share a single base-period
+// gate rather than each having their own — the RCT this is grounded in
+// (Run Clever) tested one base period before intensity progression of any
+// kind, and staggering tempo/interval further apart on the calendar isn't
+// independently evidenced; once unlocked, per-session volume/rep caps do
+// the safety work instead (see session.ts's INTERVAL_SESSION). See
+// docs/research/intervalltraining-nach-zieldistanz.md Recommendation (a).
 
-import { PHASE_VOLUME_GATES, RACE_BLOCK_WEEKS } from "../constants";
+import { QUALITY_BASE_GATE_WEEKS, RACE_BLOCK_WEEKS } from "../constants";
+import type { Experience } from "../types";
 import { defineRule } from "./define";
 
 export const tempoGateRule = defineRule({
   id: "phase.tempo_gate",
   step: "phases",
-  apply({ volumeKm }: { volumeKm: number }) {
-    const value = volumeKm >= PHASE_VOLUME_GATES.tempoKm;
+  apply({
+    weekNumber,
+    experience,
+  }: {
+    weekNumber: number;
+    experience: Experience;
+  }) {
+    const gateWeeks = QUALITY_BASE_GATE_WEEKS[experience];
+    const value = weekNumber >= gateWeeks;
     return {
       value,
-      inputs: { volumeKm, gateKm: PHASE_VOLUME_GATES.tempoKm },
+      inputs: { weekNumber, experience, gateWeeks },
       outcome: value
-        ? `${volumeKm.toFixed(1)} km/wk unlocks tempo/threshold work`
-        : `${volumeKm.toFixed(1)} km/wk — below the ${PHASE_VOLUME_GATES.tempoKm} km tempo gate`,
+        ? `Week ${weekNumber} — ${gateWeeks}-week (${experience}) base period complete, unlocks tempo/threshold work`
+        : `Week ${weekNumber} — below the ${gateWeeks}-week (${experience}) base-period gate`,
     };
   },
 });
@@ -24,14 +40,21 @@ export const tempoGateRule = defineRule({
 export const intervalGateRule = defineRule({
   id: "phase.interval_gate",
   step: "phases",
-  apply({ volumeKm }: { volumeKm: number }) {
-    const value = volumeKm >= PHASE_VOLUME_GATES.intervalKm;
+  apply({
+    weekNumber,
+    experience,
+  }: {
+    weekNumber: number;
+    experience: Experience;
+  }) {
+    const gateWeeks = QUALITY_BASE_GATE_WEEKS[experience];
+    const value = weekNumber >= gateWeeks;
     return {
       value,
-      inputs: { volumeKm, gateKm: PHASE_VOLUME_GATES.intervalKm },
+      inputs: { weekNumber, experience, gateWeeks },
       outcome: value
-        ? `${volumeKm.toFixed(1)} km/wk unlocks VO2max interval work`
-        : `${volumeKm.toFixed(1)} km/wk — below the ${PHASE_VOLUME_GATES.intervalKm} km interval gate`,
+        ? `Week ${weekNumber} — ${gateWeeks}-week (${experience}) base period complete, unlocks VO2max interval work`
+        : `Week ${weekNumber} — below the ${gateWeeks}-week (${experience}) base-period gate`,
     };
   },
 });

@@ -120,19 +120,37 @@ describe("buildCurve volume progression", () => {
 });
 
 describe("buildCurve phase gates", () => {
-  it("stays in 'base' phase below the tempo volume gate (28 km/wk), outside the always-'race' final weeks", () => {
-    const w = weeks(baseInput());
+  it("stays in 'base' phase until the beginner base-period gate (week 8) is reached, outside the always-'race' final weeks", () => {
+    const w = weeks(baseInput()); // experience: "beginner"
     for (const week of w.slice(0, -4)) {
-      if (week.targetVolumeKm < 28) expect(week.phase).toBe("base");
+      if (week.weekNumber < 8) expect(week.phase).toBe("base");
     }
   });
 
-  it("only reaches 'interval' phase once the interval volume gate (42 km/wk) is reached", () => {
-    const w = weeks(baseInput());
+  it("only reaches 'interval' phase once the beginner base-period gate (week 8) is reached", () => {
+    const w = weeks(baseInput()); // experience: "beginner"
     for (const week of w) {
       if (week.phase === "interval")
-        expect(week.targetVolumeKm).toBeGreaterThanOrEqual(42);
+        expect(week.weekNumber).toBeGreaterThanOrEqual(8);
     }
+  });
+
+  it("shares one gate week between tempo and interval — 'tempo' phase never appears since interval unlocks the same week", () => {
+    // Documents the deliberate merge (see constants.ts QUALITY_BASE_GATE_WEEKS):
+    // once the shared base-period gate is reached, curve.ts's phase resolution
+    // checks intervalUnlocked before tempoUnlocked, so 'tempo' is unreachable
+    // by design — per-session caps, not a staggered calendar gate, bound risk.
+    const w = weeks(baseInput());
+    expect(w.some((week) => week.phase === "tempo")).toBe(false);
+  });
+
+  it("unlocks tempo/interval work sooner for a returning or continuous runner than a beginner", () => {
+    const firstNonBaseWeek = (experience: PlanInput["experience"]) =>
+      weeks(baseInput({ experience })).find((week) => week.phase !== "base")
+        ?.weekNumber;
+    const beginnerWeek = firstNonBaseWeek("beginner");
+    expect(firstNonBaseWeek("returner")).toBeLessThan(beginnerWeek ?? 0);
+    expect(firstNonBaseWeek("continuous")).toBeLessThan(beginnerWeek ?? 0);
   });
 
   it("puts the final 4 weeks before targetDate in the 'race' phase regardless of volume", () => {

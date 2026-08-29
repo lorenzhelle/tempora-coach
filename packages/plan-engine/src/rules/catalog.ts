@@ -93,17 +93,17 @@ export const RULE_CATALOG: Record<RuleId, CatalogEntry> = {
   "phase.tempo_gate": {
     title: "When tempo work starts",
     plain:
-      "Tempo/threshold sessions only start once your weekly volume is high enough to support them safely.",
+      "Tempo/threshold sessions start once you've run a consistent base for a few weeks — longer if you're new to running — with the session itself kept small at first.",
     technical:
-      "Tempo/threshold work unlocks once weekly volume reaches 28 km, matching the point in the 6-month mileage table where tempo/threshold work is first introduced.",
+      "Tempo/threshold work unlocks once you've reached week 8 (beginner) or week 4 (returner/continuous) of consistent base training — an experience-tiered weeks-of-base gate, not an absolute weekly-volume figure. Shares its gate week with phase.interval_gate.",
     source: RULE_SOURCES["phase.tempo_gate"],
   },
   "phase.interval_gate": {
     title: "When interval work starts",
     plain:
-      "VO2max interval sessions only start once your weekly volume is high enough to support them safely.",
+      "VO2max interval sessions unlock on the same schedule as tempo work — what keeps early sessions safe is their small size, not a longer wait.",
     technical:
-      "VO2max interval work unlocks once weekly volume reaches 42 km, matching the point in the 6-month mileage table where sub-goal-pace intervals are first introduced.",
+      "VO2max interval work unlocks once you've reached week 8 (beginner) or week 4 (returner/continuous) of consistent base training — the same gate week as phase.tempo_gate, not a separately-timed one; per-session volume/rep caps (see session.interval_structure) bound the risk of an early session instead.",
     source: RULE_SOURCES["phase.interval_gate"],
   },
   "phase.race_block": {
@@ -282,9 +282,9 @@ export const RULE_CATALOG: Record<RuleId, CatalogEntry> = {
   "session.interval_structure": {
     title: "Interval session structure",
     plain:
-      "Interval sessions are built from short, repeated hard efforts with easy jogging in between, sized to your current volume.",
+      "Interval sessions are built from short, repeated hard efforts with easy jogging in between, sized to your current volume and capped so a single session never asks for too much.",
     technical:
-      "A simplified structure (work distance sized as a fraction of weekly volume, at Interval pace) rather than a fully individualized rep scheme — a first-version simplification.",
+      "Session volume is capped at the lesser of 10 km and 8% of weekly volume (Daniels); rep distance is chosen so each rep takes 3-5 minutes at Interval pace; recovery is set close to the work interval's own duration (~90% of it); rep count falls out of the session cap divided by rep distance, floored at 3 reps.",
     source: RULE_SOURCES["session.interval_structure"],
   },
   "check.spike_ceiling": {

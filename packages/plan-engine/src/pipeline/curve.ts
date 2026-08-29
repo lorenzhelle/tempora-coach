@@ -278,8 +278,16 @@ export function buildCurve(input: PlanInput, tracer: Tracer): CurveResult {
 
     const weeksToRace = horizonWeeks - weekNumber + 1;
     const inRaceBlock = tracer.run(raceBlockRule, { weeksToRace }, target);
-    const intervalUnlocked = tracer.run(intervalGateRule, { volumeKm }, target);
-    const tempoUnlocked = tracer.run(tempoGateRule, { volumeKm }, target);
+    const intervalUnlocked = tracer.run(
+      intervalGateRule,
+      { weekNumber, experience: input.experience },
+      target,
+    );
+    const tempoUnlocked = tracer.run(
+      tempoGateRule,
+      { weekNumber, experience: input.experience },
+      target,
+    );
     const phase: Phase = inRaceBlock
       ? "race"
       : intervalUnlocked

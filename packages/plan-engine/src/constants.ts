@@ -5,7 +5,7 @@
 // and docs/research/progression-und-verletzungspraevention.md for the
 // underlying research.
 
-import type { RuleId, TrainingZone } from "./types";
+import type { Experience, RuleId, TrainingZone } from "./types";
 
 export const RULE_SOURCES: Record<RuleId, string> = {
   "fitness.vdot_from_result": "Daniels & Gilbert 1979 (Oxygen Power)",
@@ -21,9 +21,9 @@ export const RULE_SOURCES: Record<RuleId, string> = {
     "engine heuristic (~1 VDOT point/month budget) — not a cited figure",
   "goal.milestones_from_riegel": "Riegel 1977, power law T2 = T1*(D2/D1)^1.06",
   "phase.tempo_gate":
-    "docs/research/progression-und-verletzungspraevention.md, 6-month mileage table (month 4)",
+    "Ramskov et al. 2018 (JOSPT; Run Clever trial, 8-week preconditioning period before either arm progressed intensity or volume) for the beginner figure; returner/continuous is shortened per the faster cardiovascular/muscular rebuild in progression-und-verletzungspraevention.md §A2. See docs/research/intervalltraining-nach-zieldistanz.md Recommendation (a).",
   "phase.interval_gate":
-    "docs/research/progression-und-verletzungspraevention.md, 6-month mileage table (month 6)",
+    "Same basis and gate as phase.tempo_gate — tempo and interval share one base-period gate rather than a separately-timed one; see docs/research/intervalltraining-nach-zieldistanz.md Recommendation (a).",
   "phase.race_block": "engine rule — final weeks before the goal race",
   "phase.maintenance_mesocycles":
     "docs/research/designing-a-plan-generator.md §5 (repeating mesocycles for a long horizon)",
@@ -62,7 +62,8 @@ export const RULE_SOURCES: Record<RuleId, string> = {
   "session.pace_from_zone": "Daniels' Running Formula, 3rd ed. (2014)",
   "session.duration_from_distance":
     "engine arithmetic — duration = distance x pace",
-  "session.interval_structure": "Seiler (interval work-bout length guidance)",
+  "session.interval_structure":
+    "Daniels' Running Formula, 3rd ed. (I-pace: session capped at the lesser of 10 km and 8% of weekly volume; individual reps 3-5 min; recovery ~= work time) — figures corroborated across secondary sources, not verified against the primary text; rep-distance/rep-count derivation is engine synthesis. See docs/research/intervalltraining-nach-zieldistanz.md Block F.",
   "check.spike_ceiling": "Frandsen et al. 2025 / RUNSAFE, BJSM",
   "check.easy_share": "Seiler; the 80/20 principle",
   "check.hard_spacing": "engine rule — hard/easy alternation",
@@ -152,8 +153,38 @@ export const FEASIBILITY_VDOT_BUDGET_PER_MONTH = 1.0;
 /** Below this fraction of the budget, a goal is 'realistic'; up to the full budget, 'ambitious'; beyond it, 'unrealistic'. */
 export const FEASIBILITY_REALISTIC_FRACTION = 0.6;
 
-/** Weekly-volume thresholds that unlock tempo/threshold and VO2max-interval work (see phase.tempo_gate / phase.interval_gate). */
-export const PHASE_VOLUME_GATES = { tempoKm: 28, intervalKm: 42 };
+/**
+ * Weeks of consistent base training required before quality work (tempo/
+ * threshold AND VO2max-interval — a single shared gate, not a separate one
+ * per type) unlocks, tiered by experience (see phase.tempo_gate /
+ * phase.interval_gate). Not an absolute weekly-volume figure — no RCT ties
+ * intensity readiness to a specific km/week number, and a flat number
+ * applied regardless of experience (an earlier version of this constant)
+ * ignores that beginners carry ~2x the baseline injury risk of experienced
+ * runners (Videbaek et al. 2015; Kemler et al. 2018) while returners rebuild
+ * cardiovascular/muscular fitness faster (see
+ * progression-und-verletzungspraevention.md §A2).
+ *
+ * The beginner value reuses the Run Clever trial's 8-week preconditioning
+ * period directly (Ramskov et al. 2018, JOSPT; Malisoux et al. 2016 trial
+ * design) — the one RCT that actually tests readiness-to-progress-intensity,
+ * which used an identical 8-week base period before *either* arm (intensity
+ * or volume progression) started, not a separate number per workout type.
+ * An earlier version of this constant used a coaching-consensus 8-12 week
+ * range with a further, uncited 2-week gap between tempo and interval —
+ * that gap had no independent evidentiary basis and contradicted the
+ * research doc's own real-world cross-check (Nike's beginner-oriented 5K
+ * plan introduces multiple quality-work types together from week 1). Once
+ * unlocked, intensity is kept safe by the per-session volume/rep caps
+ * (INTERVAL_SESSION and the equivalent threshold session cap), not by
+ * staggering tempo and interval further apart on the calendar. See
+ * docs/research/intervalltraining-nach-zieldistanz.md Recommendation (a).
+ */
+export const QUALITY_BASE_GATE_WEEKS: Record<Experience, number> = {
+  beginner: 8,
+  returner: 4,
+  continuous: 4,
+};
 /** The final weeks before targetDate are always the 'race' phase, regardless of volume. */
 export const RACE_BLOCK_WEEKS = 4;
 
@@ -213,9 +244,22 @@ export const EASY_SHARE = {
 };
 export const STRENGTH_SESSIONS_PER_WEEK = 2;
 
-/** Tempo/interval session distance, as a fraction of weekly volume, clamped to a sane range. */
-export const QUALITY_SESSION = {
-  shareOfWeeklyVolume: 0.15,
-  minKm: 3,
-  maxKm: 10,
+/**
+ * Daniels' Running Formula (3rd ed.) I-pace prescription: session volume
+ * capped at the lesser of an absolute distance and a fraction of weekly
+ * volume; individual reps bounded to 3-5 min (Daniels caps reps here to
+ * avoid anaerobic/lactate spillover); recovery close to the work interval's
+ * own duration. `repDistanceCandidatesKm` are the "clean" track/road
+ * distances the rep-distance calculation picks from. See
+ * docs/research/intervalltraining-nach-zieldistanz.md Block F /
+ * "Implications for session.interval_structure".
+ */
+export const INTERVAL_SESSION = {
+  shareOfWeeklyVolume: 0.08,
+  maxSessionKm: 10,
+  repDurationMinRange: [3, 5] as const,
+  /** Daniels: recovery is roughly equal to, or slightly less than, work time. */
+  restToWorkRatio: 0.9,
+  minRepCount: 3,
+  repDistanceCandidatesKm: [0.2, 0.4, 0.8, 1.0, 1.2, 1.6],
 };
