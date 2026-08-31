@@ -27,11 +27,13 @@ export function VoiceRecorder({
   onTranscribed,
   onPartialTranscript,
   onRecordingChange,
+  onTranscribingChange,
   disabled,
 }: {
   onTranscribed: (text: string) => void;
   onPartialTranscript?: (text: string) => void;
   onRecordingChange?: (recording: boolean) => void;
+  onTranscribingChange?: (transcribing: boolean) => void;
   disabled?: boolean;
 }) {
   const [recording, setRecording] = useState(false);
@@ -146,6 +148,7 @@ export function VoiceRecorder({
     setRecording(false);
     onRecordingChange?.(false);
     setTranscribing(false);
+    onTranscribingChange?.(false);
     cleanupAudio();
   };
 
@@ -228,6 +231,7 @@ export function VoiceRecorder({
     setRecording(false);
     onRecordingChange?.(false);
     setTranscribing(true);
+    onTranscribingChange?.(true);
     try {
       controllerRef.current?.close();
       controllerRef.current = null;
@@ -240,6 +244,7 @@ export function VoiceRecorder({
       setError("Transkription fehlgeschlagen — bitte erneut versuchen.");
     } finally {
       setTranscribing(false);
+      onTranscribingChange?.(false);
     }
   };
 

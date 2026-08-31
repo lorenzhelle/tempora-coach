@@ -15,6 +15,7 @@ export function OnboardingChat() {
   const { messages, sendMessage, status } = useChat();
   const [input, setInput] = useState("");
   const [voiceRecording, setVoiceRecording] = useState(false);
+  const [voiceTranscribing, setVoiceTranscribing] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const isBusy = status === "submitted" || status === "streaming";
@@ -82,7 +83,10 @@ export function OnboardingChat() {
                 <QuickReplies
                   key={key}
                   options={options}
-                  onSelect={send}
+                  onSelect={(option) => {
+                    setInput(option);
+                    focusInput();
+                  }}
                   disabled={isBusy}
                 />
               );
@@ -116,12 +120,13 @@ export function OnboardingChat() {
         className="flex shrink-0 items-center gap-2.5 border-t border-border px-5 py-4"
       >
         <VoiceRecorder
-          onTranscribed={send}
+          onTranscribed={setInput}
           onPartialTranscript={setInput}
           onRecordingChange={(recording) => {
             setVoiceRecording(recording);
             if (recording) setInput("");
           }}
+          onTranscribingChange={setVoiceTranscribing}
           disabled={isBusy}
         />
         <input
@@ -130,13 +135,15 @@ export function OnboardingChat() {
           value={input}
           onChange={(event) => setInput(event.target.value)}
           placeholder="Schreib deine Antwort…"
-          disabled={isBusy || voiceRecording}
+          disabled={isBusy || voiceRecording || voiceTranscribing}
           className="flex-1 rounded-control border border-border bg-surface-2 px-3.5 py-2.5 text-[15px] focus:-outline-offset-1 focus:outline-[1.5px] focus:outline-accent"
         />
         <button
           type="submit"
           className="cursor-pointer rounded-control bg-accent px-4 py-2.5 font-heading font-semibold text-accent-ink disabled:cursor-not-allowed disabled:opacity-50"
-          disabled={isBusy || voiceRecording || !input.trim()}
+          disabled={
+            isBusy || voiceRecording || voiceTranscribing || !input.trim()
+          }
         >
           Senden
         </button>
