@@ -49,7 +49,7 @@ External dependencies:
   overlap with Prisma to resolve. Don't add PostgREST-style data access via
   the Supabase client as an alternative to Prisma: it would require RLS on
   every table — a second authorization system running alongside the
-  API-route checks DATA-001 already requires — and would make the Spec 2
+  API-route-only mutation rule below — and would make the Spec 2
   relational queries (`Plan → Milestone → TrainingWeek → PlannedSession →
   Activity`, the spike-rule lookback) harder to express than Prisma's query
   builder. Keep data access on Prisma; keep the Supabase client on Auth.
@@ -69,6 +69,10 @@ repository/
 ├── prisma/                 Schema (currently empty — see "Status" above) + migrations
 ├── proxy.ts                Next.js 16's renamed `middleware.ts` — refreshes the
 │                           Supabase session cookie on every request (ADR-0005)
+├── packages/               Framework-agnostic logic, npm workspaces (not `lib/`)
+│   └── plan-engine/        @tempora/plan-engine — fitness index, training paces,
+│                           progression/volume/allocation rules. Pure, no DB/
+│                           network/clock access. Vitest-tested (ADR-0009).
 └── lib/
     ├── prisma.ts           Prisma client singleton
     └── supabase/           Browser/server Supabase clients + the proxy.ts session helper (ADR-0005)
@@ -90,8 +94,7 @@ actually consumes it is implemented, so the schema never carries a model
 with no code exercising it: `Activity` with Spec 1 (Strava sync); `Plan`,
 `Milestone`, `TrainingWeek`, `PlannedSession` with Spec 3 (onboarding —
 the flow that actually creates a `Plan`), including the onboarding-intake
-fields on `Plan` added by
-[ADR-0008](decisions/0008-full-horizon-deterministic-plan-generation.md).
+fields on `Plan` (see [Spec 2](specs/02-plan-datenmodell/spec.md)).
 
 ## Critical flows
 
@@ -100,18 +103,18 @@ fields on `Plan` added by
    stores it as an `Activity` → available to the dashboard and chat
    context.
 2. **Onboarding** (Spec 3): Chat asks for the key inputs (including day/
-   time-budget and risk-stratification questions added in
-   [ADR-0008](decisions/0008-full-horizon-deterministic-plan-generation.md))
-   → a deterministic progression algorithm computes the full plan for the
-   whole horizon (capped at 12 months), Claude only writes the free-text
-   phase/session prose within that structure → user confirms → the plan
-   is persisted to `Plan`/`Milestone`/`TrainingWeek`/`PlannedSession` for
-   the full horizon.
+   time-budget and risk-stratification questions the onboarding intake
+   requires — see Spec 3) → `packages/plan-engine`'s `generatePlan()`
+   computes the full plan for the whole horizon (capped at 12 months),
+   Claude only writes the free-text phase/session prose within that
+   structure → user confirms → the plan is persisted to
+   `Plan`/`Milestone`/`TrainingWeek`/`PlannedSession` for the full
+   horizon.
 3. **Chat-based adjustment** (Spec 5): User request in chat → Claude gets
    the current plan state + recent activities as context → either
    identifies the affected field and changes it in a targeted way, or —
-   for a full replan (ADR-0008) — re-runs the progression algorithm over
-   the not-yet-completed part of the plan; checks either kind of change
+   for a full replan — re-runs `generatePlan()` over the not-yet-completed
+   part of the plan; checks either kind of change
    against training principles (spike rule, see `docs/research/`) and
    warns on a violation instead of silently applying it; a replan outside
    onboarding additionally requires explicit confirmation before applying.

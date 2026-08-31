@@ -4,7 +4,63 @@
 //
 // See ADR-0009 for why this is a workspace package, and
 // docs/research/designing-a-plan-generator.md for the design this
-// implements. Fitness math, the tracing primitive, and the rule set land
-// incrementally on top of this skeleton.
+// implements.
 
-export const PLAN_ENGINE_VERSION = "0.1.0";
+export { riegelPredict } from "./fitness/riegel";
+export {
+  paceZonesFromVdot,
+  percentVo2Max,
+  vdotFromResult,
+  vo2Cost,
+} from "./fitness/vdot";
+export type {
+  IntakeFieldKey,
+  IntakeFieldMeta,
+  IntakeStatus,
+  PartialIntakeProfile,
+} from "./intake";
+export {
+  dayOfWeekSchema,
+  evaluateIntake,
+  experienceSchema,
+  INTAKE_FIELDS,
+  intakeProfileSchema,
+  partialIntakeProfileSchema,
+  scheduleRegularitySchema,
+} from "./intake";
+export { generatePlan } from "./pipeline/index";
+export type { CatalogEntry } from "./rules/catalog";
+export { RULE_CATALOG } from "./rules/catalog";
+export type { RuleDefinition, RuleResult, TraceTarget } from "./rules/define";
+export { defineRule, Tracer } from "./rules/define";
+export {
+  danielsZonesRule,
+  riegelEquivalentRule,
+  vdotFromResultRule,
+} from "./rules/fitness";
+export type {
+  DayOfWeek,
+  Decision,
+  DecisionScope,
+  Experience,
+  FeasibilityVerdict,
+  FitnessConfidence,
+  FitnessIndex,
+  GeneratedPlan,
+  GoalInput,
+  IntakeProfile,
+  Milestone,
+  PaceZones,
+  PersonalBest,
+  Phase,
+  PipelineStep,
+  PlanInput,
+  PlannedSession,
+  PlanWeek,
+  RaceResult,
+  RuleId,
+  SessionType,
+  TrainingZone,
+  Violation,
+  ZonePace,
+} from "./types";

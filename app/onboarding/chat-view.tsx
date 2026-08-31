@@ -68,11 +68,10 @@ export function OnboardingChat() {
               );
             }
 
-            // Both tools execute immediately server-side (see
+            // suggestQuickReplies executes immediately server-side (see
             // app/api/chat/route.ts) purely so the tool call always gets a
-            // matching result; the actual UI is rendered from `input` here,
-            // as soon as it's available, regardless of whether the (unused)
-            // output has resolved yet too.
+            // matching result — its actual UI is rendered from `input` as
+            // soon as it's available, the (unused) output doesn't matter.
             if (
               part.type === "tool-suggestQuickReplies" &&
               (part.state === "input-available" ||
@@ -89,15 +88,19 @@ export function OnboardingChat() {
               );
             }
 
+            // generatePlan does real work (packages/plan-engine's
+            // generatePlan(), see app/api/chat/route.ts) — its `input` is
+            // just the intake profile the model submitted, not a plan.
+            // Only render once `output` (the computed PlanProposal) has
+            // actually resolved.
             if (
-              part.type === "tool-proposePlan" &&
-              (part.state === "input-available" ||
-                part.state === "output-available")
+              part.type === "tool-generatePlan" &&
+              part.state === "output-available"
             ) {
               return (
                 <PlanCard
                   key={key}
-                  plan={part.input as PlanProposal}
+                  plan={part.output as PlanProposal}
                   onRequestChange={focusInput}
                 />
               );
