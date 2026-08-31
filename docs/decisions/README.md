@@ -13,6 +13,15 @@ rewritten even when a later change makes a detail in it stale (e.g. a
 link to a since-renamed/removed file) — it's a historical record, not a
 living doc; a later ADR amends/supersedes it explicitly instead.
 
+**Exception:** an ADR that turns out to be a content decision (training
+methodology, product copy, which questions to ask) rather than an
+architecture one gets deleted outright instead of superseded, and its
+still-binding content moves into the spec it actually belongs in — see
+[ADR-0009](0009-plan-engine-package.md)'s "Related documentation" for a
+worked example (former ADR-0008). The no-delete rule above is about
+architecture history staying legible; it was never meant to pin a content
+decision to the ADR log just because it once lived there by accident.
+
 **When a decision needs an ADR:** it's hard or expensive to reverse, or a
 future agent could plausibly re-derive it differently without this
 record (choice of a vendor/provider, data source, or storage engine;
@@ -36,5 +45,11 @@ description instead.
   Vercel AI Gateway instead of a direct Anthropic provider
 - [ADR-0007](0007-vercel-ai-gateway-transcription.md) — Voice-memo
   transcription: Vercel AI Gateway instead of a direct Deepgram provider
-- [ADR-0008](0008-full-horizon-deterministic-plan-generation.md) — Full-
-  horizon plan generation via a deterministic progression algorithm
+- ~~ADR-0008~~ — was "Full-horizon plan generation via a deterministic
+  progression algorithm"; deleted (see the format-exception note above).
+  Its architecture decision is now [ADR-0009](0009-plan-engine-package.md);
+  its content decisions live in
+  [Spec 2](../specs/02-plan-datenmodell/spec.md) and
+  [Spec 3](../specs/03-onboarding/spec.md).
+- [ADR-0009](0009-plan-engine-package.md) — Deterministic plan generation
+  lives in a workspace package, `packages/plan-engine`

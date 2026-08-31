@@ -6,19 +6,17 @@ nagging").
 
 **Targeted edits vs. full replan:** most requests are targeted — change
 one field, leave the rest alone (AC 1). Some requests instead warrant a
-**full replan** — re-running the deterministic progression algorithm
-(Spec 2, ADR-0008) over the not-yet-completed part of the plan given
-updated inputs, e.g. "I was sick for a week" or a reported extended gap.
-The agent decides which kind of change a request needs; a full replan
-never modifies a `TrainingWeek`/`PlannedSession` already marked
-`completed`, and — unlike during onboarding, where a replan of the
-still-unconfirmed draft applies directly — a full replan here requires an
-explicit confirm step before applying (see AC below;
-[ADR-0008](../../decisions/0008-full-horizon-deterministic-plan-generation.md)).
-A separate, more
-surgical capability for manually moving a single session without a full
-replan is out of scope here — deferred to a future dashboard-editing
-ticket.
+**full replan** — re-running `packages/plan-engine`'s `generatePlan()`
+(Spec 2, [ADR-0009](../../decisions/0009-plan-engine-package.md)) over
+the not-yet-completed part of the plan given updated inputs, e.g. "I was
+sick for a week" or a reported extended gap. The agent decides which kind
+of change a request needs; a full replan never modifies a
+`TrainingWeek`/`PlannedSession` already marked `completed`, and — unlike
+during onboarding, where a replan of the still-unconfirmed draft applies
+directly — a full replan here requires an explicit confirm step before
+applying (see AC below). A separate, more surgical capability for
+manually moving a single session without a full replan is out of scope
+here — deferred to a future dashboard-editing ticket.
 
 **Context Claude gets per request:**
 - The current plan state (JSON, [Spec 2](../02-plan-datenmodell/spec.md))
