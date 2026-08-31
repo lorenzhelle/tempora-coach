@@ -8,6 +8,13 @@ import {
 
 // 4:00/km Interval pace — a mid-fitness runner's roughly-VDOT-50 zone.
 const INTERVAL_PACE_SEC_PER_KM = 240;
+// 1 quality session/week at a standard 80/20 split — chosen so the
+// allocation-consistency ceiling (qualitySessionDistanceKm) never binds
+// below Daniels' own I-pace cap in these tests, unless a test says
+// otherwise; see intervalSessionStructure's doc comment for why both
+// ceilings exist.
+const QUALITY_COUNT = 1;
+const EASY_SHARE_FRACTION = 0.8;
 
 describe("pickRepDistanceKm", () => {
   it("picks the longest 'clean' candidate distance whose duration lands in the 3-5 min band", () => {
@@ -38,6 +45,8 @@ describe("intervalSessionStructure", () => {
     const { sessionDistanceKm } = intervalSessionStructure(
       INTERVAL_PACE_SEC_PER_KM,
       50,
+      QUALITY_COUNT,
+      EASY_SHARE_FRACTION,
     );
     // 8% of 50 km = 4 km; 3 reps of 1.2 km = 3.6 km, under that cap.
     expect(sessionDistanceKm).toBeLessThanOrEqual(4);
@@ -47,6 +56,8 @@ describe("intervalSessionStructure", () => {
     const { repCount, repDistanceKm } = intervalSessionStructure(
       INTERVAL_PACE_SEC_PER_KM,
       200, // 8% of 200 km = 16 km, above the 10 km ceiling
+      QUALITY_COUNT,
+      EASY_SHARE_FRACTION,
     );
     expect(repCount * repDistanceKm).toBeLessThanOrEqual(10);
     expect(repCount).toBe(Math.floor(10 / repDistanceKm));
@@ -56,6 +67,8 @@ describe("intervalSessionStructure", () => {
     const { repCount, sessionDistanceKm } = intervalSessionStructure(
       INTERVAL_PACE_SEC_PER_KM,
       10, // 8% of 10 km = 0.8 km — less than even one 1.2 km rep
+      QUALITY_COUNT,
+      EASY_SHARE_FRACTION,
     );
     expect(repCount).toBe(INTERVAL_SESSION.minRepCount);
     expect(sessionDistanceKm).toBeCloseTo(
@@ -68,6 +81,8 @@ describe("intervalSessionStructure", () => {
     const { repDurationSec, restSec } = intervalSessionStructure(
       INTERVAL_PACE_SEC_PER_KM,
       50,
+      QUALITY_COUNT,
+      EASY_SHARE_FRACTION,
     );
     expect(restSec).toBeCloseTo(
       repDurationSec * INTERVAL_SESSION.restToWorkRatio,
@@ -78,12 +93,17 @@ describe("intervalSessionStructure", () => {
 });
 
 describe("intervalStructureRule", () => {
-  it("traces a human-readable interval prescription", () => {
-    const { outcome, value } = intervalStructureRule.apply({
+  it("traces a human-readable interval prescription, with the session's realized distance as its value", () => {
+    const { outcome, value, inputs } = intervalStructureRule.apply({
       zonePaceSecPerKm: INTERVAL_PACE_SEC_PER_KM,
       weeklyVolumeKm: 50,
+      qualityCount: QUALITY_COUNT,
+      easyShareFraction: EASY_SHARE_FRACTION,
     });
     expect(outcome).toContain("x 1200m @ Interval pace");
-    expect(value.repCount).toBeGreaterThanOrEqual(INTERVAL_SESSION.minRepCount);
+    expect(value).toBeCloseTo(3.6, 6); // 3 reps of 1.2 km, Daniels' cap binding
+    expect(inputs.repCount).toBeGreaterThanOrEqual(
+      INTERVAL_SESSION.minRepCount,
+    );
   });
 });

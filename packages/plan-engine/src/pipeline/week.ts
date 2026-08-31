@@ -4,7 +4,7 @@
 // forward across the whole plan via a rolling run-history array threaded
 // through by the caller (pipeline/index.ts).
 
-import { SPIKE_LOOKBACK_DAYS } from "../constants";
+import { QUALITY_SESSION, SPIKE_LOOKBACK_DAYS } from "../constants";
 import {
   intensitySplitRule,
   qualitySessionCountRule,
@@ -182,11 +182,27 @@ export function buildWeekSessions(
     { phase: week.phase, isDeload: week.isDeload },
     target,
   );
-  const qualityCount = Math.min(rawQualityCount, Math.max(0, runsPerWeek - 1));
   const easyShareFraction = tracer.run(
     intensitySplitRule,
     { runsPerWeek },
     target,
+  );
+  // The phase gate says quality work is *allowed* this week; it doesn't
+  // guarantee the week's own volume is large enough to give every quality
+  // slot its QUALITY_SESSION.minKm floor without breaching the 80/20
+  // target — a beginner's first interval-phase weeks (unlocked by weeks of
+  // base training, not by volume; see phase.interval_gate) can still be at
+  // fairly low weekly volume. Clamping qualityCount here, rather than
+  // loosening the floor, keeps every scheduled quality session a
+  // meaningful size and lets the week grow into its second quality slot as
+  // volume builds, instead of ever violating check.easy_share.
+  const maxQualityByVolume = Math.floor(
+    (week.targetVolumeKm * (1 - easyShareFraction)) / QUALITY_SESSION.minKm,
+  );
+  const qualityCount = Math.min(
+    rawQualityCount,
+    Math.max(0, runsPerWeek - 1),
+    Math.max(0, maxQualityByVolume),
   );
   const strengthCount = tracer.run(
     strengthSessionsRule,
