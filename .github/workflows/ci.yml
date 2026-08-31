@@ -20,9 +20,9 @@ jobs:
       - run: npm run typecheck
       - run: npm run build
 
-  # Only runs on push to main, not on every PR — no preview deployments
-  # exist to test against, and this is the gate before production, not a
-  # per-PR check. See docs/runbooks/runbook.md "Deployment".
+  # Only runs on push to main, not on every PR — informational only, it
+  # doesn't gate or trigger anything on Vercel's side. See
+  # docs/runbooks/runbook.md "Deployment".
   e2e:
     if: github.event_name == 'push'
     needs: ci
@@ -50,57 +50,3 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 7
-
-  # main auto-deploys to a Vercel *Preview* build via ordinary git
-  # integration (vercel.json only enables that for main; every other
-  # branch stays off, so PRs still get no preview). That Preview build is
-  # not production yet — this job waits for the Preview deployment that
-  # matches this exact commit to finish, then promotes it to Production
-  # via the Vercel API, but only once ci and e2e have both passed. See
-  # docs/runbooks/runbook.md "Deployment" for the one-time setup
-  # (Production Branch dashboard setting + the four VERCEL_* secrets).
-  promote-production:
-    if: github.event_name == 'push'
-    needs: [ci, e2e]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Wait for this commit's Preview deployment to be ready
-        id: find
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          BRANCH_URL: ${{ secrets.VERCEL_MAIN_BRANCH_URL }}
-        run: |
-          # No `set -e`/pipefail reliance here on purpose — GitHub Actions'
-          # default bash flags would otherwise kill this retry loop on the
-          # first transient curl/jq failure instead of retrying.
-          domain="${BRANCH_URL#https://}"
-          domain="${domain#http://}"
-          found=""
-          for _ in $(seq 1 30); do
-            resp=$(curl -sS "https://api.vercel.com/v13/deployments/${domain}${VERCEL_ORG_ID:+?teamId=$VERCEL_ORG_ID}" \
-              -H "Authorization: Bearer ${VERCEL_TOKEN}") || resp=""
-            sha=$(echo "$resp" | jq -r '.meta.githubCommitSha // empty' 2>/dev/null) || sha=""
-            state=$(echo "$resp" | jq -r '.readyState // empty' 2>/dev/null) || state=""
-            if [ "$sha" = "$GITHUB_SHA" ] && [ "$state" = "READY" ]; then
-              id=$(echo "$resp" | jq -r '.id // .uid')
-              echo "id=$id" >> "$GITHUB_OUTPUT"
-              found="1"
-              break
-            fi
-            sleep 20
-          done
-          if [ -z "$found" ]; then
-            echo "Timed out waiting for Vercel to build $GITHUB_SHA as a Preview deployment at $domain" >&2
-            exit 1
-          fi
-
-      - name: Promote to production
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: |
-          curl -fsS -X POST \
-            "https://api.vercel.com/v10/projects/${VERCEL_PROJECT_ID}/promote/${{ steps.find.outputs.id }}${VERCEL_ORG_ID:+?teamId=$VERCEL_ORG_ID}" \
-            -H "Authorization: Bearer ${VERCEL_TOKEN}"

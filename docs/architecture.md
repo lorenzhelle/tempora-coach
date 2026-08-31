@@ -132,11 +132,12 @@ fields on `Plan` (see [Spec 2](specs/02-plan-datenmodell/spec.md)).
   reconciliation (ticket B4), so lost webhook events don't lead to
   missing activities.
 - **Deployment/CI:** push to `main` → Vercel git integration auto-builds
-  a **Preview** deployment (`vercel.json` only enables git-triggered
-  builds for `main`; PRs get none) → GitHub Actions runs `ci`
-  (lint/typecheck/build) then `e2e` → only once both pass does a
-  `promote-production` job call the Vercel API to promote that build to
-  Production.
+  it (`vercel.json` only enables git-triggered builds for `main`; PRs
+  get none) as a **Staged** production build (Auto-assign Custom
+  Production Domains is off — see `docs/runbooks/runbook.md`) →
+  GitHub Actions runs `ci` (lint/typecheck/build) then `e2e` as a
+  visibility signal only. Going live is a manual "Promote to
+  Production" click in the Vercel dashboard.
 
 ## ADR index
 

@@ -138,19 +138,20 @@ conflicts with this project's deploy path below.
 
 ## Boundaries and approvals
 
-- Deployment to Vercel always happens through the CI-gated pipeline
-  (ticket A3): push to `main` → Vercel's git integration auto-builds it
-  as a **Preview** deployment (not Production — see `vercel.json` and the
-  Production Branch dashboard setting in `docs/runbooks/runbook.md`) →
-  GitHub Actions runs `ci` (lint/typecheck/build) then `e2e` → only once
-  both pass does the `promote-production` job call the Vercel API to
-  promote that same Preview deployment to Production. No preview
-  deployments for PRs — `vercel.json`'s `git.deploymentEnabled` only
-  turns on git-triggered builds for `main`, PRs only run `ci`. Never
-  invoke the Vercel CLI/API to create an ad-hoc deployment (`vercel
-  deploy`, or a skill/script that wraps it) or to promote one before
-  `ci`/`e2e` have passed — that bypasses this pipeline and produces an
-  untracked or unverified production deployment
+- Deployment to Vercel uses Vercel's own built-in staged-production-build
+  workflow, no custom pipeline or tokens: push to `main` → Vercel's git
+  integration auto-builds it (`vercel.json`'s `git.deploymentEnabled`
+  only turns on git-triggered builds for `main`, PRs only run `ci`, no
+  preview deployments). Production Branch stays `main`, but "Auto-assign
+  Custom Production Domains" is turned off (Vercel → Project Settings →
+  Environments → Production → Branch Tracking — see
+  `docs/runbooks/runbook.md`), so that build lands **Staged**, not live.
+  GitHub Actions runs `ci` then `e2e` on the same push purely as a
+  visibility signal — neither gates or triggers anything on Vercel's
+  side. Going live is always a manual, human action — "Promote to
+  Production" in the Vercel dashboard (or `vercel promote` from the
+  CLI). Never invoke the Vercel CLI/API to create or promote a
+  deployment from a script/skill/agent — that's a human-only step
 
 - Never mutate plan data via business logic in the frontend — always
   through the API route
