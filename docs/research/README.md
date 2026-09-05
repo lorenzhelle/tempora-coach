@@ -23,6 +23,15 @@ code — a reference for system prompts and plan rules.
   stored rule trace, not an LLM-authored guess) — see
   [ADR-0009](../decisions/0009-plan-engine-package.md) and
   `packages/plan-engine`.
+- `5k-plans-comparison-and-adaptive-volume.md` — a cross-plan comparison
+  of published 5K programs (beginner/finisher, time-goal, elite
+  methodology) and why there's no formula for an individual's "correct"
+  weekly volume — only a minimum effective dose that periodic time-trial
+  re-testing should reveal. This is the basis for `volume.target_cap`
+  (`packages/plan-engine/src/rules/volume.ts`) holding the target-volume
+  climb at current volume once a recent time trial already shows the
+  goal on track, instead of always climbing toward the generic
+  by-distance heuristic.
 
 **Core rule for the plan logic (Spec 5, AC 4):** The best-evidenced risk
 factor isn't the weekly volume increase, but a single run that

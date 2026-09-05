@@ -35,7 +35,7 @@ export const RULE_SOURCES: Record<RuleId, string> = {
     "docs/research/progression-und-verletzungspraevention.md §A3 (3:1 step loading)",
   "volume.post_deload_restart": "derived from the 6-month mileage table",
   "volume.target_cap":
-    "docs/research/progression-und-verletzungspraevention.md, 6-month mileage table (month-6 target); the target-by-distance mapping beyond that table is an engine heuristic",
+    "docs/research/progression-und-verletzungspraevention.md, 6-month mileage table (month-6 target); the target-by-distance mapping beyond that table is an engine heuristic. Gated by feasibility verdict from the most recent time trial rather than applied unconditionally, per docs/research/5k-plans-comparison-and-adaptive-volume.md (no evidence-based formula for a runner's individual volume ceiling — periodic re-testing, not a fixed target, is the right instrument).",
   "volume.conservative_multiplier":
     "docs/research/progression-und-verletzungspraevention.md §A2 (prior injury as an independent risk factor)",
   "volume.taper":

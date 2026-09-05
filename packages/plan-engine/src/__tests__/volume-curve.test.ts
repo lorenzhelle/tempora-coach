@@ -107,6 +107,40 @@ describe("buildCurve volume progression", () => {
     }
   });
 
+  it("caps target volume at current volume once a recent time trial already shows the goal on track, instead of forcing the heuristic target", () => {
+    const w = weeks(
+      baseInput({
+        currentWeeklyVolumeKm: 25,
+        // Already ran the goal time itself as a time trial -> unambiguously "realistic".
+        recentTimeTrial: { distanceMeters: 5000, timeSeconds: 1200 },
+      }),
+    );
+    for (const week of w) {
+      if (!week.isTaper) {
+        expect(week.targetVolumeKm).toBeLessThanOrEqual(25 + 1e-6);
+      }
+    }
+  });
+
+  it("still climbs toward the heuristic target when a recent time trial shows the goal is not yet on track", () => {
+    const w = weeks(
+      baseInput({
+        currentWeeklyVolumeKm: 25,
+        // Far off the goal pace and a short horizon -> not "realistic".
+        goal: {
+          distanceMeters: 5000,
+          targetDate: "2026-11-28", // ~13 weeks out
+          targetTimeSeconds: 1200,
+        },
+        recentTimeTrial: { distanceMeters: 5000, timeSeconds: 1800 },
+      }),
+    );
+    const lastBuildWeek = [...w]
+      .reverse()
+      .find((week) => !week.isDeload && !week.isTaper);
+    expect(lastBuildWeek?.targetVolumeKm ?? 0).toBeGreaterThan(25);
+  });
+
   it("applies a smaller build step throughout when priorStressFracture is reported", () => {
     const cautious = weeks(baseInput({ priorStressFracture: true }));
     const standard = weeks(baseInput());

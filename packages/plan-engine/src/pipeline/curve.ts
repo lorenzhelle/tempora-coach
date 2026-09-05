@@ -217,6 +217,8 @@ export function buildCurve(input: PlanInput, tracer: Tracer): CurveResult {
     {
       goalDistanceMeters: input.goal.distanceMeters,
       currentWeeklyVolumeKm: input.currentWeeklyVolumeKm,
+      feasibilityVerdict: verdict,
+      fitnessConfidence: fitness.confidence,
     },
     PLAN_TARGET,
   );

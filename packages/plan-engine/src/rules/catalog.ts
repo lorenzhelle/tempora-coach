@@ -157,9 +157,9 @@ export const RULE_CATALOG: Record<RuleId, CatalogEntry> = {
   "volume.target_cap": {
     title: "Target weekly volume",
     plain:
-      "Your volume stops increasing once it reaches a level appropriate for your goal distance.",
+      "Your volume stops increasing once it reaches a level appropriate for your goal distance — or sooner, if a recent time trial shows you're already on track at less.",
     technical:
-      "Target weekly volume is looked up/interpolated by goal distance (45 km/wk for a 5K, per the research table; other distances are heuristic control points), floored at your current volume so it never asks you to cut back.",
+      "Target weekly volume is looked up/interpolated by goal distance (45 km/wk for a 5K, per the research table; other distances are heuristic control points), floored at your current volume so it never asks you to cut back. If a recent time trial (high-confidence fitness, not the low/medium-confidence baseline estimate) already puts the goal's feasibility verdict at 'realistic', the target holds at current volume instead of climbing toward the heuristic — re-tested every 4-6 weeks (alloc.time_trial_cadence), so the cap can climb again if a later test shows the goal has drifted out of reach.",
     source: RULE_SOURCES["volume.target_cap"],
   },
   "volume.conservative_multiplier": {
